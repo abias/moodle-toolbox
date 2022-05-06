@@ -4,12 +4,11 @@
 ### local config: webserver stack
 ###################################
 
-# The user who runs the webserver
-config_webserver_user='www-data'
-
 # The php binary
-config_php_binary='/opt/plesk/php/7.4/bin/php'
+config_webserver_phpbin='/opt/plesk/php/7.4/bin/php'
 
+# The command which will be prepended to ressource-intensive commands
+config_webserver_nice='ionice -c3 nice -n19'
 
 ###################################
 ### local config: webserver environment
@@ -35,10 +34,39 @@ config_vhost_distros=('moodle' 'iomad')
 # Make sure that the default value is an allowed value as well
 config_vhost_distros_default='moodle'
 
+# The Moodle releases which should be allowed
+# Currently, 39 is supported and are used in Git branch names
+# If you want to use any other release, please check all scripts for correct behaviour
+config_vhost_releases=('39')
+# As this is an optional parameter in the scripts, you can also set a default value
+# Make sure that the default value is an allowed value as well
+config_vhost_releases_default='39'
+
 
 ###################################
-### local config: nice
+### local config: git environment
 ###################################
 
-# The command which will be prepended to ressource-intensive commands
-config_nice='ionice -c3 nice -n19'
+# The Github URL prefix for Git repositories. This URL is amended by the site's distro type and the site name.
+config_git_githuburlprefix='git@github.com:lernlink-intern/lms-site'
+
+
+###################################
+### local config: moodle environment
+###################################
+
+# The Moodle admin username which will be created with the installation.
+config_moodle_adminusername='support@lernlink.de'
+
+# The Moodle admin user email which will be set during the installation.
+config_moodle_adminusermail='support@lernlink.de'
+
+# A random Moodle admin password which will be set during the installation.
+config_moodle_adminuserpass=`openssl rand -base64 48`
+
+# A random upgrade key which can be set during the installation.
+config_moodle_randomupgradekey=`openssl rand -base64 24`
+
+# The Moodle default language which will be set duting the installation.
+config_moodle_defaultlang='DE'
+

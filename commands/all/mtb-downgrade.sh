@@ -32,10 +32,11 @@ usage ()
     moodlesites=`array_echo_linebyline_indented "${moodlesites[@]}"`
     moodleinstances=`array_echo_linebyline_indented "${config_vhost_instances[@]}"`
     moodledistros=`array_echo_linebyline_indented "${config_vhost_distros[@]}"`
+    moodlereleases=`array_echo_linebyline_indented "${config_vhost_releases[@]}"`
 
     cat <<EOU
 Usage:
-mtb-downgrade.sh -s <site> -i <instance> [-d <distro>]
+mtb-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -57,12 +58,21 @@ Optional parameters:
 $moodledistros
 
      Default value:
-     moodle
+     $config_vhost_distros_default
+
+  -r <release>
+     The Moodle release which is to be used by the scripts
+
+     Possible values:
+$moodlereleases
+
+     Default value:
+     $config_vhost_releases_default
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:' OPTION; do
+while getopts 'hs:i:d:r:' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -87,6 +97,14 @@ while getopts 'hs:i:d:' OPTION; do
 	    else
                  moodledistro=$OPTARG
 	    fi
+            ;;
+        r)
+            if ! array_contains_element "$OPTARG" "${config_vhost_releases[@]}"; then
+                 usage
+                 exit 1
+            else
+                 moodlerelease=$OPTARG
+            fi
             ;;
         h)
             usage
@@ -125,6 +143,11 @@ if [[ -z "$moodledistro" ]]; then
     moodledistro=$config_vhost_distros_default
 fi
 
+# If no release was given, use the default
+if [[ -z "$moodlerelease" ]]; then
+    moodlerelease=$config_vhost_releases_default
+fi
+
 # Confirmation
 echo -e "You requested to downgrade the database of the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
 confirm
@@ -135,7 +158,7 @@ confirm
 ###################################
 
 site_verifymoodleinstance $moodlesite $moodleinstance $moodledistro
-site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
+site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 
 ###################################
