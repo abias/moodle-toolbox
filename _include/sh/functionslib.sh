@@ -27,10 +27,15 @@ now ()
 }
 
 # This helper function asks for confirmation. 
+# If the automode variable is set to 1, the function returns directly.
 # If the user enters y, the script continues.
 # If the user enters anything else, the script terminates.
 confirm ()
 {
+    if [[ $automode -eq 1 ]]; then
+        return;
+    fi
+
     read -p "Continue (y/n)? " CONT
     if [ "$CONT" != "y" ]; then
         echo "Ok, exiting...";
@@ -39,11 +44,16 @@ confirm ()
 }
 
 # This helper function asks for confirmation. 
+# If the automode variable is set to 1, the function returns directly.
 # If the user enters y, the script executes the command which is passed in $1.
 # If the user enters n, the script continues without executing the command.
 # If the user enters anything else, the script terminates.
 ask ()
 {
+    if [[ $automode -eq 1 ]]; then
+        return;
+    fi
+
     read -p "Do you want me to do this (y/n)? " CONT
     if [ "$CONT" == "y" ]; then
         echo "Ok, I will do this...";
@@ -58,11 +68,16 @@ ask ()
 }
 
 # This helper function asks for confirmation. 
+# If the automode variable is set to 1, the function returns directly.
 # If the user enters y, the script sets the variable doit to 1.
 # If the user enters n, the script sets the variable doit to 0.
 # If the user enters anything else, the script terminates.
 askandremember ()
 {
+    if [[ $automode -eq 1 ]]; then
+        return;
+    fi
+
     read -p "Do you want me to do this (y/n)? " CONT
     if [ "$CONT" == "y" ]; then
         echo "Ok, I will do this...";
@@ -77,8 +92,13 @@ askandremember ()
 }
 
 # This helper function simply pauses the script execution and waits for a key press.
+# If the automode variable is set to 1, the function returns directly.
 acknowledge ()
 {
+    if [[ $automode -eq 1 ]]; then
+        return;
+    fi
+
     read -p "Press any key to continue."
 }
 

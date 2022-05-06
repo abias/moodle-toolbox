@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
+mtb-downgrade.sh -s <site> -i <instance> [-d <distro>]
 
 Mandatory parameters:
   -s <site>
@@ -59,15 +59,6 @@ $moodledistros
 
      Default value:
      $config_vhost_distros_default
-
-  -r <release>
-     The Moodle release which is to be used by the scripts
-
-     Possible values:
-$moodlereleases
-
-     Default value:
-     $config_vhost_releases_default
 EOU
 }
 
@@ -97,14 +88,6 @@ while getopts 'hs:i:d:r:' OPTION; do
 	    else
                  moodledistro=$OPTARG
 	    fi
-            ;;
-        r)
-            if ! array_contains_element "$OPTARG" "${config_vhost_releases[@]}"; then
-                 usage
-                 exit 1
-            else
-                 moodlerelease=$OPTARG
-            fi
             ;;
         h)
             usage
@@ -143,7 +126,7 @@ if [[ -z "$moodledistro" ]]; then
     moodledistro=$config_vhost_distros_default
 fi
 
-# If no release was given, use the default
+# If no release was given (which will be always true for this script), use the default
 if [[ -z "$moodlerelease" ]]; then
     moodlerelease=$config_vhost_releases_default
 fi

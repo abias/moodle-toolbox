@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-d <distro>] [-r <release>]
+mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -66,6 +66,10 @@ $moodleinstances
      The database password to be set for the Moodle site
 
 Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+
   -d <distro>
      The Moodle distribution which is to be used by the scripts
 
@@ -87,7 +91,7 @@ EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -135,6 +139,9 @@ while getopts 'hs:i:d:r:f:t:n:u:p:' OPTION; do
             ;;
         p)
             moodledbpass=$OPTARG
+            ;;
+        a)
+            automode=1
             ;;
         h)
             usage

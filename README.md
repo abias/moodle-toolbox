@@ -69,7 +69,7 @@ This script is used to initialize a Moodle instance. It needs some additional pa
 
 ```
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-d <distro>] [-r <release>]
+mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -92,6 +92,9 @@ Mandatory parameters:
      The database password to be set for the Moodle site
 
 Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
   -d <distro>
      The Moodle distribution which is to be used by the scripts
      This parameter expects the distribution name of the instance of the Moodle site.
