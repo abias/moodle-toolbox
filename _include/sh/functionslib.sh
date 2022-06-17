@@ -279,3 +279,18 @@ site_verifymoodleinstance()
 	exit 1
     fi
 }
+
+
+###################################
+### git-related functions
+###################################
+
+# This helper function sets some environment variables for git comits.
+git_init_commits()
+{
+    export GIT_AUTHOR_NAME=$config_git_author_name
+    export GIT_AUTHOR_EMAIL=$config_git_author_mail
+    export GIT_COMMITTER_NAME=$config_git_committer_name
+    export GIT_COMMITTER_EMAIL=$config_git_committer_mail
+    success
+}

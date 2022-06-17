@@ -1,7 +1,7 @@
 moodle-toolbox
 ==============
 
-This is a small Bash script collection which makes handling of multiple Moodle instances quite handy.
+This is a small Bash script collection which makes handling of multiple Moodle instances and working with Moodle code quite handy.
 
 
 Requirements
@@ -103,6 +103,84 @@ Optional parameters:
      The Moodle release which is to be used by the scripts
      This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
+```
+
+### /commands/dev
+
+In this folder, you will find scripts which can be used to do various Moodle dev tasks.
+
+#### mtb-plugin-upgrade-prepare.php
+
+This script is used to prepare a plugin upgrade.
+It is used as the first of three scripts which must be used in combination to easily publish new plugin major versions.
+
+```
+Usage:
+mtb-plugin-upgrade-prepare.sh -p <path> -m <machinerelease> -r <release> -d <date> -c <coreversion> [-a <path>]
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin to be upgraded is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -m <machinerelease>
+     The (machine readable) target release of the plugin.
+  -r <release>
+     The (human readable) target release of the plugin.
+  -d <date>
+     The date of the upgrade.
+     This is just needed for the CHANGELOG entry.
+  -v <version>
+     The version of the release of the plugin.
+     Ideally, this matches the date in the CHANGELOG entry. Don't forget the two trailing zeros which are required for Moodle versions.
+  -c <coreversion>
+     The version of the Moodle core which is required for the new release of the plugin.
+     You can find the Moodle core releases on https://docs.moodle.org/dev/Releases.
+
+Optional parameters:
+  -a <path>
+     The (full) path to a shell script which will be sourced after the basic plugin modifications and before committing the results. It can be used to apply additional, release-specific changes to the plugin.
+     Please note that the script must be executable.
+```
+
+#### mtb-plugin-upgrade-finish.php
+
+This script is used to finish a plugin upgrade.
+It is used as the second of three scripts which must be used in combination to easily publish new plugin major versions.
+
+```
+Usage:
+mtb-plugin-upgrade-finish.sh -p <path> -m <machinerelease> -r <release> -v <version>
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin to be upgraded is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -m <machinerelease>
+     The (machine readable) target release of the plugin.
+  -r <release>
+     The (human readable) target release of the plugin.
+  -v <version>
+     The version of the release of the plugin.
+     Ideally, this matches the date in the CHANGELOG entry. Don't forget the two trailing zeros which are required for Moodle versions.
+```
+
+#### mtb-plugin-upgrade-release.php
+
+This script is used to release a plugin upgrade.
+It is used as the third of three scripts which must be used in combination to easily publish new plugin major versions.
+
+```
+Usage:
+mtb-plugin-upgrade-release.sh -p <path> -m <machinerelease> -r <release>
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin to be upgraded is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -m <machinerelease>
+     The (machine readable) target release of the plugin.
+  -r <release>
+     The (human readable) target release of the plugin.
 ```
 
 
