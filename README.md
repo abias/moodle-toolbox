@@ -212,6 +212,31 @@ Optional parameters:
      If this switch is set, the branch is pushed to Github after the commit.
 ```
 
+#### mtb-plugin-patch-backport.php
+
+This script is used to backport a commit to release branches.
+
+```
+Usage:
+mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g]
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin which contains the patch is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -b <branches>
+     The branches which the patch should be backported to.
+     This parameter expects a comma-separated list of existing branch names.
+
+Optional parameters:
+  -s <shahash>
+     The SHA hash of the patch to be backported.
+     If this parameter is not given, the script backports the HEAD commit in the master branch.
+  -g
+     Push to Github.
+     If this switch is set, the given branches are pushed to Github after the backport.
+```
+
 
 Maintainers
 -----------
