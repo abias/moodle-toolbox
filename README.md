@@ -237,6 +237,52 @@ Optional parameters:
      If this switch is set, the given branches are pushed to Github after the backport.
 ```
 
+#### mtb-plugin-update-finish-latest.php
+
+This script is used to finish a plugin update for the latest supported release.
+It is used as the first of two scripts which must be used in combination to easily publish new plugin minor versions.
+
+```
+Usage:
+mtb-plugin-update-finish-latest.sh -p <path> -m <machinerelease> -r <release> [-v] [-g]
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin to be updated is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -m <machinerelease>
+     The (machine readable) major version of the plugin update.
+  -r <release>
+     The (human readable) major version of the plugin update.
+
+Optional parameters:
+  -v
+     Raise version.
+     If this switch is set, the plugin version in version.php is raised within the update.
+  -g
+     Push to Github.
+     If this switch is set, the branches are pushed to Github after the commit.
+```
+
+#### mtb-plugin-update-release-latest.php
+
+This script is used to release a plugin update for the latest supported release.
+It is used as the second of two scripts which must be used in combination to easily publish new plugin minor versions.
+
+```
+Usage:
+mtb-plugin-update-release-latest.sh -p <path> -m <machinerelease> -r <release>
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin to be updated is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -m <machinerelease>
+     The (machine readable) major version of the plugin update.
+  -r <release>
+     The (human readable) major version of the plugin update.
+```
+
 
 Maintainers
 -----------
