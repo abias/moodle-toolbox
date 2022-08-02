@@ -20,9 +20,9 @@ Then, have a look at the configuration file
 /_config/localconfig.sh
 and adapt the configuration settings to your local needs. All configuration settings should be commented well in the configuration file.
 
-Futhermore, have a look at the template file
-/_template/config.sh
-and adapt the default config.php file for new installations to your local needs.
+Futhermore, have a look at the template files below
+/_template/
+and adapt the config.php template files for new installations to your local needs.
 
 
 Usage

@@ -319,7 +319,7 @@ export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$config_moodle_randomupgradekey
 export configtemplate_pathtophp=$config_webserver_phpbin
 
-cat $CURRENTDIR/../../_template/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_pathtophp' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_pathtophp' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
