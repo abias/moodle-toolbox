@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
+mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -87,11 +87,29 @@ $moodlereleases
 
      Default value:
      $config_vhost_releases_default
+
+  -x <smtpserver>
+     The SMTP mail server which is used for outgoing mail
+
+     Default value:
+     $config_moodle_outgoingmailsmtphosts
+
+  -y <smtpuser>
+     The SMTP mail user which is used for outgoing mail
+
+     Default value:
+     $config_moodle_outgoingmailsmtpuser
+
+  -z <smtppass>
+     The SMTP mail password which is used for outgoing mail
+
+     Default value:
+     <hidden>
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:a' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -139,6 +157,15 @@ while getopts 'hs:i:d:r:f:t:n:u:p:a' OPTION; do
             ;;
         p)
             moodledbpass=$OPTARG
+            ;;
+        x)
+            moodlesmtphosts=$OPTARG
+            ;;
+        y)
+            moodlesmtpuser=$OPTARG
+            ;;
+        z)
+            moodlesmtppass=$OPTARG
             ;;
         a)
             automode=1
@@ -213,6 +240,21 @@ fi
 # If no release was given, use the default
 if [[ -z "$moodlerelease" ]]; then
     moodlerelease=$config_vhost_releases_default
+fi
+
+# If no SMTP host was given, use the default
+if [[ -z "$moodlesmtphosts" ]]; then
+    moodlesmtphosts=$config_moodle_outgoingmailsmtphosts
+fi
+
+# If no SMTP user was given, use the default
+if [[ -z "$moodlesmtpuser" ]]; then
+    moodlesmtpuser=$config_moodle_outgoingmailsmtpuser
+fi
+
+# If no SMTP password was given, use the default
+if [[ -z "$moodlesmtppass" ]]; then
+    moodlesmtppass=$config_moodle_outgoingmailsmtppass
 fi
 
 # Confirmation
@@ -318,8 +360,14 @@ export configtemplate_dbuser=$moodledbuser
 export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$config_moodle_randomupgradekey
 export configtemplate_pathtophp=$config_webserver_phpbin
+export configtemplate_smtphosts=$moodlesmtphosts
+export configtemplate_smtpuser=$moodlesmtpuser
+export configtemplate_smtppass=$moodlesmtppass
+export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$moodlesite
+export configtemplate_supportname="$moodlefullname"
+export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_pathtophp' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}

@@ -83,6 +83,24 @@ $CFG->showcampaigncontent = false;
 
 
 //=========================================================================
+// OUTGOING MAIL
+//=========================================================================
+
+// Outgoing mail server configuration.
+$CFG->smtphosts = '$configtemplate_smtphosts';
+$CFG->smtpsecure = 'ssl';
+$CFG->smtpauthtype = 'LOGIN';
+
+// Outgoing mail instance configuration.
+$CFG->smtpuser = '$configtemplate_smtpuser';
+$CFG->smtppass = '$configtemplate_smtppass';
+$CFG->noreplyaddress = '$configtemplate_noreplyaddress';
+$CFG->supportname = '$configtemplate_supportname';
+$CFG->supportemail = '$configtemplate_supportemail';
+
+
+
+//=========================================================================
 // SETTINGS FOR DEBUGGING AND TESTING
 //=========================================================================
 
@@ -107,4 +125,3 @@ require_once(__DIR__ . '/lib/setup.php'); // Do not edit
 
 // There is no php closing tag in this file,
 // it is intentional because it prevents trailing whitespace problems!
-

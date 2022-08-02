@@ -83,6 +83,27 @@ $CFG->showcampaigncontent = false;
 
 
 //=========================================================================
+// OUTGOING MAIL
+//=========================================================================
+
+// Outgoing mail server configuration.
+$CFG->smtphosts = '$configtemplate_smtphosts';
+$CFG->smtpsecure = 'ssl';
+$CFG->smtpauthtype = 'LOGIN';
+
+// Outgoing mail instance configuration.
+$CFG->smtpuser = '$configtemplate_smtpuser';
+$CFG->smtppass = '$configtemplate_smtppass';
+$CFG->noreplyaddress = '$configtemplate_noreplyaddress';
+$CFG->supportname = '$configtemplate_supportname';
+$CFG->supportemail = '$configtemplate_supportemail';
+
+// Do not send any outgoing mail.
+$CFG->noemailever = true;
+
+
+
+//=========================================================================
 // SETTINGS FOR DEBUGGING AND TESTING
 //=========================================================================
 

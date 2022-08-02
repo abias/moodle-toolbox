@@ -105,6 +105,15 @@ Optional parameters:
      The Moodle release which is to be used by the scripts
      This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
+  -x <smtpserver>
+     The SMTP mail server which is used for outgoing mail
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -y <smtpuser>
+     The SMTP mail user which is used for outgoing mail
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -z <smtppass>
+     The SMTP mail password which is used for outgoing mail
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
 ### /commands/dev

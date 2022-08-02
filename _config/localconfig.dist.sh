@@ -72,6 +72,26 @@ config_moodle_defaultlang='DE'
 
 
 ###################################
+### local config: moodle outgoing mail
+###################################
+
+# The default SMTP mail server which is used for outgoing mail and which will be set during the installation.
+config_moodle_outgoingmailsmtphosts='smtp.eu.mailgun.org:465'
+
+# The default SMTP mail user which is used for outgoing mail and which will be set during the installation.
+config_moodle_outgoingmailsmtpuser=''
+
+# The default SMTP mail password which is used for outgoing mail and which will be set during the installation.
+config_moodle_outgoingmailsmtppass=''
+
+# The noreply prefix which will be added to the domain and which will be set during the installation.
+config_moodle_outgoingmailnoreplyaddressprefix='noreply'
+
+# The support prefix which will be added to the domain and which will be set during the installation.
+config_moodle_outgoingmailsupportemailprefix='noreply'
+
+
+###################################
 ### dev tools:git
 ###################################
 
