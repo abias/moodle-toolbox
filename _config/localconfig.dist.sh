@@ -72,6 +72,17 @@ config_moodle_defaultlang='DE'
 
 
 ###################################
+### local config: moodle bigbluebutton plugin
+###################################
+
+# The BBB URL prefix and suffix which will be used to compose the BBB URL.
+# The BBB URL will be composed from the prefix, the BBB user name (which is provided as command line parameter) and the suffix.
+# All three components will be imploded by forward slashes.
+config_moodle_bbburlprefix='https://bbb.pool.lern.link'
+config_moodle_bbburlsuffix='bigbluebutton'
+
+
+###################################
 ### local config: moodle outgoing mail
 ###################################
 

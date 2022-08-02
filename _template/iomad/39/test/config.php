@@ -83,6 +83,16 @@ $CFG->showcampaigncontent = false;
 
 
 //=========================================================================
+// MOODLE BBB PLUGIN
+//=========================================================================
+
+// BBB Connection instance configuration.
+$CFG->bigbluebuttonbn_server_url = '$configtemplate_bbburl';
+$CFG->bigbluebuttonbn_shared_secret = '$configtemplate_bbbtoken';
+
+
+
+//=========================================================================
 // OUTGOING MAIL
 //=========================================================================
 

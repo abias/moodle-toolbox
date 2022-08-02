@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>]
+mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -64,6 +64,12 @@ $moodleinstances
 
   -p <dbpass>
      The database password to be set for the Moodle site
+
+  -b <bbbuser>
+     The BBB user to be set for the Moodle site
+
+  -c <bbbtoken>
+     The BBB token to be set for the Moodle site
 
 Optional parameters:
   -a
@@ -109,7 +115,7 @@ EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:a' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -166,6 +172,12 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:a' OPTION; do
             ;;
         z)
             moodlesmtppass=$OPTARG
+            ;;
+        b)
+            moodlebbbuser=$OPTARG
+            ;;
+        c)
+            moodlebbbtoken=$OPTARG
             ;;
         a)
             automode=1
@@ -228,6 +240,18 @@ fi
 
 # Verify that a moodledbpass was given
 if [[ -z "$moodledbpass" ]]; then
+    usage
+    exit 1
+fi
+
+# Verify that a moodlebbbuser was given
+if [[ -z "$moodlebbbuser" ]]; then
+    usage
+    exit 1
+fi
+
+# Verify that a moodlebbbtoken was given
+if [[ -z "$moodlebbbtoken" ]]; then
     usage
     exit 1
 fi
@@ -357,6 +381,8 @@ export configtemplate_wwwroot=$site_url
 export configtemplate_dataroot=$site_moodledata
 export configtemplate_dbname=$moodledbname
 export configtemplate_dbuser=$moodledbuser
+export configtemplate_bbburl="${config_moodle_bbburlprefix}/$moodlebbbuser/${config_moodle_bbburlsuffix}"
+export configtemplate_bbbtoken=$moodlebbbtoken
 export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$config_moodle_randomupgradekey
 export configtemplate_pathtophp=$config_webserver_phpbin
@@ -367,7 +393,7 @@ export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressp
 export configtemplate_supportname="$moodlefullname"
 export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}

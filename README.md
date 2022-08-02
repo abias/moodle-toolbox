@@ -92,6 +92,10 @@ Mandatory parameters:
      The database user to be set for the Moodle site
   -p <dbpass>
      The database password to be set for the Moodle site
+  -b <bbbuser>
+     The BBB user to be set for the Moodle site
+  -c <bbbtoken>
+     The BBB token to be set for the Moodle site
 
 Optional parameters:
   -a
