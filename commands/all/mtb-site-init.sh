@@ -499,6 +499,14 @@ sudo -u $moodlesite $config_webserver_phpbin admin/cli/upgrade.php --non-interac
     && success || failure
 
 
+now "Download H5P content types"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $moodlesite $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
+    && success || failure
+
+
 ###################################
 ### inform admin
 ###################################
