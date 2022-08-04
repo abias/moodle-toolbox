@@ -10,6 +10,10 @@ config_webserver_phpbin='/opt/plesk/php/7.4/bin/php'
 # The command which will be prepended to ressource-intensive commands
 config_webserver_nice='ionice -c3 nice -n19'
 
+# The mariadb binary
+config_webserver_mariadbbin='/usr/bin/mariadb'
+
+
 ###################################
 ### local config: webserver environment
 ###################################
