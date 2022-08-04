@@ -416,8 +416,11 @@ export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressp
 export configtemplate_supportname="$moodlefullname"
 export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
 export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
+# TODO: configtemplate_envbarprodroot has be changed for test instances
+export configtemplate_envbarprodroot=$site_url
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes' > $site_configphp \
+
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
