@@ -34,14 +34,14 @@ Usage
 
 In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / dev).
 
-#### mtb-downgrade.php
+#### mtb-site-downgrade.php
 
 This script is used to downgrade the core and plugin versions stored in the Moodle database to the versions stored in the version.php files on disk.
 It does not do any rollback of upgrade steps. Please use it only for development or emergency purposes.
 
 ```
 Usage:
-mtb-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
+mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -65,13 +65,13 @@ Optional parameters:
 ```
 
 
-#### mtb-init.php
+#### mtb-site-init.php
 
 This script is used to initialize a Moodle instance. It needs some additional parameters about the database and the site and will setup the site, starting from the creation of the filestructure and ending at the initialization of the database.
 
 ```
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>

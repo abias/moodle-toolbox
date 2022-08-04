@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-downgrade.sh -s <site> -i <instance> [-d <distro>]
+mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>]
 
 Mandatory parameters:
   -s <site>
