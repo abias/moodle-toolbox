@@ -70,6 +70,12 @@ config_moodle_randomupgradekey=`openssl rand -base64 24`
 # The Moodle default language which will be set duting the installation.
 config_moodle_defaultlang='DE'
 
+# The Moodle upload sizes which should be allowed
+config_moodle_upload=('24' '64' '128' '256' '512' '1024' '2048')
+# As this is an optional parameter in the scripts, you can also set a default value
+# Make sure that the default value is an allowed value as well
+config_moodle_upload_default='64'
+
 
 ###################################
 ### local config: moodle bigbluebutton plugin

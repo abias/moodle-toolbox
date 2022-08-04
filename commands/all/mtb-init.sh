@@ -33,10 +33,11 @@ usage ()
     moodleinstances=`array_echo_linebyline_indented "${config_vhost_instances[@]}"`
     moodledistros=`array_echo_linebyline_indented "${config_vhost_distros[@]}"`
     moodlereleases=`array_echo_linebyline_indented "${config_vhost_releases[@]}"`
+    moodleuploads=`array_echo_linebyline_indented "${config_moodle_upload[@]}"`
 
     cat <<EOU
 Usage:
-mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>]
+mtb-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>]
 
 Mandatory parameters:
   -s <site>
@@ -111,11 +112,20 @@ $moodlereleases
 
      Default value:
      <hidden>
+
+  -m <maxbytes>
+     The Moodle maxbytes setting to be set for the Moodle site
+
+     Possible values:
+$moodleuploads
+
+     Default value:
+     $config_moodle_upload_default
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:a' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -178,6 +188,14 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:a' OPTION; do
             ;;
         c)
             moodlebbbtoken=$OPTARG
+            ;;
+        m)
+            if ! array_contains_element "$OPTARG" "${config_moodle_upload[@]}"; then
+                 usage
+                 exit 1
+            else
+                 moodleupload=$OPTARG
+            fi
             ;;
         a)
             automode=1
@@ -279,6 +297,11 @@ fi
 # If no SMTP password was given, use the default
 if [[ -z "$moodlesmtppass" ]]; then
     moodlesmtppass=$config_moodle_outgoingmailsmtppass
+fi
+
+# If no Moodle upload size was given, use the default
+if [[ -z "$moodleupload" ]]; then
+    moodleupload=$config_moodle_upload_default
 fi
 
 # Confirmation
@@ -392,8 +415,9 @@ export configtemplate_smtppass=$moodlesmtppass
 export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$moodlesite
 export configtemplate_supportname="$moodlefullname"
 export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
+export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}

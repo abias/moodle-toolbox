@@ -118,6 +118,8 @@ Optional parameters:
   -z <smtppass>
      The SMTP mail password which is used for outgoing mail
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -m <maxbytes>
+     The Moodle maxbytes setting to be set for the Moodle site
 ```
 
 ### /commands/dev
