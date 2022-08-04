@@ -79,6 +79,25 @@ $CFG->yuislasharguments = 1;
 
 
 //=========================================================================
+// CACHE SETTINGS
+//=========================================================================
+
+$CFG->cachedir = '$configtemplate_cachedir';
+$CFG->localcachedir = '$configtemplate_localcachedir';
+
+
+
+//=========================================================================
+// TEMP SETTINGS
+//=========================================================================
+
+$CFG->tempdir = '$configtemplate_tempdir';
+$CFG->backuptempdir = '$configtemplate_backuptempdir';
+$CFG->localrequestdir = '$configtemplate_localrequestdir';
+
+
+
+//=========================================================================
 // MOODLE UI SETTINGS
 //=========================================================================
 
