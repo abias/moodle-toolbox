@@ -71,7 +71,7 @@ This script is used to initialize a Moodle instance. It needs some additional pa
 
 ```
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-l <language>]
 
 Mandatory parameters:
   -s <site>
@@ -120,6 +120,8 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
   -m <maxbytes>
      The Moodle maxbytes setting to be set for the Moodle site
+  -l <language>
+     The language pack to be set for the Moodle site
 ```
 
 ### /commands/dev

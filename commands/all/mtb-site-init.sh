@@ -34,10 +34,11 @@ usage ()
     moodledistros=`array_echo_linebyline_indented "${config_vhost_distros[@]}"`
     moodlereleases=`array_echo_linebyline_indented "${config_vhost_releases[@]}"`
     moodleuploads=`array_echo_linebyline_indented "${config_moodle_upload[@]}"`
+    moodlelangs=`array_echo_linebyline_indented "${config_moodle_langs[@]}"`
 
     cat <<EOU
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>] [-l <language>]
 
 Mandatory parameters:
   -s <site>
@@ -121,11 +122,20 @@ $moodleuploads
 
      Default value:
      $config_moodle_upload_default
+
+  -l <language>
+     The language pack to be set for the Moodle site
+
+     Possible values:
+$moodlelangs
+
+     Default value:
+     $config_moodle_langs_default
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:a' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -195,6 +205,14 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:a' OPTION; do
                  exit 1
             else
                  moodleupload=$OPTARG
+            fi
+            ;;
+        l)
+            if ! array_contains_element "$OPTARG" "${config_moodle_langs[@]}"; then
+                 usage
+                 exit 1
+            else
+                 moodlelang=$OPTARG
             fi
             ;;
         a)
@@ -302,6 +320,11 @@ fi
 # If no Moodle upload size was given, use the default
 if [[ -z "$moodleupload" ]]; then
     moodleupload=$config_moodle_upload_default
+fi
+
+# If no Moodle lang was given, use the default
+if [[ -z "$moodlelang" ]]; then
+    moodlelang=$config_moodle_langs_default
 fi
 
 # Confirmation
@@ -434,9 +457,10 @@ export configtemplate_localcachedir=$site_moodledata/localcache
 export configtemplate_tempdir=$site_moodledata/temp
 export configtemplate_backuptempdir=$site_moodledata/backuptemp
 export configtemplate_localrequestdir=/tmp/$moodlesite
+export configtemplate_lang=$moodlelang
 
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
@@ -460,7 +484,7 @@ now "Installing Moodle database"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $moodlesite $config_webserver_phpbin admin/cli/install_database.php --lang=$config_moodle_defaultlang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+sudo -u $moodlesite $config_webserver_phpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
     && success || failure
 
 

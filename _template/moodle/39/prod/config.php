@@ -101,7 +101,7 @@ $CFG->backuptempdir = '$configtemplate_backuptempdir';
 //=========================================================================
 
 // Set the language here to show database problems in german as well.
-$CFG->lang = 'de';
+$CFG->lang = '$configtemplate_lang';
 
 // Remote Moodle HQ campaign.
 $CFG->showcampaigncontent = false;
