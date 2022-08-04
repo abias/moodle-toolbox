@@ -415,7 +415,20 @@ chmod u=r,g=,o= $site_configphp \
 
 now "Installing Moodle database"
 
-sudo -u $moodlesite $config_webserver_phpbin $site_wwwroot/admin/cli/install_database.php --lang=$config_moodle_defaultlang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+cd $site_wwwroot \
+    && success || failure
+sudo -u $moodlesite $config_webserver_phpbin admin/cli/install_database.php --lang=$config_moodle_defaultlang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+    && success || failure
+
+
+now "Setting Moodle baseline settings"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $moodlesite $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigbaseline.php -i="$CURRENTDIR/../../_template/$moodledistro/$moodlerelease/all/configbaseline.ini" \
+    && success || failure
+# Updating the database is done now to make sure that Moodle core not show the database wizard on the first login after setting the baseline config
+sudo -u $moodlesite $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \
     && success || failure
 
 
