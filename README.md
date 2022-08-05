@@ -71,7 +71,7 @@ This script is used to initialize a Moodle instance. It needs some additional pa
 
 ```
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-l <language>]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-l <language>] [-h]
 
 Mandatory parameters:
   -s <site>
@@ -126,6 +126,9 @@ Optional parameters:
   -l <language>
      The language pack to be set for the Moodle site
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -h
+     Initialize H5P content types
+     If this flag is set, the script will download the H5P content types to the Moodle instance initially
 ```
 
 ### /commands/dev

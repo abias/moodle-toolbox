@@ -38,7 +38,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>] [-l <language>]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>] [-l <language>] [-h]
 
 Mandatory parameters:
   -s <site>
@@ -131,11 +131,15 @@ $moodlelangs
 
      Default value:
      $config_moodle_langs_default
+
+  -h
+     Initialize H5P content types
+     If this flag is set, the script will download the H5P content types to the Moodle instance initially
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:a' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:ah' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -217,6 +221,9 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:a' OPTION; do
             ;;
         a)
             automode=1
+            ;;
+        h)
+            moodleinith5p=1
             ;;
         h)
             usage
@@ -499,12 +506,15 @@ sudo -u $moodlesite $config_webserver_phpbin admin/cli/upgrade.php --non-interac
     && success || failure
 
 
-now "Download H5P content types"
+if [[ $moodleinith5p -eq 1 ]]; then
+    now "Download H5P content types"
 
-cd $site_wwwroot \
-    && success || failure
-sudo -u $moodlesite $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
-    && success || failure
+    cd $site_wwwroot \
+        && success || failure
+    # The following scheduled task can fail for several reasons, especially because we are downloading stuff from a third party system
+    sudo -u $moodlesite $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
+        && success || failureconfirm
+fi
 
 
 ###################################

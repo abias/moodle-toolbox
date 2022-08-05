@@ -19,6 +19,24 @@ failure ()
     exit 1
 }
 
+# This helper function shows a failure message after a failed command, asks for confirmation and does _not_ terminate the script afterwards.
+# If the automode variable is set to 1, the script terminates anyway.
+failureconfirm ()
+{
+    echo -e "\033[31mFailed (return code: $?)\033[0m" >&2
+
+    if [[ $automode -eq 1 ]]; then
+        echo "Exiting..."
+        exit 1
+    fi
+
+    read -p "Do you want me to continue and will you check and handle the failure after the script is completed (y/n)? " CONT
+    if [ "$CONT" != "y" ]; then
+        echo "Ok, exiting...";
+        exit 1;
+    fi
+}
+
 # This helper function simply shows a status message to make clear what is happening.
 now ()
 {
