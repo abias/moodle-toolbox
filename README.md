@@ -105,10 +105,12 @@ Optional parameters:
      The Moodle distribution which is to be used by the scripts
      This parameter expects the distribution name of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
   -r <release>
      The Moodle release which is to be used by the scripts
      This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
   -x <smtpserver>
      The SMTP mail server which is used for outgoing mail
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
@@ -120,8 +122,10 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
   -m <maxbytes>
      The Moodle maxbytes setting to be set for the Moodle site
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
   -l <language>
      The language pack to be set for the Moodle site
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
 ### /commands/dev
