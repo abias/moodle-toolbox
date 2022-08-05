@@ -58,6 +58,9 @@ $CFG->upgradekey = '$configtemplate_upgradekey';
 $CFG->uninstallclionly = true;
 $CFG->disableupdateautodeploy = true;
 $CFG->pathtophp = '$configtemplate_pathtophp';
+$CFG->pathtodu = '$configtemplate_pathtodu';
+$CFG->pathtodot = '$configtemplate_pathtodot';
+$CFG->pathtogs = '$configtemplate_pathtogs';
 
 
 

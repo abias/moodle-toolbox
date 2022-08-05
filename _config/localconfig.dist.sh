@@ -13,6 +13,15 @@ config_webserver_nice='ionice -c3 nice -n19'
 # The mariadb binary
 config_webserver_mariadbbin='/usr/bin/mariadb'
 
+# The du binary
+config_webserver_dubin='/usr/bin/du'
+
+# The dot binary
+config_webserver_dotbin='/usr/bin/dot'
+
+# The gs binary
+config_webserver_gsbin='/usr/bin/gs'
+
 
 ###################################
 ### local config: webserver environment

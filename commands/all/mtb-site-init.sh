@@ -450,6 +450,9 @@ export configtemplate_bbbtoken=$moodlebbbtoken
 export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$config_moodle_randomupgradekey
 export configtemplate_pathtophp=$config_webserver_phpbin
+export configtemplate_pathtodu=$config_webserver_dubin
+export configtemplate_pathtodot=$config_webserver_dotbin
+export configtemplate_pathtogs=$config_webserver_gsbin
 export configtemplate_smtphosts=$moodlesmtphosts
 export configtemplate_smtpuser=$moodlesmtpuser
 export configtemplate_smtppass=$moodlesmtppass
@@ -467,7 +470,7 @@ export configtemplate_localrequestdir=/tmp/$moodlesite
 export configtemplate_lang=$moodlelang
 
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
