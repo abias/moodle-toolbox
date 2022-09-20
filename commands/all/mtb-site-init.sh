@@ -354,9 +354,27 @@ site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 now "Checking security nets"
 
-if [[ -d $site_instanceroot || -d $site_wwwroot || -d $site_moodledata || -e $site_configphp ]]; then
-    echo "I have found already some Moodle assets, I expect that there is already a Moodle site installed."
-    echo "It does not make sense to init the site again, at least not with this script."
+if [[ -d $site_moodledata ]]; then
+    echo "I have found already a Moodledata directory, I expect that there is already a Moodle instance installed."
+    echo "It does not make sense to init the instance again, at least not with this script."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
+if [[ -e $site_configphp ]]; then
+    echo "I have found already a config.php file, I expect that there is already a Moodle instance installed."
+    echo "It does not make sense to init the instance again, at least not with this script."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
+if [[ -e $site_womenslib ]]; then
+    echo "I have found already a lib/womenslib.php file, I expect that there is already a Moodle instance installed."
+    echo "It does not make sense to init the instance again, at least not with this script."
     echo "I can't continue."
     exit 1
 else
@@ -374,14 +392,14 @@ fi
 
 tablesexisting=`$config_webserver_mariadbbin -u $moodledbuser -p$moodledbpass -D $moodledbname --skip-column-names -e "SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema = '$moodledbname'"`
 if [ $tablesexisting -gt 0 ]; then
-    echo "I have found already some database tables, I expect that there is already a Moodle site installed."
-    echo "It does not make sense to init the site again, at least not with this script."
+    echo "I have found already some database tables, I expect that there is already a Moodle instance installed."
+    echo "It does not make sense to init the instance again, at least not with this script."
     echo "I can't continue."
     exit 1
 else
     success
 fi
-unset $tablesexisting
+unset tablesexisting
 
 
 ###################################
@@ -402,14 +420,28 @@ else
 fi
 
 
-now "Creating $site_instanceroot Moodle instance directory"
+now "Creating $site_instanceroot Moodle instance directory (if it does not exist yet)"
 
-mkdir $site_instanceroot \
-    && success || failure
-chown $moodlesite:psaserv $site_instanceroot \
-    && success || failure
-chmod u=rX,g=X,o= $site_instanceroot \
-    && success || failure
+if [[ ! -d $site_instanceroot ]]; then
+    mkdir $site_instanceroot \
+        && success || failure
+    chown $moodlesite:psaserv $site_instanceroot \
+        && success || failure
+    chmod u=rX,g=X,o= $site_instanceroot \
+        && success || failure
+else
+    success
+fi
+
+
+now "Removing $site_wwwroot Moodle instance directory (if it does exist already without a Moodle codebase in it)"
+
+if [[ -d $site_wwwroot ]]; then
+    rm -rf $site_wwwroot \
+        && success || failure
+else
+    success
+fi
 
 
 now "Creating $site_moodledata Moodledata directory"

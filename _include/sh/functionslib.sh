@@ -245,8 +245,11 @@ site_pickmoodleinstance()
     # Fill the site_configphp variable
     site_configphp=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/config.php
 
+    # Fill the site_womenslib variable
+    site_womenslib=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/womenslib.php
+
     # Fill the site_url variable
-    site_url=https://$1
+    site_url=https://$2.$1
 
     # Fill the site_moodledistro variable
     site_moodledistro=$3
