@@ -325,6 +325,16 @@ else
     success
 fi
 
+dbconnectionworking=`$config_webserver_mariadbbin -u $moodledbuser -p$moodledbpass -D $moodledbname -e "SELECT table_name FROM information_schema.columns WHERE table_schema = '$moodledbname'"`
+if [ $? -gt 0 ]; then
+    echo "I think the given database credentials do not work, I can't connect to the database."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+unset dbconnectionworking
+
 tablesexisting=`$config_webserver_mariadbbin -u $moodledbuser -p$moodledbpass -D $moodledbname --skip-column-names -e "SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema = '$moodledbname'"`
 if [ $tablesexisting -gt 0 ]; then
     echo "I have found already some database tables, I expect that there is already a Moodle instance installed."
