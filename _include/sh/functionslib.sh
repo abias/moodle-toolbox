@@ -262,6 +262,13 @@ site_pickmoodleinstance()
 
     # Fill the site_githuburl variable
     site_githuburl=${config_git_githuburlprefix}-$3-$1.git
+
+    # Fill the site_instanceisprod variable
+    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+        site_instanceisprod=1
+    else
+        site_instanceisprod=0
+    fi
 }
 
 # This helper function picks the Moodle site branch from the given parameters $1 and $2 and $3 and $4.
@@ -269,7 +276,11 @@ site_pickmoodleinstance()
 site_pickmoodlebranch()
 {
     # Fill the site_moodlebranchsite variable
-    site_moodlebranchsite=${3^^}_${4}_STABLE_site
+    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+        site_moodlebranchsite=${3^^}_${4}_STABLE_site
+    else
+        site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
+    fi
 }
 
 # This helper function checks if the Moodle site from the given parameters $1 and $2 and $3 exists.

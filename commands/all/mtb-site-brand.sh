@@ -249,7 +249,7 @@ if [[ $branddomain -eq 1 ]]; then
     cd $site_wwwroot \
         && success || failure
 
-    if [[ $moodleinstance == $config_vhost_instances_prod ]]; then
+    if [[ $site_instanceisprod -eq 1 ]]; then
         configsed_wwwroot=https://$moodlecustomerdomain
     else
         configsed_wwwroot=https://$moodleinstance.$moodlecustomerdomain
