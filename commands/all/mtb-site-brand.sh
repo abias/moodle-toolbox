@@ -36,7 +36,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [-x <smtpserver> -y <smtpuser> -z <smtppass>]
+mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -78,7 +78,7 @@ $moodledistros
     -c <bbbtoken>
        The BBB token to be set for the Moodle site
 
-  SMTP server (all or none of these optional parameters have to be given):
+  SMTP server (at least the user and pass parameters or none of these optional parameters have to be given):
 
     -x <smtpserver>
        The SMTP mail server which is used for outgoing mail
@@ -196,23 +196,28 @@ if [[ -n "$moodlebbbuser" && -n "$moodlebbbtoken" ]]; then
     brandbbb=1
 fi
 
-# If one of the SMTP parameters was given, verify that all of them were given
+# If one of the SMTP parameters was given, verify that at least user + pass is given
 if [[ -n "$moodlesmtphosts" && -z "$moodlesmtpuser" ||  -n "$moodlesmtphosts" && -z "$moodlesmtppass" ]]; then
     usage
     exit 1
 fi
-if [[ -n "$moodlesmtpuser" && -z "$moodlesmtphosts" ||  -n "$moodlesmtpuser" && -z "$moodlesmtppass" ]]; then
+if [[ -n "$moodlesmtpuser" && -z "$moodlesmtppass" ]]; then
     usage
     exit 1
 fi
-if [[ -n "$moodlesmtppass" && -z "$moodlesmtphosts" ||  -n "$moodlesmtppass" && -z "$moodlesmtpuser" ]]; then
+if [[ -n "$moodlesmtppass" && -z "$moodlesmtpuser" ]]; then
     usage
     exit 1
 fi
 
-# Otherwise, if all SMTP parameters were given, remember this fact.
-if [[ -n "$moodlesmtphosts" && -n "$moodlesmtpuser" && -n "$moodlesmtppass"  ]]; then
+# Otherwise, if SMTP parameters were given, remember this fact.
+if [[ -n "$moodlesmtpuser" && -n "$moodlesmtppass"  ]]; then
     brandsmtp=1
+fi
+
+# If SMTP credentials without SMTP host were given, use the default host
+if [[ "$brandsmtp" -eq 1 && -z "$moodlesmtphosts" ]]; then
+    moodlesmtphosts=$config_moodle_outgoingmailsmtphosts
 fi
 
 # If no branding parameters were given at all.

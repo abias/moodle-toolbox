@@ -95,7 +95,7 @@ This script is used to brand a Moodle instance. It expects additional parameters
 
 ```
 Usage:
-mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [-x <smtpserver> -y <smtpuser> -z <smtppass>]
+mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -122,7 +122,7 @@ Optional parameters:
     -c <bbbtoken>
        The BBB token to be set for the Moodle site
 
-  SMTP server (all or none of these optional parameters have to be given):
+  SMTP server (at least the user and pass parameters or none of these optional parameters have to be given):
     -x <smtpserver>
        The SMTP mail server which is used for outgoing mail
     -y <smtpuser>
