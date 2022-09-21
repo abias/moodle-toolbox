@@ -32,7 +32,7 @@ and adapt the config.php template files for new installations to your local need
 Usage
 -----
 
-### /commands/all
+### /commands/run
 
 In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / dev).
 
