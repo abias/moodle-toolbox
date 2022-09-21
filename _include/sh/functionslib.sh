@@ -226,8 +226,8 @@ site_scanmoodlesites()
     done
 }
 
-# This helper function picks the Moodle site from the given parameters $1 and $2 and $3 and $4.
-# As a result, the site_* variables are filled with paths and other data from the Moodle site.
+# This helper function picks the Moodle site from the given parameters $1 and $2 and $3.
+# As a result, the site_* variables are filled with paths and other data for the Moodle site.
 site_pickmoodleinstance()
 {
     # Fill the site_subscriptionroot variable
@@ -251,17 +251,25 @@ site_pickmoodleinstance()
     # Fill the site_url variable
     site_url=https://$2.$1
 
+    # Fill the site_envbarprodroot variable
+    site_envbarprodroot=https://${config_vhost_instances_prod}.$1
+
     # Fill the site_moodledistro variable
     site_moodledistro=$3
 
     # Fill the site_moodlebranchprefix variable
     site_moodlebranchprefix=${3^^}_
 
-    # Fill the site_moodlebranchsite variable
-    site_moodlebranchsite=${3^^}_${4}_STABLE_site
-
     # Fill the site_githuburl variable
     site_githuburl=${config_git_githuburlprefix}-$3-$1.git
+}
+
+# This helper function picks the Moodle site branch from the given parameters $1 and $2 and $3 and $4.
+# As a result, the site_moodlebranchsite variable is filled for the Moodle site.
+site_pickmoodlebranch()
+{
+    # Fill the site_moodlebranchsite variable
+    site_moodlebranchsite=${3^^}_${4}_STABLE_site
 }
 
 # This helper function checks if the Moodle site from the given parameters $1 and $2 and $3 exists.

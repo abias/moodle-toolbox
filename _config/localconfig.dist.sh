@@ -38,6 +38,9 @@ config_vhost_wwwroot='www'
 
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
 config_vhost_instances=('prod' 'test')
+# The prod instance might have to be handled specially in the scripts
+# Make sure that the prod value is an allowed value as well
+config_vhost_instances_prod='prod'
 
 # The Moodle distributions which should be allowed
 # Currently, moodle and iomad are supported and are used in Git branch names and directory names

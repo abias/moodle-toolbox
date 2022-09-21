@@ -36,6 +36,101 @@ Usage
 
 In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / dev).
 
+#### mtb-site-init.php
+
+This script is used to initialize a Moodle instance. It needs some additional parameters about the database and the site and will setup the site, starting from the creation of the filestructure and ending at the initialization of the database.
+
+```
+Usage:
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-m <maxbytes>] [-l <language>] [-j]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -f <fullname>
+     The full name to be set for the Moodle site
+  -t <shortname>
+     The short name to be set for the Moodle site
+  -n <dbname>
+     The database name to be set for the Moodle site
+  -u <dbuser>
+     The database user to be set for the Moodle site
+  -p <dbpass>
+     The database password to be set for the Moodle site
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     This parameter expects the distribution name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -m <maxbytes>
+     The Moodle maxbytes setting to be set for the Moodle site
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -l <language>
+     The language pack to be set for the Moodle site
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -j
+     Initialize H5P content types
+     If this flag is set, the script will download the H5P content types to the Moodle instance initially
+```
+
+#### mtb-site-brand.php
+
+This script is used to brand a Moodle instance. It expects additional parameters about the details which should be branded.
+
+```
+Usage:
+mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [-x <smtpserver> -y <smtpuser> -z <smtppass>]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+
+  Customer domain:
+    -k <customerdomain>
+       The customer domain to be set for the Moodle site
+
+  BBB token (all or none of these optional parameters have to be given):
+    -b <bbbuser>
+       The BBB user to be set for the Moodle site
+    -c <bbbtoken>
+       The BBB token to be set for the Moodle site
+
+  SMTP server (all or none of these optional parameters have to be given):
+    -x <smtpserver>
+       The SMTP mail server which is used for outgoing mail
+    -y <smtpuser>
+       The SMTP mail user which is used for outgoing mail
+    -z <smtppass>
+       The SMTP mail password which is used for outgoing mail
+```
+
 #### mtb-site-downgrade.php
 
 This script is used to downgrade the core and plugin versions stored in the Moodle database to the versions stored in the version.php files on disk.
@@ -64,73 +159,6 @@ Optional parameters:
      The Moodle release which is to be used by the scripts
      This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
-```
-
-
-#### mtb-site-init.php
-
-This script is used to initialize a Moodle instance. It needs some additional parameters about the database and the site and will setup the site, starting from the creation of the filestructure and ending at the initialization of the database.
-
-```
-Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-l <language>] [-h]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -f <fullname>
-     The full name to be set for the Moodle site
-  -t <shortname>
-     The short name to be set for the Moodle site
-  -n <dbname>
-     The database name to be set for the Moodle site
-  -u <dbuser>
-     The database user to be set for the Moodle site
-  -p <dbpass>
-     The database password to be set for the Moodle site
-  -b <bbbuser>
-     The BBB user to be set for the Moodle site
-  -c <bbbtoken>
-     The BBB token to be set for the Moodle site
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -x <smtpserver>
-     The SMTP mail server which is used for outgoing mail
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -y <smtpuser>
-     The SMTP mail user which is used for outgoing mail
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -z <smtppass>
-     The SMTP mail password which is used for outgoing mail
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -m <maxbytes>
-     The Moodle maxbytes setting to be set for the Moodle site
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -l <language>
-     The language pack to be set for the Moodle site
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -h
-     Initialize H5P content types
-     If this flag is set, the script will download the H5P content types to the Moodle instance initially
 ```
 
 ### /commands/dev

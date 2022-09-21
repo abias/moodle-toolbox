@@ -39,7 +39,7 @@ usage ()
 
     cat <<EOU
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> -b <bbbuser> -c <bbbtoken> [-a] [-d <distro>] [-r <release>] [-x <smtpserver>] [-y <smtpuser>] [-z <smtppass>] [-m <maxbytes>] [-l <language>] [-h]
+mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-m <maxbytes>] [-l <language>] [-j]
 
 Mandatory parameters:
   -s <site>
@@ -68,12 +68,6 @@ $moodleinstances
   -p <dbpass>
      The database password to be set for the Moodle site
 
-  -b <bbbuser>
-     The BBB user to be set for the Moodle site
-
-  -c <bbbtoken>
-     The BBB token to be set for the Moodle site
-
 Optional parameters:
   -a
      Auto mode
@@ -97,24 +91,6 @@ $moodlereleases
      Default value:
      $config_vhost_releases_default
 
-  -x <smtpserver>
-     The SMTP mail server which is used for outgoing mail
-
-     Default value:
-     $config_moodle_outgoingmailsmtphosts
-
-  -y <smtpuser>
-     The SMTP mail user which is used for outgoing mail
-
-     Default value:
-     $config_moodle_outgoingmailsmtpuser
-
-  -z <smtppass>
-     The SMTP mail password which is used for outgoing mail
-
-     Default value:
-     <hidden>
-
   -m <maxbytes>
      The Moodle maxbytes setting to be set for the Moodle site
 
@@ -133,14 +109,14 @@ $moodlelangs
      Default value:
      $config_moodle_langs_default
 
-  -h
+  -j
      Initialize H5P content types
      If this flag is set, the script will download the H5P content types to the Moodle instance initially
 EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:ah' OPTION; do
+while getopts 'hs:i:d:r:f:t:n:u:p:m:l:aj' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -189,21 +165,6 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:ah' OPTION; do
         p)
             moodledbpass=$OPTARG
             ;;
-        x)
-            moodlesmtphosts=$OPTARG
-            ;;
-        y)
-            moodlesmtpuser=$OPTARG
-            ;;
-        z)
-            moodlesmtppass=$OPTARG
-            ;;
-        b)
-            moodlebbbuser=$OPTARG
-            ;;
-        c)
-            moodlebbbtoken=$OPTARG
-            ;;
         m)
             if ! array_contains_element "$OPTARG" "${config_moodle_upload[@]}"; then
                  usage
@@ -223,7 +184,7 @@ while getopts 'hs:i:d:r:f:t:n:u:p:x:y:z:b:c:m:l:ah' OPTION; do
         a)
             automode=1
             ;;
-        h)
+        j)
             moodleinith5p=1
             ;;
         h)
@@ -288,18 +249,6 @@ if [[ -z "$moodledbpass" ]]; then
     exit 1
 fi
 
-# Verify that a moodlebbbuser was given
-if [[ -z "$moodlebbbuser" ]]; then
-    usage
-    exit 1
-fi
-
-# Verify that a moodlebbbtoken was given
-if [[ -z "$moodlebbbtoken" ]]; then
-    usage
-    exit 1
-fi
-
 # If no distro was given, use the default
 if [[ -z "$moodledistro" ]]; then
     moodledistro=$config_vhost_distros_default
@@ -308,21 +257,6 @@ fi
 # If no release was given, use the default
 if [[ -z "$moodlerelease" ]]; then
     moodlerelease=$config_vhost_releases_default
-fi
-
-# If no SMTP host was given, use the default
-if [[ -z "$moodlesmtphosts" ]]; then
-    moodlesmtphosts=$config_moodle_outgoingmailsmtphosts
-fi
-
-# If no SMTP user was given, use the default
-if [[ -z "$moodlesmtpuser" ]]; then
-    moodlesmtpuser=$config_moodle_outgoingmailsmtpuser
-fi
-
-# If no SMTP password was given, use the default
-if [[ -z "$moodlesmtppass" ]]; then
-    moodlesmtppass=$config_moodle_outgoingmailsmtppass
 fi
 
 # If no Moodle upload size was given, use the default
@@ -344,8 +278,9 @@ confirm
 ### prepare working with the Moodle instance
 ###################################
 
-# site_verifymoodleinstance - This standard step is not pot cssible here as Moodle is not set up yet
-site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro $moodlerelease
+# site_verifymoodleinstance - This standard step is not possible here as Moodle is not set up yet
+site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
+site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 
 ###################################
@@ -478,23 +413,22 @@ export configtemplate_wwwroot=$site_url
 export configtemplate_dataroot=$site_moodledata
 export configtemplate_dbname=$moodledbname
 export configtemplate_dbuser=$moodledbuser
-export configtemplate_bbburl="${config_moodle_bbburlprefix}/$moodlebbbuser/${config_moodle_bbburlsuffix}"
-export configtemplate_bbbtoken=$moodlebbbtoken
 export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$config_moodle_randomupgradekey
+export configtemplate_bbburl="${config_moodle_bbburlprefix}/${config_moodle_bbbuser}/${config_moodle_bbburlsuffix}"
+export configtemplate_bbbtoken=${config_moodle_bbbtoken}
 export configtemplate_pathtophp=$config_webserver_phpbin
 export configtemplate_pathtodu=$config_webserver_dubin
 export configtemplate_pathtodot=$config_webserver_dotbin
 export configtemplate_pathtogs=$config_webserver_gsbin
-export configtemplate_smtphosts=$moodlesmtphosts
-export configtemplate_smtpuser=$moodlesmtpuser
-export configtemplate_smtppass=$moodlesmtppass
+export configtemplate_smtphosts=$config_moodle_outgoingmailsmtphosts
+export configtemplate_smtpuser=$config_moodle_outgoingmailsmtpuser
+export configtemplate_smtppass=$config_moodle_outgoingmailsmtppass
 export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$moodlesite
 export configtemplate_supportname="$moodlefullname"
 export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
 export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
-# TODO: configtemplate_envbarprodroot has be changed for test instances
-export configtemplate_envbarprodroot=$site_url
+export configtemplate_envbarprodroot=$site_envbarprodroot
 export configtemplate_cachedir=$site_moodledata/cache
 export configtemplate_localcachedir=$site_moodledata/localcache
 export configtemplate_tempdir=$site_moodledata/temp
@@ -503,7 +437,7 @@ export configtemplate_localrequestdir=/tmp/$moodlesite
 export configtemplate_lang=$moodlelang
 
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_upgradekey $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
