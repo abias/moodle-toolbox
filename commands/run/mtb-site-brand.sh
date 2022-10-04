@@ -279,7 +279,7 @@ if [[ $brandbbb -eq 1 ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    configsed_bbburl="$/$moodlebbbuser/${config_moodle_bbburlsuffix}"
+    configsed_bbburl="${config_moodle_bbburlprefix}/$moodlebbbuser/${config_moodle_bbburlsuffix}"
     # In the following sed call, the slashes in the configsed_bbburl variable have to be escaped.
     sed -i "s/^\$CFG->bigbluebuttonbn_server_url =.*/\$CFG->bigbluebuttonbn_server_url = '${configsed_bbburl//\//\\/}';/" $site_configphp \
         && success || failure
