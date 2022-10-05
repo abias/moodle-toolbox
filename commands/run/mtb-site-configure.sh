@@ -174,11 +174,25 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 ### action
 ###################################
 
-now "Setting Moodle baseline settings"
+now "Setting Moodle baseline configuration (from ini file)"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigbaseline.php -i="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.ini" \
+sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigfromini.php -i="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.ini" \
+    && success || failure
+
+
+now "Setting Moodle baseline configuration (from sql file)"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigfromsql.php -s="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.sql" \
+    && success || failure
+
+
+now "Updating Moodle DB to apply the new settings is necessary"
+
+cd $site_wwwroot \
     && success || failure
 # Updating the database is done now to make sure that Moodle core not show the database wizard on the first login after setting the baseline config
 sudo -u $site_site $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \

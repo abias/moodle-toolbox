@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * CLI script to set a Moodle config baseline.
+ * CLI script to set a set of Moodle configurations from a ini file.
  *
  * @copyright 2022 Alexander Bias, lern.link GmbH <alexander.bias@lernlink.de>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -40,12 +40,12 @@ if ($unrecognized) {
 
 // CLI help.
 if ($options['help'] || !($options['inifile']) || !is_readable($options['inifile'])) {
-    $help = "CLI tool to set a Moodle config baseline
+    $help = "CLI tool to set a set of Moodle configurations from a ini file
 Options:
--i, --inifile   Absolute path to the .ini file with the plugin baseline
+-i, --inifile   Absolute path to the .ini file with the configurations
 -h, --help      Print out this help
 Example:
-\$ php moodleconfigbaseline.php -i path/to/baseline.ini";
+\$ php moodleconfigfromini.php -i path/to/configuration.ini";
     cli_writeln($help);
     exit(0);
 }
