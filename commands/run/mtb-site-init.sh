@@ -222,7 +222,7 @@ now "Creating $site_subscriptionroot root directory (if it does not exist yet)"
 if [[ ! -d $site_subscriptionroot ]]; then
     mkdir $site_subscriptionroot \
         && success || failure
-    chown $moodlesite:psaserv $site_subscriptionroot \
+    chown $site_site:psaserv $site_subscriptionroot \
         && success || failure
     chmod u=rX,g=X,o= $site_subscriptionroot \
         && success || failure
@@ -236,7 +236,7 @@ now "Creating $site_instanceroot Moodle instance directory (if it does not exist
 if [[ ! -d $site_instanceroot ]]; then
     mkdir $site_instanceroot \
         && success || failure
-    chown $moodlesite:psaserv $site_instanceroot \
+    chown $site_site:psaserv $site_instanceroot \
         && success || failure
     chmod u=rX,g=X,o= $site_instanceroot \
         && success || failure
@@ -294,5 +294,5 @@ site_fixpermissions
 
 now "Finish"
 
-echo -e "The \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site is initiated."
+echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site is initiated."
 echo -e "You can now install the site."

@@ -252,7 +252,7 @@ if [[ $branddomain -eq 1 ]]; then
     if [[ $site_instanceisprod -eq 1 ]]; then
         configsed_wwwroot=https://$moodlecustomerdomain
     else
-        configsed_wwwroot=https://$moodleinstance.$moodlecustomerdomain
+        configsed_wwwroot=https://$site_instance.$moodlecustomerdomain
     fi
     # In the following sed call, the slashes in the configsed_wwwroot variable have to be escaped.
     sed -i "s/^\$CFG->wwwroot =.*/\$CFG->wwwroot = '${configsed_wwwroot//\//\\/}';/" $site_configphp \
@@ -319,4 +319,4 @@ fi
 
 now "Finish"
 
-echo -e "The \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site was branded."
+echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site was branded."

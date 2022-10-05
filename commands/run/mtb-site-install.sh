@@ -366,20 +366,20 @@ export configtemplate_pathtogs=$config_webserver_gsbin
 export configtemplate_smtphosts=$config_moodle_outgoingmailsmtphosts
 export configtemplate_smtpuser=$config_moodle_outgoingmailsmtpuser
 export configtemplate_smtppass=$config_moodle_outgoingmailsmtppass
-export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$moodlesite
+export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$site_site
 export configtemplate_supportname="$moodlefullname"
-export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlesite
+export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$site_site
 export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
 export configtemplate_envbarprodroot=$site_envbarprodroot
 export configtemplate_cachedir=$site_moodledata/cache
 export configtemplate_localcachedir=$site_moodledata/localcache
 export configtemplate_tempdir=$site_moodledata/temp
 export configtemplate_backuptempdir=$site_moodledata/backuptemp
-export configtemplate_localrequestdir=/tmp/$moodlesite
+export configtemplate_localrequestdir=/tmp/$site_site
 export configtemplate_lang=$moodlelang
 
 
-cat $CURRENTDIR/../../_template/$moodledistro/$moodlerelease/$moodleinstance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
@@ -394,7 +394,7 @@ now "Installing Moodle database"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $moodlesite $config_webserver_phpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+sudo -u $site_site $config_webserver_phpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
     && success || failure
 
 
@@ -404,7 +404,7 @@ if [[ $moodleinith5p -eq 1 ]]; then
     cd $site_wwwroot \
         && success || failure
     # The following scheduled task can fail for several reasons, especially because we are downloading stuff from a third party system
-    sudo -u $moodlesite $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
+    sudo -u $site_site $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
         && success || failureconfirm
 fi
 
@@ -415,7 +415,7 @@ fi
 
 now "Finish"
 
-echo -e "The \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site is installed."
+echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site is installed."
 echo -e "You can now login into the site on \033[31m$site_url\033[0m"
 echo
 echo "Please document these credentials:"

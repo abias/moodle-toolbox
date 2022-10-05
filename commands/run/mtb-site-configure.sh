@@ -217,10 +217,10 @@ now "Setting Moodle baseline settings"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $moodlesite $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigbaseline.php -i="$CURRENTDIR/../../_template/$moodledistro/$moodlerelease/all/configbaseline.ini" \
+sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigbaseline.php -i="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.ini" \
     && success || failure
 # Updating the database is done now to make sure that Moodle core not show the database wizard on the first login after setting the baseline config
-sudo -u $moodlesite $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \
+sudo -u $site_site $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \
     && success || failure
 
 
@@ -230,4 +230,4 @@ sudo -u $moodlesite $config_webserver_phpbin admin/cli/upgrade.php --non-interac
 
 now "Finish"
 
-echo -e "The \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site is configured."
+echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site is configured."

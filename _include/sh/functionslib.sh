@@ -233,6 +233,9 @@ site_pickmoodleinstance()
     # Fill the site_site variable
     site_site=$1
 
+    # Fill the site_instance variable
+    site_instance=$2
+
     # Fill the site_subscriptionroot variable
     site_subscriptionroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}
 
@@ -287,6 +290,9 @@ site_pickmoodlebranch()
     else
         site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
     fi
+
+    # Fill the site_moodlerelease variable
+    site_moodlerelease=$4
 }
 
 # This helper function checks if the Moodle site from the given parameters $1 and $2 and $3 exists.

@@ -201,4 +201,4 @@ site_fixpermissions
 
 now "Finish"
 
-echo -e "The permissions of the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site were fixed."
+echo -e "The permissions of the \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site were fixed."
