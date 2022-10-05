@@ -289,6 +289,8 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 now "Checking security nets"
 
+# These security nets are run here as site_verifymoodleinstance was not run before
+
 if [[ ! -d $site_moodledata ]]; then
     echo "I haven't found a Moodledata directory, I expect that the Moodle instance was not initialized yet."
     echo "I can't continue."

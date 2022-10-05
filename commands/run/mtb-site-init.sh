@@ -176,6 +176,8 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 now "Checking security nets"
 
+# These security nets are run here as site_verifymoodleinstance was not run before
+
 if [[ -d $site_moodledata ]]; then
     echo "I have found already a Moodledata directory, I expect that there is already a Moodle instance installed."
     echo "It does not make sense to init the instance again, at least not with this script."

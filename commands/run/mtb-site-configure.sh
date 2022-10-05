@@ -171,45 +171,6 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 
 ###################################
-### security net
-###################################
-
-now "Checking security nets"
-
-if [[ ! -d $site_moodledata ]]; then
-    echo "I haven't found a Moodledata directory, I expect that the Moodle instance was not initialized yet."
-    echo "I can't continue."
-    exit 1
-else
-    success
-fi
-
-if [[ ! -e $site_womenslib ]]; then
-    echo "I haven't found a lib/womenslib.php file, I expect that the Moodle instance was not initialized yet."
-    echo "I can't continue."
-    exit 1
-else
-    success
-fi
-
-if [[ ! -e $site_mucconfig ]]; then
-    echo "I haven't found a MUC config file, I expect that the Moodle instance was not installed yet."
-    echo "I can't continue."
-    exit 1
-else
-    success
-fi
-
-if [[ ! -e $site_configphp ]]; then
-    echo "I haven't found a config.php file, I expect that the Moodle instance was not installed yet."
-    echo "I can't continue."
-    exit 1
-else
-    success
-fi
-
-
-###################################
 ### action
 ###################################
 
