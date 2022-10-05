@@ -229,6 +229,35 @@ Optional parameters:
      When running the script, a list of possible values can be requested with the -h parameter.
 ```
 
+#### mtb-site-permissions.php
+
+This script is used to fix the permissions on disk.
+Normally, all site scripts which deal with files should fix permissions at the end anyway. However, after manual modifications and to fix issues, this script can be useful.
+
+```
+Usage:
+mtb-site-permissions.sh -s <site> -i <instance> [-d <distro>] [-a]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     This parameter expects the distribution name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+```
+
 ### /commands/dev
 
 In this folder, you will find scripts which can be used to do various Moodle dev tasks.

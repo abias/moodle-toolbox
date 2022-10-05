@@ -285,14 +285,7 @@ git submodule update --init \
 
 now "Setting the filesystem permissions for the Moodle instance files"
 
-chown -R $moodlesite:psacln $site_moodledata \
-    && success || failure
-chmod -R u=rwX,g=rX,o=rX $site_moodledata \
-    && success || failure
-chown -R $moodlesite:psacln $site_wwwroot \
-    && success || failure
-chmod -R u=rX,g=rX,o=rX $site_wwwroot \
-    && success || failure
+site_fixpermissions
 
 
 ###################################

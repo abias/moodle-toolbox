@@ -230,6 +230,9 @@ site_scanmoodlesites()
 # As a result, the site_* variables are filled with paths and other data for the Moodle site.
 site_pickmoodleinstance()
 {
+    # Fill the site_site variable
+    site_site=$1
+
     # Fill the site_subscriptionroot variable
     site_subscriptionroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}
 
@@ -320,6 +323,24 @@ site_verifymoodleinstance()
 	echo "I have to assume that this is an incomplete Moodle instance."
 	echo "Exiting..."
 	exit 1
+    fi
+}
+
+# This helper function sets the file system permissions of the Moodle instance.
+# It uses variable values which must have been set by site_pickmoodleinstance() before.
+site_fixpermissions()
+{
+    chown -R $site_site:psacln $site_moodledata \
+        && success || failure
+    chmod -R u=rwX,g=rX,o=rX $site_moodledata \
+        && success || failure
+    chown -R $site_site:psacln $site_wwwroot \
+        && success || failure
+    chmod -R u=rX,g=rX,o=rX $site_wwwroot \
+        && success || failure
+    if [ -e $site_configphp ]; then
+        chmod u=r,g=,o= $site_configphp \
+            && success || failure
     fi
 }
 
