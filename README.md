@@ -206,7 +206,7 @@ It does not do any rollback of upgrade steps. Please use it only for development
 
 ```
 Usage:
-mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
+mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>]
 
 Mandatory parameters:
   -s <site>
@@ -222,10 +222,6 @@ Optional parameters:
   -d <distro>
      The Moodle distribution which is to be used by the scripts
      This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
 ```
 
