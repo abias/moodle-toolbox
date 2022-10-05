@@ -38,11 +38,45 @@ In this folder, you will find scripts which can be used on all kinds of Moodle i
 
 #### mtb-site-init.php
 
-This script is used to initialize a Moodle instance. It needs some additional parameters about the database and the site and will setup the site, starting from the creation of the filestructure and ending at the initialization of the database.
+This script is used to initialize a Moodle instance. It needs just some basic parameters about the site and will setup the instance structure on disk.
 
 ```
 Usage:
-mtb-site-init.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-m <maxbytes>] [-l <language>] [-j]
+mtb-site-init.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     This parameter expects the distribution name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+```
+
+#### mtb-site-install.php
+
+This script is used to install a Moodle instance. It needs some additional parameters about the database and the site and will install the site / initialize the database.
+
+```
+Usage:
+mtb-site-install.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-m <maxbytes>] [-l <language>] [-j]
 
 Mandatory parameters:
   -s <site>
@@ -87,6 +121,40 @@ Optional parameters:
   -j
      Initialize H5P content types
      If this flag is set, the script will download the H5P content types to the Moodle instance initially
+```
+
+#### mtb-site-configure.php
+
+This script is used to configure a Moodle instance. It needs just some basic parameters about the site and will apply the basic configuration as it is defined in the configuration templates.
+
+```
+Usage:
+mtb-site-configure.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     This parameter expects the distribution name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
 #### mtb-site-brand.php
