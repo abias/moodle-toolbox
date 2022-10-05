@@ -92,7 +92,7 @@ foreach($config as $pluginname => $pluginconfig) {
     // Iterate over the settings.
     foreach($pluginconfig as $cname => $cvalue) {
 	// Split the plugin name from the config name.
-	$setting = explode('/', $cvalue);
+	$setting = explode('/', $cname);
 
 	// If this is a core setting (for example because the plugin stores its settings in the wrong place).
 	if (count($setting) == 1) {
