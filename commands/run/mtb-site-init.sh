@@ -176,7 +176,16 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 now "Checking security nets"
 
-# These security nets are run here as site_verifymoodleinstance was not run before
+if [[ $site_instanceisprod -eq 0 && ! -d $site_instancerootprod ]]; then
+    echo "You want to install a non-prod instance but I have not found the prod instance."
+    echo "The prod instance has to be created before any non-prod instance."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
+# The following security nets are run here as site_verifymoodleinstance was not run before
 
 if [[ -d $site_moodledata ]]; then
     echo "I have found already a Moodledata directory, I expect that there is already a Moodle instance installed."

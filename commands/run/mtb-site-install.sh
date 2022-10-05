@@ -289,7 +289,16 @@ site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 now "Checking security nets"
 
-# These security nets are run here as site_verifymoodleinstance was not run before
+if [[ $site_instanceisprod -eq 0 && ! -d $site_instancerootprod ]]; then
+    echo "You want to install a non-prod instance but I have not found the prod instance."
+    echo "The prod instance has to be created before any non-prod instance."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
+# The following security nets are run here as site_verifymoodleinstance was not run before
 
 if [[ ! -d $site_moodledata ]]; then
     echo "I haven't found a Moodledata directory, I expect that the Moodle instance was not initialized yet."
@@ -353,12 +362,14 @@ unset tablesexisting
 
 now "Filling and placing config.php"
 
+site_pickupgradekey
+
 export configtemplate_wwwroot=$site_url
 export configtemplate_dataroot=$site_moodledata
 export configtemplate_dbname=$moodledbname
 export configtemplate_dbuser=$moodledbuser
 export configtemplate_dbpass=$moodledbpass
-export configtemplate_upgradekey=$config_moodle_randomupgradekey
+export configtemplate_upgradekey=$site_upgradekey
 export configtemplate_bbburl="${config_moodle_bbburlprefix}/${config_moodle_bbbuser}/${config_moodle_bbburlsuffix}"
 export configtemplate_bbbtoken=${config_moodle_bbbtoken}
 export configtemplate_pathtophp=$config_webserver_phpbin
@@ -424,4 +435,4 @@ echo "Please document these credentials:"
 echo
 echo "Username:    $config_moodle_adminusername"
 echo "Password:    $config_moodle_adminuserpass"
-echo "Upgrade Key: $config_moodle_randomupgradekey"
+echo "Upgrade Key: $site_upgradekey"

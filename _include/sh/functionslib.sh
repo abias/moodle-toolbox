@@ -242,6 +242,9 @@ site_pickmoodleinstance()
     # Fill the site_instanceroot variable
     site_instanceroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2
 
+    # Fill the site_instancerootprod variable
+    site_instancerootprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}
+
     # Fill the site_wwwroot variable
     site_wwwroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3
 
@@ -250,6 +253,9 @@ site_pickmoodleinstance()
 
     # Fill the site_configphp variable
     site_configphp=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/config.php
+
+    # Fill the site_configphpprod variable
+    site_configphpprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}/$3/config.php
 
     # Fill the site_mucconfig variable
     site_mucconfig=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/muc/config.php
@@ -280,8 +286,20 @@ site_pickmoodleinstance()
     fi
 }
 
-# This helper function picks the Moodle site branch from the given parameters $1 and $2 and $3 and $4.
-# As a result, the site_moodlebranchsite variable is filled for the Moodle site.
+# This helper function picks the Moodle upgrade key - either from the configuration or from the existing prod instance.
+# As a result, the site_upgradekey variable is filled for the Moodle site.
+site_pickupgradekey()
+{
+    # Fill the site_upgradekey variable
+    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+        site_upgradekey=$config_moodle_randomupgradekey
+    else
+        site_upgradekey=`grep upgradekey $site_configphpprod | cut -d"'" -f2`
+    fi
+}
+
+# This helper function picks the Moodle site branch und release from the given parameters $1 and $2 and $3 and $4.
+# As a result, the site_moodlebranchsite and site_moodlerelease variables are filled for the Moodle site.
 site_pickmoodlebranch()
 {
     # Fill the site_moodlebranchsite variable
