@@ -65,6 +65,24 @@ ksort($config['core']);
 foreach($config['core'] as $cname => $cvalue) {
     // Set the setting.
     set_config($cname, $cvalue);
+
+    // And inform the admin.
+    cli_writeln('... '.$cname.': '.$cvalue);
+}
+
+// Process moodlecourse settings (which are stored like a plugin but which aren't a real plugin).
+cli_writeln('Setting config for Moodle courses...');
+
+// Sort the settings for a nicer output.
+ksort($config['moodlecourse']);
+
+// Iterate over the settings.
+foreach($config['moodlecourse'] as $cname => $cvalue) {
+    // Split the plugin name from the config name.
+    $setting = explode('/', $cname);
+
+    // Set the setting.
+    set_config($setting[1], $cvalue, $setting[0]);
     
     // And inform the admin.
     cli_writeln('... '.$cname.': '.$cvalue);
@@ -72,8 +90,8 @@ foreach($config['core'] as $cname => $cvalue) {
 
 // Iterate over the plugin sections.
 foreach($config as $pluginname => $pluginconfig) {
-    // If we have found the core plugin (again), skip it.
-    if ($pluginname == 'core') {
+    // If we have found the core or the moodlecourse section (again), skip it.
+    if ($pluginname == 'core' || $pluginname == 'moodlecourse') {
         continue;
     }
 
