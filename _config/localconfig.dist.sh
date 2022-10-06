@@ -147,6 +147,14 @@ config_moodle_outgoingmailsupportemailprefix='noreply'
 
 
 ###################################
+### toolbox config
+###################################
+
+# The amount of minutes which should be waited until the maintenance mode is enabled for a Moodle update.
+config_toolbox_maintenancesleep=10
+
+
+###################################
 ### dev tools:git
 ###################################
 

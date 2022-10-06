@@ -169,6 +169,16 @@ fi
 ### action
 ###################################
 
+now "Disable cron"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
+    && success || failure
+sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
+    && success || failure
+
+
 now "Enable maintenance mode"
 
 cat > $site_climaintenance << EOL
@@ -196,16 +206,6 @@ chown $site_site:psacln $site_climaintenance \
     && success || failure
 
 chmod u=rwX,g=rX,o= $site_climaintenance \
-    && success || failure
-
-
-now "Disable cron"
-
-cd $site_wwwroot \
-    && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
-    && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
     && success || failure
 
 
