@@ -7,11 +7,10 @@
 # The php binary
 config_webserver_phpbin='/opt/plesk/php/7.4/bin/php'
 
-# The command which will be prepended to ressource-intensive commands
-config_webserver_nice='ionice -c3 nice -n19'
 
-# The mariadb binary
-config_webserver_mariadbbin='/usr/bin/mariadb'
+###################################
+### local config: backend tools
+###################################
 
 # The du binary
 config_webserver_dubin='/usr/bin/du'
@@ -21,6 +20,28 @@ config_webserver_dotbin='/usr/bin/dot'
 
 # The gs binary
 config_webserver_gsbin='/usr/bin/gs'
+
+
+###################################
+### local config: helper tools
+###################################
+
+# The command which will be prepended to ressource-intensive commands
+config_webserver_nice='ionice -c3 nice -n19'
+
+# The rsync binary
+config_webserver_rsyncbin='/usr/bin/rsync'
+
+
+###################################
+### local config: database stack
+###################################
+
+# The mariadb binary
+config_webserver_mariadbbin='/usr/bin/mariadb'
+
+# The mysqldump binary
+config_webserver_mysqldumpbin='/usr/bin/mysqldump'
 
 
 ###################################

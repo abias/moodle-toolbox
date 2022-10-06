@@ -236,6 +236,9 @@ site_pickmoodleinstance()
     # Fill the site_instance variable
     site_instance=$2
 
+    # Fill the site_subscriptionbasedir variable
+    site_subscriptionbasedir=${config_vhost_basedir}/$1
+
     # Fill the site_subscriptionroot variable
     site_subscriptionroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}
 
@@ -248,8 +251,14 @@ site_pickmoodleinstance()
     # Fill the site_wwwroot variable
     site_wwwroot=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3
 
+    # Fill the site_wwwrootprod variable
+    site_wwwrootprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}/$3
+
     # Fill the site_moodledata variable
     site_moodledata=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data
+
+    # Fill the site_moodledataprod variable
+    site_moodledataprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}/$3data
 
     # Fill the site_configphp variable
     site_configphp=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/config.php
@@ -278,6 +287,9 @@ site_pickmoodleinstance()
     # Fill the site_githuburl variable
     site_githuburl=${config_git_githuburlprefix}-$3-$1.git
 
+    # Fill the site_climaintenance variable
+    site_climaintenance=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/climaintenance.html
+
     # Fill the site_instanceisprod variable
     if [[ $2 == ${config_vhost_instances_prod} ]]; then
         site_instanceisprod=1
@@ -296,6 +308,29 @@ site_pickupgradekey()
     else
         site_upgradekey=`grep upgradekey $site_configphpprod | cut -d"'" -f2`
     fi
+}
+
+# This helper function picks the Moodle database credentials from the Moodle config - for the given instance as well as for the prod instance.
+# As a result, the site_db* variables are filled for the Moodle site.
+site_pickdbcredentials()
+{
+    # Fill the site_dbname variable
+    site_dbname=`grep dbname $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbuser variable
+    site_dbuser=`grep dbuser $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbpass variable
+    site_dbpass=`grep dbpass $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbnameprod variable
+    site_dbnameprod=`grep dbname $site_configphpprod | cut -d"'" -f2`
+
+    # Fill the site_dbuserprod variable
+    site_dbuserprod=`grep dbuser $site_configphpprod | cut -d"'" -f2`
+
+    # Fill the site_dbpassprod variable
+    site_dbpassprod=`grep dbpass $site_configphpprod | cut -d"'" -f2`
 }
 
 # This helper function picks the Moodle site branch und release from the given parameters $1 and $2 and $3 and $4.

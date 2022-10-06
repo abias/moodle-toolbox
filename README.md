@@ -168,8 +168,12 @@ mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain
 Mandatory parameters:
   -s <site>
      The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
   -i <instance>
      The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
 
 Optional parameters:
   -a
@@ -197,6 +201,36 @@ Optional parameters:
        The SMTP mail user which is used for outgoing mail
     -z <smtppass>
        The SMTP mail password which is used for outgoing mail
+```
+
+#### mtb-site-reset.php
+
+This script is used to reset a non-prod Moodle instance to the status of the prod Moodle instance.
+It will reset the whole instance to the current status (code + data) of the prod instance.
+But it will not reset the config.php file. If you have changed this file in any way, please make sure to reset it manually back to a stable state.
+
+```
+Usage:
+mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site below the basedir.
+     When running the script, a list of possible values can be requested with the -h parameter.
+  -i <instance>
+     The instance of the Moodle site which is to be used by this script
+     This parameter expects the instance name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
 #### mtb-site-downgrade.php
