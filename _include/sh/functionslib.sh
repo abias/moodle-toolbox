@@ -278,6 +278,9 @@ site_pickmoodleinstance()
     # Fill the site_envbarprodroot variable
     site_envbarprodroot=https://${config_vhost_instances_prod}.$1
 
+    # Fill the site_envbartestroot variable
+    site_envbartestroot=https://test.$1
+
     # Fill the site_datacleanerprodroot variable
     site_datacleanerprodroot=https://${config_vhost_instances_prod}.$1
 
@@ -306,7 +309,7 @@ site_pickmoodleinstance()
 site_pickmoodlebranch()
 {
     # Fill the site_moodlebranchsite variable
-    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+    if [[ $site_instanceisprod -eq 1 ]]; then
         site_moodlebranchsite=${3^^}_${4}_STABLE_site
     else
         site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
@@ -386,10 +389,22 @@ site_fixpermissions()
 site_pickupgradekey()
 {
     # Fill the site_upgradekey variable
-    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+    if [[ $site_instanceisprod -eq 1 ]]; then
         site_upgradekey=$config_moodle_randomupgradekey
     else
         site_upgradekey=`grep upgradekey $site_configphpprod | cut -d"'" -f2`
+    fi
+}
+
+# This helper function picks the Envbar secret key - either from the configuration or from the existing prod instance.
+# As a result, the site_envbarsecretkey variable is filled for the Moodle site.
+site_pickenvbarsecretkey()
+{
+    # Fill the site_envbarsecretkey variable
+    if [[ $site_instanceisprod -eq 1 ]]; then
+        site_envbarsecretkey=$config_moodle_randomenvbarsecretkey
+    else
+        site_envbarsecretkey=`grep local_envbar_secretkey $site_configphpprod | cut -d"'" -f2`
     fi
 }
 

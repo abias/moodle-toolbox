@@ -58,6 +58,7 @@ config_vhost_basedir_ignore=('chroot' 'default' '.skel' 'system')
 config_vhost_wwwroot='www'
 
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
+# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod and test)
 config_vhost_instances=('prod' 'test')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
@@ -103,6 +104,9 @@ config_moodle_adminuserpass=`openssl rand -base64 48`
 
 # A random upgrade key which can be set during the installation.
 config_moodle_randomupgradekey=`openssl rand -base64 24`
+
+# A random envbar secret key which can be set during the installation.
+config_moodle_randomenvbarsecretkey=`openssl rand -base64 48`
 
 # The Moodle language which will be set during the installation.
 config_moodle_langs=('en' 'de')

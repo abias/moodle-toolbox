@@ -149,6 +149,17 @@ $CFG->digestmailtime = 12;
 // URL of the prod instance (set it here instead of relying on the magic of the plugin).
 $CFG->local_envbar_prodwwwroot = '$configtemplate_envbarprodroot';
 
+// Secret key to allow communication between non-prod environments and the prod environment.
+$CFG->local_envbar_secretkey = '$configtemplate_envbarsecretkey';
+
+// Array of existing non-prod environments.
+$CFG->local_envbar_items = array(
+    array(
+        'showtext' => 'TEST', 'matchpattern' => '$configtemplate_envbartestroot',
+        'colourbg' => 'crimson', 'colourtext' => 'white'
+    )
+);
+
 
 
 //=========================================================================
