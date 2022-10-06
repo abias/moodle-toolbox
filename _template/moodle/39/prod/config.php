@@ -146,7 +146,20 @@ $CFG->digestmailtime = 12;
 // ENVBAR
 //=========================================================================
 
+// URL of the prod instance (set it here instead of relying on the magic of the plugin).
 $CFG->local_envbar_prodwwwroot = '$configtemplate_envbarprodroot';
+
+
+
+//=========================================================================
+// DATACLEANER
+//=========================================================================
+
+// URL of the prod instance (set it here instead of relying on the magic of the plugin).
+$CFG->original_wwwroot = '$configtemplate_datacleanerprodroot';
+
+// Allow local_datacleaner to run.
+$CFG->local_datacleaner_allowexecution = false;
 
 
 

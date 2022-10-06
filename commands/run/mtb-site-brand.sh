@@ -263,6 +263,11 @@ if [[ $branddomain -eq 1 ]]; then
     sed -i "s/^\$CFG->local_envbar_prodwwwroot =.*/\$CFG->local_envbar_prodwwwroot = '${configsed_envbarprodroot//\//\\/}';/" $site_configphp \
         && success || failure
 
+    configsed_datacleanerprodroot=https://$moodlecustomerdomain
+    # In the following sed call, the slashes in the configsed_datacleanerprodroot variable have to be escaped.
+    sed -i "s/^\$CFG->original_wwwroot =.*/\$CFG->original_wwwroot = '${configsed_datacleanerprodroot//\//\\/}';/" $site_configphp \
+        && success || failure
+
     configsed_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$moodlecustomerdomain
     sed -i "s/^\$CFG->noreplyaddress =.*/\$CFG->noreplyaddress = '$configsed_noreplyaddress';/" $site_configphp \
         && success || failure

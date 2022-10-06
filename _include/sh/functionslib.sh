@@ -278,6 +278,9 @@ site_pickmoodleinstance()
     # Fill the site_envbarprodroot variable
     site_envbarprodroot=https://${config_vhost_instances_prod}.$1
 
+    # Fill the site_datacleanerprodroot variable
+    site_datacleanerprodroot=https://${config_vhost_instances_prod}.$1
+
     # Fill the site_moodledistro variable
     site_moodledistro=$3
 
