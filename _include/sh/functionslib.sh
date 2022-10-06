@@ -298,41 +298,6 @@ site_pickmoodleinstance()
     fi
 }
 
-# This helper function picks the Moodle upgrade key - either from the configuration or from the existing prod instance.
-# As a result, the site_upgradekey variable is filled for the Moodle site.
-site_pickupgradekey()
-{
-    # Fill the site_upgradekey variable
-    if [[ $2 == ${config_vhost_instances_prod} ]]; then
-        site_upgradekey=$config_moodle_randomupgradekey
-    else
-        site_upgradekey=`grep upgradekey $site_configphpprod | cut -d"'" -f2`
-    fi
-}
-
-# This helper function picks the Moodle database credentials from the Moodle config - for the given instance as well as for the prod instance.
-# As a result, the site_db* variables are filled for the Moodle site.
-site_pickdbcredentials()
-{
-    # Fill the site_dbname variable
-    site_dbname=`grep dbname $site_configphp | cut -d"'" -f2`
-
-    # Fill the site_dbuser variable
-    site_dbuser=`grep dbuser $site_configphp | cut -d"'" -f2`
-
-    # Fill the site_dbpass variable
-    site_dbpass=`grep dbpass $site_configphp | cut -d"'" -f2`
-
-    # Fill the site_dbnameprod variable
-    site_dbnameprod=`grep dbname $site_configphpprod | cut -d"'" -f2`
-
-    # Fill the site_dbuserprod variable
-    site_dbuserprod=`grep dbuser $site_configphpprod | cut -d"'" -f2`
-
-    # Fill the site_dbpassprod variable
-    site_dbpassprod=`grep dbpass $site_configphpprod | cut -d"'" -f2`
-}
-
 # This helper function picks the Moodle site branch und release from the given parameters $1 and $2 and $3 and $4.
 # As a result, the site_moodlebranchsite and site_moodlerelease variables are filled for the Moodle site.
 site_pickmoodlebranch()
@@ -385,6 +350,11 @@ site_verifymoodleinstance()
     fi
 }
 
+
+###################################
+### moodle action functions
+###################################
+
 # This helper function sets the file system permissions of the Moodle instance.
 # It uses variable values which must have been set by site_pickmoodleinstance() before.
 site_fixpermissions()
@@ -401,6 +371,46 @@ site_fixpermissions()
         chmod u=r,g=,o= $site_configphp \
             && success || failure
     fi
+}
+
+
+###################################
+### moodle cross-site-related functions
+###################################
+
+# This helper function picks the Moodle upgrade key - either from the configuration or from the existing prod instance.
+# As a result, the site_upgradekey variable is filled for the Moodle site.
+site_pickupgradekey()
+{
+    # Fill the site_upgradekey variable
+    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+        site_upgradekey=$config_moodle_randomupgradekey
+    else
+        site_upgradekey=`grep upgradekey $site_configphpprod | cut -d"'" -f2`
+    fi
+}
+
+# This helper function picks the Moodle database credentials from the Moodle config - for the given instance as well as for the prod instance.
+# As a result, the site_db* variables are filled for the Moodle site.
+site_pickdbcredentials()
+{
+    # Fill the site_dbname variable
+    site_dbname=`grep dbname $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbuser variable
+    site_dbuser=`grep dbuser $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbpass variable
+    site_dbpass=`grep dbpass $site_configphp | cut -d"'" -f2`
+
+    # Fill the site_dbnameprod variable
+    site_dbnameprod=`grep dbname $site_configphpprod | cut -d"'" -f2`
+
+    # Fill the site_dbuserprod variable
+    site_dbuserprod=`grep dbuser $site_configphpprod | cut -d"'" -f2`
+
+    # Fill the site_dbpassprod variable
+    site_dbpassprod=`grep dbpass $site_configphpprod | cut -d"'" -f2`
 }
 
 
