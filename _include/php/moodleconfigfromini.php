@@ -70,33 +70,46 @@ foreach($config['core'] as $cname => $cvalue) {
     cli_writeln('... '.$cname.': '.$cvalue);
 }
 
-// Process moodlecourse settings (which are stored like a plugin but which aren't a real plugin).
-cli_writeln('Setting config for Moodle courses...');
 
-// Sort the settings for a nicer output.
-ksort($config['moodlecourse']);
+// Config areas which are stored like plugins but which are not really plugins (with an installed version).
+$pseudoplugins = array('moodlecourse', 'core_competency');
 
-// Iterate over the settings.
-foreach($config['moodlecourse'] as $cname => $cvalue) {
-    // Split the plugin name from the config name.
-    $setting = explode('/', $cname);
-
-    // Set the setting.
-    set_config($setting[1], $cvalue, $setting[0]);
-    
-    // And inform the admin.
-    cli_writeln('... '.$cname.': '.$cvalue);
-}
-
-// Iterate over the plugin sections.
-foreach($config as $pluginname => $pluginconfig) {
-    // If we have found the core or the moodlecourse section (again), skip it.
-    if ($pluginname == 'core' || $pluginname == 'moodlecourse') {
+// Iterate over the pseudo-plugins.
+foreach ($pseudoplugins as $ps) {
+    // If there isn't any configuration for this pseudo-plugin in the configuration file, skip it silently.
+    if (array_key_exists($ps, $config) == false) {
         continue;
     }
 
     // Inform the admin.
-    cli_writeln('Setting config for plugin '.$pluginname);
+    cli_writeln('Setting config for pseudo-plugin '.$ps.'...');
+
+    // Sort the settings for a nicer output.
+    ksort($config[$ps]);
+
+    // Iterate over the settings.
+    foreach($config[$ps] as $cname => $cvalue) {
+        // Split the plugin name from the config name.
+        $setting = explode('/', $cname);
+    
+        // Set the setting.
+        set_config($setting[1], $cvalue, $setting[0]);
+
+        // And inform the admin.
+	cli_writeln('... '.$cname.': '.$cvalue);
+    }
+}
+
+
+// Iterate over the plugin sections.
+foreach ($config as $pluginname => $pluginconfig) {
+    // If we have found the core or a pseudo-plugin (again), skip it.
+    if ($pluginname == 'core' || in_array($pluginname, $pseudoplugins)) {
+        continue;
+    }
+
+    // Inform the admin.
+    cli_writeln('Setting config for plugin '.$pluginname.'...');
     
     // If the plugin is not installed at all, skip it.
     if ($DB->record_exists('config_plugins', array('plugin' => $pluginname, 'name' => 'version')) == false) {
