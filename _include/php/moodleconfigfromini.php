@@ -72,7 +72,7 @@ foreach($config['core'] as $cname => $cvalue) {
 
 
 // Config areas which are stored like plugins but which are not really plugins (with an installed version).
-$pseudoplugins = array('moodlecourse', 'core_competency');
+$pseudoplugins = array('moodlecourse', 'backup', 'core_competency');
 
 // Iterate over the pseudo-plugins.
 foreach ($pseudoplugins as $ps) {
