@@ -107,8 +107,20 @@ $CFG->localrequestdir = '$configtemplate_localrequestdir';
 // Set the language here to show database problems in german as well.
 $CFG->lang = '$configtemplate_lang';
 
-// Remote Moodle HQ campaign.
+
+
+//=========================================================================
+// MOODLE HQ PHONE HOME
+//=========================================================================
+
+// Remove Moodle HQ campaign.
 $CFG->showcampaigncontent = false;
+
+// Remove Moodle partners campaign.
+$CFG->showservicesandsupportcontent = false;
+
+// Disable Moodle HQ feedback.
+$CFG->enableuserfeedback = false;
 
 
 
