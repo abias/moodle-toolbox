@@ -202,6 +202,9 @@ $CFG->debugdisplay = 1; // Yes
 // Enable performance information
 $CFG->perfdebug = 7; // No
 
+// Enable string debugging
+$CFG->debugstringids = 1; // Yes
+
 
 
 //=========================================================================
