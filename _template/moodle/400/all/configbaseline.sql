@@ -14,3 +14,9 @@ DELETE FROM {repository} WHERE type = 'wikimedia'
 -- repository_url: Remove the repository instance
 DELETE FROM {repository_instances} WHERE id = (SELECT id FROM {repository} WHERE type = 'url')
 DELETE FROM {repository} WHERE type = 'url'
+
+-- filter_emoticon: Disable the filter
+UPDATE {filter_active} SET active = -9999 WHERE filter = 'emoticon'
+
+-- filter_activitynames: Disable the filter
+UPDATE {filter_active} SET active = -9999 WHERE filter = 'activitynames'
