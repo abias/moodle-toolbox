@@ -30,9 +30,13 @@ global $CFG, $DB;
 
 // Get cli options.
 list($options, $unrecognized) = cli_get_params(array('help' => false,
-                                                    'inifile' => null),
+                                                    'inifile' => null,
+                                                    'dryrun' => false,
+                                                    'verbose' => false),
                                                array('h' => 'help',
-                                                    'i' => 'inifile'));
+                                                    'i' => 'inifile',
+                                                    'd' => 'dryrun',
+                                                    'v' => 'verbose'));
 if ($unrecognized) {
     $unrecognized = implode("\n  ", $unrecognized);
     cli_error(get_string('cliunknowoption', 'admin', $unrecognized));
@@ -43,6 +47,8 @@ if ($options['help'] || !($options['inifile']) || !is_readable($options['inifile
     $help = "CLI tool to set a set of Moodle configurations from a ini file
 Options:
 -i, --inifile   Absolute path to the .ini file with the configurations
+-d, --dryrun    Dry-run mode, do only check which changes would be made (Default: false)
+-v, --verbose   Verbose mode, show unchanged settings besides the changed settings (Default: false)
 -h, --help      Print out this help
 Example:
 \$ php moodleconfigfromini.php -i path/to/configuration.ini";
@@ -63,11 +69,32 @@ ksort($config['core']);
 
 // Iterate over the settings.
 foreach($config['core'] as $cname => $cvalue) {
-    // Set the setting.
-    set_config($cname, $cvalue);
+    // Get current setting.
+    $current = get_config('core', $cname);
+    // If the current setting differs from the target setting.
+    if ($current != $cvalue) {
+        // If dry-run is on.
+        if ($options['dryrun'] == true) {
+            // Inform the admin.
+            cli_writeln('... '.$cname.': '.$cvalue.' (DRYRUN)');
 
-    // And inform the admin.
-    cli_writeln('... '.$cname.': '.$cvalue);
+            // Otherwise.
+        } else {
+            // Set the setting.
+            set_config($cname, $cvalue);
+
+            // And inform the admin.
+            cli_writeln('... '.$cname.': '.$cvalue.' (CHANGED)');
+	}
+
+	// Otherwise.
+    } else {
+        // If verbose is on.
+        if ($options['verbose'] == true) {
+            // Inform the admin.
+            cli_writeln('... '.$cname.': '.$cvalue.' (UNCHANGED)');
+	}
+    }
 }
 
 
@@ -92,11 +119,32 @@ foreach ($pseudoplugins as $ps) {
         // Split the plugin name from the config name.
         $setting = explode('/', $cname);
     
-        // Set the setting.
-        set_config($setting[1], $cvalue, $setting[0]);
+        // Get current setting.
+        $current = get_config($setting[0], $setting[1]);
+        // If the current setting differs from the target setting.
+        if ($current != $cvalue) {
+            // If dry-run is on.
+            if ($options['dryrun'] == true) {
+                // Inform the admin.
+                cli_writeln('... '.$cname.': '.$cvalue.' (DRYRUN)');
 
-        // And inform the admin.
-	cli_writeln('... '.$cname.': '.$cvalue);
+                // Otherwise.
+            } else {
+                // Set the setting.
+                set_config($setting[1], $cvalue, $setting[0]);
+
+                // And inform the admin.
+                cli_writeln('... '.$cname.': '.$cvalue.' (CHANGED)');
+            }
+
+            // Otherwise.
+        } else {
+            // If verbose is on.
+            if ($options['verbose'] == true) {
+                // Inform the admin.
+                cli_writeln('... '.$cname.': '.$cvalue.' (UNCHANGED)');
+            }
+        }
     }
 }
 
@@ -127,16 +175,61 @@ foreach ($config as $pluginname => $pluginconfig) {
 
 	// If this is a core setting (for example because the plugin stores its settings in the wrong place).
 	if (count($setting) == 1) {
-            // Set the setting.
-            set_config($cname, $cvalue);
+            // Get current setting.
+            $current = get_config('core', $cname);
+            // If the current setting differs from the target setting.
+            if ($current != $cvalue) {
+                // If dry-run is on.
+                if ($options['dryrun'] == true) {
+                    // Inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (DRYRUN)');
+
+                    // Otherwise.
+                } else {
+                    // Set the setting.
+                    set_config($cname, $cvalue);
+
+                    // And inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (CHANGED)');
+                }
+
+                // Otherwise.
+            } else {
+                // If verbose is on.
+                if ($options['verbose'] == true) {
+                    // Inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (UNCHANGED)');
+                }
+            }
 
             // Otherwise, if this is a plugin setting.
 	} else {
-            // Set the setting.
-            set_config($setting[1], $cvalue, $setting[0]);
-	}
+            // Get current setting.
+            $current = get_config($setting[0], $setting[1]);
+            // If the current setting differs from the target setting.
+            if ($current != $cvalue) {
+                // If dry-run is on.
+                if ($options['dryrun'] == true) {
+                    // Inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (DRYRUN)');
 
-        // And inform the admin.
-        cli_writeln('... '.$cname.': '.$cvalue);
+                    // Otherwise.
+                } else {
+                    // Set the setting.
+                    set_config($setting[1], $cvalue, $setting[0]);
+
+                    // And inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (CHANGED)');
+                }
+
+                // Otherwise.
+            } else {
+                // If verbose is on.
+                if ($options['verbose'] == true) {
+                    // Inform the admin.
+                    cli_writeln('... '.$cname.': '.$cvalue.' (UNCHANGED)');
+                }
+            }
+	}
     }  
 }
