@@ -101,6 +101,19 @@ $CFG->localrequestdir = '$configtemplate_localrequestdir';
 
 
 //=========================================================================
+// PERFORMANCE SETTINGS
+//=========================================================================
+
+$CFG->langcache = true;
+$CFG->langstringcache = true;
+$CFG->useexternalyui = false;
+$CFG->yuicomboloading = true;
+$CFG->cachejs = true;
+$CFG->cachetemplates = true;
+$CFG->themedesignermode = false;
+
+
+//=========================================================================
 // MOODLE UI SETTINGS
 //=========================================================================
 

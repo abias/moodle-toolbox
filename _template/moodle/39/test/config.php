@@ -100,6 +100,20 @@ $CFG->backuptempdir = '$configtemplate_backuptempdir';
 
 
 //=========================================================================
+// PERFORMANCE SETTINGS
+//=========================================================================
+
+$CFG->langcache = true;
+$CFG->langstringcache = true;
+$CFG->useexternalyui = false;
+$CFG->yuicomboloading = true;
+$CFG->cachejs = true;
+$CFG->cachetemplates = true;
+$CFG->themedesignermode = false;
+
+
+
+//=========================================================================
 // MOODLE UI SETTINGS
 //=========================================================================
 
