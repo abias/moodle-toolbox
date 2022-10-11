@@ -148,5 +148,5 @@ now "Running downgrade script in PHP for directory: $site_wwwroot"
 
 cd $site_wwwroot
 
-$config_php_binary $CURRENTDIR/../../_include/php/moodledowngrade.php \
+sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodledowngrade.php \
     && success || failure

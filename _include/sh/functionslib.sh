@@ -254,6 +254,9 @@ site_pickmoodleinstance()
     # Fill the site_wwwrootprod variable
     site_wwwrootprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}/$3
 
+    # Fill the site_wwwrootupdate variable
+    site_wwwrootupdate=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3_update
+
     # Fill the site_moodledata variable
     site_moodledata=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data
 
@@ -265,6 +268,9 @@ site_pickmoodleinstance()
 
     # Fill the site_configphpprod variable
     site_configphpprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}/$3/config.php
+
+    # Fill the site_configphpupdate variable
+    site_configphpupdate=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3_update/config.php
 
     # Fill the site_mucconfig variable
     site_mucconfig=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/muc/config.php
@@ -356,6 +362,19 @@ site_verifymoodleinstance()
     fi
 }
 
+# This helper function checks if there is a valid Github repository.
+site_verifygithubrepo()
+{
+    # Check if the instance's Github repo exists.
+    git ls-remote $site_githuburl 2>/dev/null 1>/dev/null
+    if [ $? -gt 0 ]; then
+        echo "I haven't found a Github repository on $site_githuburl for the given Moodle site."
+        echo "I have to assume that this is a broken Moodle instance."
+        echo "Exiting..."
+        exit 1
+    fi
+}
+
 
 ###################################
 ### moodle action functions
@@ -363,20 +382,33 @@ site_verifymoodleinstance()
 
 # This helper function sets the file system permissions of the Moodle instance.
 # It uses variable values which must have been set by site_pickmoodleinstance() before.
+# If parameter $1 equals 'update' then the update paths are used instead.
 site_fixpermissions()
 {
-    chown -R $site_site:psacln $site_moodledata \
+    if [ $1 == 'update' ]; then
+        setperms_moodledata=$site_moodledata
+        setperms_wwwroot=$site_wwwrootupdate
+        setperms_configphp=$site_configphpupdate
+    else
+        setperms_moodledata=$site_moodledata
+        setperms_wwwroot=$site_wwwroot
+        setperms_configphp=$site_configphp
+    fi
+
+    chown -R $site_site:psacln $setperms_moodledata \
         && success || failure
-    chmod -R u=rwX,g=rX,o=rX $site_moodledata \
+    chmod -R u=rwX,g=rX,o=rX $setperms_moodledata \
         && success || failure
-    chown -R $site_site:psacln $site_wwwroot \
+    chown -R $site_site:psacln $setperms_wwwroot \
         && success || failure
-    chmod -R u=rX,g=rX,o=rX $site_wwwroot \
+    chmod -R u=rX,g=rX,o=rX $setperms_wwwroot \
         && success || failure
-    if [ -e $site_configphp ]; then
-        chmod u=r,g=,o= $site_configphp \
+    if [ -e $setperms_configphp ]; then
+        chmod u=r,g=,o= $setperms_configphp \
             && success || failure
     fi
+
+    unset setperms_moodledata setperms_wwwroot setperms_configphp
 }
 
 

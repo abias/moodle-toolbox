@@ -168,6 +168,7 @@ confirm
 # site_verifymoodleinstance - This standard step is not possible here as the Moodle instance is not initiated yet
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
+site_verifygithubrepo
 
 
 ###################################
@@ -208,15 +209,6 @@ fi
 if [[ -e $site_womenslib ]]; then
     echo "I have found already a lib/womenslib.php file, I expect that there is already a Moodle instance installed."
     echo "It does not make sense to init the instance again, at least not with this script."
-    echo "I can't continue."
-    exit 1
-else
-    success
-fi
-
-git ls-remote $site_githuburl 2>/dev/null 1>/dev/null
-if [ $? -gt 0 ]; then
-    echo "I haven't found a Github repository on $site_githuburl for the given Moodle site."
     echo "I can't continue."
     exit 1
 else

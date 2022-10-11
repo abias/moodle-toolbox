@@ -177,6 +177,7 @@ confirm
 site_verifymoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
+site_verifygithubrepo
 
 
 ###################################
@@ -203,28 +204,39 @@ unset gitstatus
 ### action
 ###################################
 
-now "Copy Moodle instance codebase to update directory"
+now "Cloning $site_wwwroot Moodle wwwroot directory from Github into update directory"
 
-cd $site_subscriptionroot \
+$config_webserver_nice git clone $site_githuburl $site_wwwrootupdate \
     && success || failure
-$config_webserver_nice cp -pr $site_wwwroot ${site_wwwroot}_update \
-    && success || failure
-trap 'rm -rf "${site_wwwroot}_update"' EXIT \
+trap 'rm -rf "$site_wwwrootupdate"' EXIT \
     && success || failure
 
 
-now "Update Moodle instance codebase in update directory"
+now "Checking out the $site_moodlebranchsite branch"
 
-cd ${site_wwwroot}_update \
+cd $site_wwwrootupdate \
     && success || failure
-git fetch $config_github_remoterepo \
+$config_webserver_nice git checkout $site_moodlebranchsite \
     && success || failure
-git reset --hard $config_github_remoterepo/$site_moodlebranchsite\
+
+
+now "Initializing the Git submodules"
+
+cd $site_wwwrootupdate \
     && success || failure
-git submodule update --init \
+$config_webserver_nice git submodule update --init \
     && success || failure
-git submodule update --recursive --remote \
+
+
+now "Copying config.php into update directory"
+
+cp -p $site_configphp $site_configphpupdate \
     && success || failure
+
+
+now "Setting the filesystem permissions for the update directory"
+
+site_fixpermissions update
 
 
 now "Disable cron"
@@ -255,15 +267,10 @@ now "Deploy the updated codebase"
 
 mv $site_wwwroot ${site_wwwroot}_old \
     && success || failure
-mv ${site_wwwroot}_update $site_wwwroot \
+mv $site_wwwrootupdate $site_wwwroot \
     && success || failure
 rm -rf ${site_wwwroot}_old \
     && success || failure
-
-
-now "Setting the filesystem permissions for the Moodle instance files"
-
-site_fixpermissions
 
 
 now "Update Moodle database"
