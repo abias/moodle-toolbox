@@ -190,6 +190,26 @@ sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodl
     && success || failure
 
 
+now "Importing Moodle language customizations"
+
+cd $site_wwwroot \
+    && success || failure
+
+# Get all language pack customizations for the given Moodle release
+readarray allcustomlang < <(find $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/ -name *_local.zip -type f -printf "%f\n")
+
+# Iterate over these languages
+for langfile in ${allcustomlang[@]}
+do
+    # Extract the language pack identifier
+    lang=`cut -d "_" -f 1 <<<"$langfile"` \
+        && success || failure
+    # Import the language pack
+    sudo -u $site_site $config_webserver_phpbin $site_wwwroot/admin/tool/customlang/cli/import.php --lang=$lang --source="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/$langfile" --checkin --mode=all \
+        && success || failure
+done
+
+
 now "Updating Moodle DB to apply the new settings is necessary"
 
 cd $site_wwwroot \
