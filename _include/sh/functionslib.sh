@@ -385,7 +385,7 @@ site_verifygithubrepo()
 # If parameter $1 equals 'update' then the update paths are used instead.
 site_fixpermissions()
 {
-    if [ $1 == 'update' ]; then
+    if [[ "$1" == 'update' ]]; then
         setperms_moodledata=$site_moodledata
         setperms_wwwroot=$site_wwwrootupdate
         setperms_configphp=$site_configphpupdate
