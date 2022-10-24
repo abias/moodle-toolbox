@@ -323,6 +323,14 @@ if [[ $brandsmtp -eq 1 ]]; then
 fi
 
 
+now "Purge caches"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $site_site $config_webserver_phpbin admin/cli/purge_caches.php \
+    && success || failure
+
+
 ###################################
 ### inform admin
 ###################################
