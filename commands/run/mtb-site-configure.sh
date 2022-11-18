@@ -194,11 +194,6 @@ sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodl
 if [[ $site_moodlerelease -ge 310 ]]; then
     now "Importing Moodle language customizations"
 
-    # Confirmation
-    echo "Due to MDL-75974, please login now into the Moodle GUI, go to 'Site administration -> Language -> Language customization' and do an initial customization checkout of all installed language packs"
-    acknowledge
-
-
     cd $site_wwwroot \
         && success || failure
 
