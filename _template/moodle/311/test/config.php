@@ -205,6 +205,18 @@ $CFG->local_datacleaner_allowexecution = true;
 
 
 //=========================================================================
+// CLAMAV
+//=========================================================================
+
+// Forced ClamAV settings.
+$CFG->forced_plugin_settings['antivirus_clamav']['runningmethod'] = 'commandline';
+$CFG->forced_plugin_settings['antivirus_clamav']['pathtoclam'] = '/usr/bin/clamdscan';
+$CFG->forced_plugin_settings['antivirus_clamav']['clamfailureonupload'] = 'tryagain';
+$CFG->forced_plugin_settings['antivirus_clamav']['tries'] = 2;
+
+
+
+//=========================================================================
 // SETTINGS FOR DEBUGGING AND TESTING
 //=========================================================================
 
