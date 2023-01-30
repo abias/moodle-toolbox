@@ -287,6 +287,9 @@ site_pickmoodleinstance()
     # Fill the site_envbartestroot variable
     site_envbartestroot=https://test.$1
 
+    # Fill the site_divertgallmailsaddress variable
+    site_divertallmailsaddress=$2.$1@${config_moodle_outgoingmailtestmailer}
+
     # Fill the site_datacleanerprodroot variable
     site_datacleanerprodroot=https://${config_vhost_instances_prod}.$1
 

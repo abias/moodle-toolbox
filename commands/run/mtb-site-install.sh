@@ -387,6 +387,7 @@ export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
 export configtemplate_envbarprodroot=$site_envbarprodroot
 export configtemplate_envbartestroot=$site_envbartestroot
 export configtemplate_envbarsecretkey=$site_envbarsecretkey
+export configtemplate_divertallmailsaddress=$site_divertallmailsaddress
 export configtemplate_datacleanerprodroot=$site_datacleanerprodroot
 export configtemplate_cachedir=$site_moodledata/cache
 export configtemplate_localcachedir=$site_moodledata/localcache
@@ -396,7 +397,7 @@ export configtemplate_localrequestdir=/tmp/$site_site
 export configtemplate_lang=$moodlelang
 
 
-cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarsecretkey $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarsecretkey $configtemplate_divertallmailsaddress $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
