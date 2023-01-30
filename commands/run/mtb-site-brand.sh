@@ -281,6 +281,14 @@ if [[ $branddomain -eq 1 ]]; then
     sed -i "s/^\$CFG->supportemail =.*/\$CFG->supportemail = '$configsed_supportemail';/" $site_configphp \
         && success || failure
 
+    if [[ $site_instanceisprod -eq 1 ]]; then
+        configsed_divertallmailsaddress=$moodlecustomerdomain@${config_moodle_outgoingmailtestmailer}
+    else
+        configsed_divertallmailsaddress=$site_instance.$moodlecustomerdomain@${config_moodle_outgoingmailtestmailer}
+    fi
+    sed -i "s/^\$CFG->divertallemailsto =.*/\$CFG->divertallemailsto = '$configsed_divertallmailsaddress';/" $site_configphp \
+        && success || failure
+
     unset ${!configsed_*}
 fi
 
