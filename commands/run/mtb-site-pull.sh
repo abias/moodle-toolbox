@@ -239,15 +239,21 @@ now "Setting the filesystem permissions for the update directory"
 site_fixpermissions update
 
 
-now "Disable cron"
+now "Stop cron"
 
 cd $site_wwwroot \
     && success || failure
 sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
-    && success || failure
 
+if [[ $moodlerelease -gt 310 ]]; then
+    now "Disable cron"
+
+    cd $site_wwwroot \
+        && success || failure
+    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
+        && success || failure
+fi
 
 now "Enable maintenance mode"
 
@@ -289,12 +295,14 @@ sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --disable 
     && success || failure
 
 
-now "Enable cron"
+if [[ $moodlerelease -gt 310 ]]; then
+    now "Enable cron"
 
-cd $site_wwwroot \
-    && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
-    && success || failure
+    cd $site_wwwroot \
+        && success || failure
+    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
+        && success || failure
+fi
 
 
 ###################################
