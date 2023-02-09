@@ -168,9 +168,10 @@ cd $pluginpath \
     && success || failure
 changes=$(grep "### Unreleased" $pluginpath/CHANGES.md)
 if [[ $? -eq 0 ]]; then
-    echo -e "The CHANGES.md file contains an 'Unreleased' section. This must be solved before the upgrade"
-    echo "I can't continue."
-    exit 1
+    echo -e "The CHANGES.md file contains an 'Unreleased' section. Normally, a new release should be pushed out for the current latest version before upgrading to the next version."
+    echo -e "However, if the unreleased changes do not have an effect on the running plugin (e.g. changes in Moodle-Plugin-CI), you can go ahead and prepare the new version."
+    echo "Do you really want to continue?"
+    confirm
 else
     success
 fi
@@ -268,9 +269,15 @@ now "Amend CHANGES.md"
 
 cd $pluginpath \
     && success || failure
-sed -i "7i ### Unreleased\n\n* $plugindate - Prepare compatibility for Moodle $pluginrelease.\n" $pluginpath/CHANGES.md \
-    && success || failure
-
+changes=$(grep "### Unreleased" $pluginpath/CHANGES.md)
+if [[ $? -ne 0 ]]; then
+    sed -i "7i ### Unreleased\n\n* $plugindate - Prepare compatibility for Moodle $pluginrelease.\n" $pluginpath/CHANGES.md \
+        && success || failure
+else
+    sed -i "9i * $plugindate - Prepare compatibility for Moodle $pluginrelease." $pluginpath/CHANGES.md \
+        && success || failure
+fi
+unset changes
 
 if [[ ! -z "$pluginadditions" ]]; then
     now "Apply additional changes through the modification script"
