@@ -78,7 +78,7 @@ EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:a' OPTION; do
+while getopts 'hs:i:d:r:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
