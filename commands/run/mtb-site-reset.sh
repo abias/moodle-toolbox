@@ -33,10 +33,11 @@ usage ()
     moodlesites=`array_echo_linebyline_indented "${moodlesites[@]}"`
     moodleinstances=`array_echo_linebyline_indented "${config_vhost_instances[@]}"`
     moodledistros=`array_echo_linebyline_indented "${config_vhost_distros[@]}"`
+    moodlereleases=`array_echo_linebyline_indented "${config_vhost_releases[@]}"`
 
     cat <<EOU
 Usage:
-mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>]
+mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -64,6 +65,15 @@ $moodledistros
 
      Default value:
      $config_vhost_distros_default
+
+  -r <release>
+     The Moodle release which is to be used by the scripts
+
+     Possible values:
+$moodlereleases
+
+     Default value:
+     $config_vhost_releases_default
 EOU
 }
 
@@ -94,6 +104,14 @@ while getopts 'hs:i:d:a' OPTION; do
                  moodledistro=$OPTARG
 	    fi
             ;;
+        r)
+            if ! array_contains_element "$OPTARG" "${config_vhost_releases[@]}"; then
+                 usage
+                 exit 1
+            else
+                 moodlerelease=$OPTARG
+            fi
+	    ;;
         a)
             automode=1
             ;;
@@ -134,6 +152,11 @@ if [[ -z "$moodledistro" ]]; then
     moodledistro=$config_vhost_distros_default
 fi
 
+# If no release was given, use the default
+if [[ -z "$moodlerelease" ]]; then
+    moodlerelease=$config_vhost_releases_default
+fi
+
 # Confirmation
 echo -e "You requested to reset the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
 echo "I will reset the whole instance to the current status (code + data) of the prod instance."
@@ -169,14 +192,22 @@ fi
 ### action
 ###################################
 
-now "Disable cron"
+now "Stop cron"
 
 cd $site_wwwroot \
     && success || failure
 sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
-    && success || failure
+
+
+if [[ $moodlerelease -gt 310 ]]; then
+    now "Disable cron"
+
+    cd $site_wwwroot \
+        && success || failure
+    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
+        && success || failure
+fi
 
 
 now "Enable maintenance mode"
@@ -283,12 +314,14 @@ sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --disable 
     && success || failure
 
 
-now "Enable cron"
+if [[ $moodlerelease -gt 310 ]]; then
+    now "Enable cron"
 
-cd $site_wwwroot \
-    && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
-    && success || failure
+    cd $site_wwwroot \
+        && success || failure
+    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
+        && success || failure
+fi
 
 
 ###################################

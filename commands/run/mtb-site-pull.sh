@@ -246,6 +246,7 @@ cd $site_wwwroot \
 sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
     && success || failure
 
+
 if [[ $moodlerelease -gt 310 ]]; then
     now "Disable cron"
 
@@ -254,6 +255,7 @@ if [[ $moodlerelease -gt 310 ]]; then
     sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
         && success || failure
 fi
+
 
 now "Enable maintenance mode"
 

@@ -247,7 +247,7 @@ But it will not reset the config.php file. If you have changed this file in any 
 
 ```
 Usage:
-mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>]
+mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -265,6 +265,11 @@ Optional parameters:
      If this flag is set, the script will not ask for any confirmations
   -d <distro>
      The Moodle distribution which is to be used by the scripts
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
