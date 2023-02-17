@@ -29,6 +29,24 @@ Futhermore, have a look at the template files below
 and adapt the config.php template files for new installations to your local needs.
 
 
+Instance types
+--------------
+
+If you look at the localconfig.sh file, you will see that there are three types of instances:
+
+### 1. The prod instance
+
+The prod instance is the main instance of a productive Moodle installation. It acts as master for several things like upgrade keys, envbar URLs and it is used as data source for resetting non-prod instances.
+
+### 2. The non-prod instances
+
+Non-prod instances are all other instances besides the prod instance. They can be installed after / in addition to the prod instance. Their data can always be reset to the status of the prod instance.
+
+### 3. Singleton instances
+
+Singleton instances are kind of special. They are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test instance besides them. The main goal of the singleton instance is to have a less restrictive configuration to be used as playground. 
+
+
 Usage
 -----
 

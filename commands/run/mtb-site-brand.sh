@@ -240,6 +240,22 @@ site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
 
 
 ###################################
+### security net
+###################################
+
+now "Checking security nets"
+
+if [[ $site_instanceissingleton -eq 1 ]]; then
+    echo "You want to brand a singleton instance."
+    echo "Unfortunately, singleton instances cannot be branded."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
+
+###################################
 ### action
 ###################################
 

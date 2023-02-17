@@ -230,6 +230,30 @@ site_scanmoodlesites()
 # As a result, the site_* variables are filled with paths and other data for the Moodle site.
 site_pickmoodleinstance()
 {
+    # Fill the site_instancerootrealprod variable
+    site_instancerootrealprod=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-${config_vhost_instances_prod}
+
+    # If we are dealing with a singleton instance.
+    if array_contains_element "$2" "${config_vhost_instances_singleton[@]}"; then
+        # Pretend that the singleton instance is handled like it was the prod instance
+        config_vhost_instances_prod=$2
+
+	# Fill the site_instanceissingleton variable
+        site_instanceissingleton=1
+    else
+        # Fill the site_instanceissingleton variable
+        site_instanceissingleton=0
+    fi
+
+    # If we are dealing with the prod instance.
+    if [[ $2 == ${config_vhost_instances_prod} ]]; then
+        # Fill the site_instanceisprod variable
+        site_instanceisprod=1
+    else
+        # Fill the site_instanceisprod variable
+        site_instanceisprod=0
+    fi
+
     # Fill the site_site variable
     site_site=$1
 
@@ -304,13 +328,6 @@ site_pickmoodleinstance()
 
     # Fill the site_climaintenance variable
     site_climaintenance=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/climaintenance.html
-
-    # Fill the site_instanceisprod variable
-    if [[ $2 == ${config_vhost_instances_prod} ]]; then
-        site_instanceisprod=1
-    else
-        site_instanceisprod=0
-    fi
 }
 
 # This helper function picks the Moodle site branch und release from the given parameters $1 and $2 and $3 and $4.

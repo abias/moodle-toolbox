@@ -58,11 +58,14 @@ config_vhost_basedir_ignore=('chroot' 'default' '.skel' 'system')
 config_vhost_wwwroot='www'
 
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
-# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod and test)
-config_vhost_instances=('prod' 'test')
+# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test and pg)
+config_vhost_instances=('prod' 'test' 'pg')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
 config_vhost_instances_prod='prod'
+# The singleton instances are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test instance besides them
+# Make sure that the values are allowed values as well
+config_vhost_instances_singleton=('pg')
 
 # The Moodle distributions which should be allowed
 # Currently, moodle and iomad are supported and are used in Git branch names and directory names

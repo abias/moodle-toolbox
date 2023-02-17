@@ -177,9 +177,10 @@ site_verifygithubrepo
 
 now "Checking security nets"
 
-if [[ $site_instanceisprod -eq 0 && ! -d $site_instancerootprod ]]; then
-    echo "You want to install a non-prod instance but I have not found the prod instance."
+if [[ $site_instanceisprod -eq 0 && ! -d $site_instancerootrealprod ]]; then
+    echo "You want to init a non-prod instance but I have not found the prod instance."
     echo "The prod instance has to be created before any non-prod instance."
+    echo "If the prod instance is a singleton instance, then you have to be aware that there cannot be any non-prod instances in addition to a singleton instance."
     echo "I can't continue."
     exit 1
 else

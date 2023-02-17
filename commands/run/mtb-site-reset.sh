@@ -187,6 +187,15 @@ else
     success
 fi
 
+if [[ $site_instanceissingleton -eq 1 ]]; then
+    echo "You want to reset a singleton instance."
+    echo "Unfortunately, singleton instances cannot be reset as there are no real prod instanced besided them."
+    echo "I can't continue."
+    exit 1
+else
+    success
+fi
+
 
 ###################################
 ### action
