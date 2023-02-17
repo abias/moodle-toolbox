@@ -96,7 +96,6 @@ $CFG->localcachedir = '$configtemplate_localcachedir';
 
 $CFG->tempdir = '$configtemplate_tempdir';
 $CFG->backuptempdir = '$configtemplate_backuptempdir';
-$CFG->localrequestdir = '$configtemplate_localrequestdir';
 
 
 
