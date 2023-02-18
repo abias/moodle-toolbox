@@ -227,7 +227,7 @@ $CFG->debugdisplay = 0; // No
 $CFG->perfdebug = 7; // No
 
 // Enable string debugging
-$CFG->debugstringids = 0; // No
+$CFG->debugstringids = 1; // Yes
 
 
 
