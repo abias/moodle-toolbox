@@ -423,7 +423,7 @@ if [[ $moodleinith5p -eq 1 ]]; then
     cd $site_wwwroot \
         && success || failure
     # The following scheduled task can fail for several reasons, especially because we are downloading stuff from a third party system
-    sudo -u $site_site $config_webserver_phpbin admin/tool/task/cli/schedule_task.php --execute=\\core\\task\\h5p_get_content_types_task \
+    sudo -u $site_site $config_webserver_phpbin admin/cli/scheduled_task.php --execute=\\core\\task\\h5p_get_content_types_task \
         && success || failureconfirm
 fi
 
