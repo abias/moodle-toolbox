@@ -298,6 +298,11 @@ sudo -u $site_site $config_webserver_phpbin admin/cli/kill_all_sessions.php \
 
 
 if [[ -f $site_wwwroot/local/datacleaner/cli/clean.php ]]; then
+    now "Wait 5 minutes before we can run the local_datacleaner tasks due to the local_datacleaner security checks"
+
+    sleep 300 \
+        && success || failure
+
     now "Run local_datacleaner tasks"
 
     cd $site_wwwroot \
