@@ -283,7 +283,7 @@ now "Initializing the Git submodules"
 
 cd $site_wwwroot \
     && success || failure
-git submodule update --init \
+git submodule update --init --recursive \
     && success || failure
 
 

@@ -224,7 +224,7 @@ now "Initializing the Git submodules"
 
 cd $site_wwwrootupdate \
     && success || failure
-$config_webserver_nice git submodule update --init \
+$config_webserver_nice git submodule update --init --recursive \
     && success || failure
 
 
