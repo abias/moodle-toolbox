@@ -57,15 +57,45 @@ config_vhost_basedir_ignore=('chroot' 'default' '.skel' 'system')
 # The directory below the basedir which holds the Moodle site
 config_vhost_wwwroot='www'
 
+# The group which is used for subscription root and instance root during the instance initialization
+config_vhost_group_subscription='psaserv'
+
+# The permissions which are used for subscription root and instance root during the instance initialization
+config_vhost_perms_subscription='u=rX,g=X,o='
+
+# The group which is used for wwwroot when fixing permissions
+config_vhost_group_wwwroot='psacln'
+
+# The group which is used for moodledata when fixing permissions
+config_vhost_group_moodledata='psacln'
+
+# The permissions which are used for wwwroot when fixing permissions
+config_vhost_perms_wwwroot='u=rX,g=rX,o=rX'
+# The permissions which are used for wwwroot when fixing permissions (for dev instances)
+config_vhost_perms_wwwroot_dev='u=rwX,g=rX,o=rX'
+
+# The permissions which are used for moodledata when fixing permissions
+config_vhost_perms_moodledata='u=rwX,g=rX,o=rX'
+# The permissions which are used for moodledata when fixing permissions (for dev instances)
+config_vhost_perms_moodledata_dev='u=rwX,g=rwX,o=rwX'
+
+# The permissions which are used for config.php when fixing permissions
+config_vhost_perms_configphp='u=r,g=,o='
+# The permissions which are used for config.php when fixing permissions (for dev instances)
+config_vhost_perms_configphp_dev='u=rw,g=,o='
+
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
 # If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test and pg)
-config_vhost_instances=('prod' 'test' 'pg')
+config_vhost_instances=('prod' 'test' 'pg' 'dev')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
 config_vhost_instances_prod='prod'
 # The singleton instances are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test instance besides them
 # Make sure that the values are allowed values as well
 config_vhost_instances_singleton=('pg')
+# The dev instances are installed and handled as if they are another singleton instance, but a) MTB will use the upstream Git repo and b) MTB will just install and never update them
+# Make sure that the values are allowed values as well
+config_vhost_instances_dev=('dev')
 
 # The Moodle distributions which should be allowed
 # Currently, moodle and iomad are supported and are used in Git branch names and directory names
@@ -88,8 +118,11 @@ config_vhost_releases_default='400'
 ### local config: git environment
 ###################################
 
-# The Github URL prefix for Git repositories. This URL is amended by the site's distro type and the site name.
+# The Github URL prefix for Git repositories. This URL is amended by the site's distro type and the site name and the '.git' suffix.
 config_git_githuburlprefix='git@github.com:lernlink-intern/lms-site'
+
+# The Github URL for the upstream repo.
+config_git_gitupstream='git@github.com:moodle/moodle.git'
 
 
 ###################################
@@ -161,7 +194,7 @@ config_toolbox_maintenancesleep=10
 
 
 ###################################
-### dev tools:git
+### dev tools: git
 ###################################
 
 # The git author name which will be used for git commits.

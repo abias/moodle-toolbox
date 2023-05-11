@@ -192,6 +192,11 @@ if [[ $site_instanceissingleton -eq 1 ]]; then
     echo "Unfortunately, singleton instances cannot be reset as there are no real prod instanced besided them."
     echo "I can't continue."
     exit 1
+elif [[ $site_instanceisdev -eq 1 ]]; then
+    echo "You want to brand a dev instance."
+    echo "Unfortunately, dev instances cannot be reset as there are no real prod instanced besided them."
+    echo "I can't continue."
+    exit 1
 else
     success
 fi
@@ -242,7 +247,7 @@ cat > $site_climaintenance << EOL
 </html>
 EOL
 
-chown $site_site:psacln $site_climaintenance \
+chown $site_site:$config_vhost_group_moodledata $site_climaintenance \
     && success || failure
 
 chmod u=rwX,g=rX,o= $site_climaintenance \

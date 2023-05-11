@@ -186,6 +186,13 @@ site_verifygithubrepo
 
 now "Checking security nets"
 
+if [[ $site_instanceisdev -eq 1 ]]; then
+    echo "You want to pull a dev instance."
+    echo "Unfortunately, dev instances cannot be pulled. Please use plain git commands on your own."
+    echo "I can't continue."
+    exit 1
+fi
+
 cd $site_wwwroot \
     && success || failure
 gitstatus=$(git status --porcelain)

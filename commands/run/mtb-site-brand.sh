@@ -250,6 +250,11 @@ if [[ $site_instanceissingleton -eq 1 ]]; then
     echo "Unfortunately, singleton instances cannot be branded."
     echo "I can't continue."
     exit 1
+elif [[ $site_instanceisdev -eq 1 ]]; then
+    echo "You want to brand a dev instance."
+    echo "Unfortunately, dev instances cannot be branded."
+    echo "I can't continue."
+    exit 1
 else
     success
 fi

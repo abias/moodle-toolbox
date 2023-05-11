@@ -226,9 +226,9 @@ now "Creating $site_subscriptionroot root directory (if it does not exist yet)"
 if [[ ! -d $site_subscriptionroot ]]; then
     mkdir $site_subscriptionroot \
         && success || failure
-    chown $site_site:psaserv $site_subscriptionroot \
+    chown $site_site:$config_vhost_group_subscription $site_subscriptionroot \
         && success || failure
-    chmod u=rX,g=X,o= $site_subscriptionroot \
+    chmod $config_vhost_perms_subscription $site_subscriptionroot \
         && success || failure
 else
     success
@@ -240,9 +240,9 @@ now "Creating $site_instanceroot Moodle instance directory (if it does not exist
 if [[ ! -d $site_instanceroot ]]; then
     mkdir $site_instanceroot \
         && success || failure
-    chown $site_site:psaserv $site_instanceroot \
+    chown $site_site:$config_vhost_group_subscription $site_instanceroot \
         && success || failure
-    chmod u=rX,g=X,o= $site_instanceroot \
+    chmod $config_vhost_perms_subscription $site_instanceroot \
         && success || failure
 else
     success

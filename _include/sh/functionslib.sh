@@ -238,11 +238,30 @@ site_pickmoodleinstance()
         # Pretend that the singleton instance is handled like it was the prod instance
         config_vhost_instances_prod=$2
 
-	# Fill the site_instanceissingleton variable
+        # Fill the site_instanceissingleton variable
         site_instanceissingleton=1
+
+        # Fill the site_instanceisdev variable
+        site_instanceisdev=0
+
+    # If we are dealing with a dev instance.
+    elif array_contains_element "$2" "${config_vhost_instances_dev[@]}"; then
+        # Pretend that the dev instance is handled like it was the prod instance
+        config_vhost_instances_prod=$2
+
+        # Fill the site_instanceissingleton variable
+        site_instanceissingleton=0
+
+        # Fill the site_instanceisdev variable
+        site_instanceisdev=1
+
+    # Otherwise.
     else
         # Fill the site_instanceissingleton variable
         site_instanceissingleton=0
+
+        # Fill the site_instanceisdev variable
+        site_instanceisdev=0
     fi
 
     # If we are dealing with the prod instance.
@@ -323,8 +342,15 @@ site_pickmoodleinstance()
     # Fill the site_moodlebranchprefix variable
     site_moodlebranchprefix=${3^^}_
 
-    # Fill the site_githuburl variable
-    site_githuburl=${config_git_githuburlprefix}-$3-$1.git
+    # If we are dealing with a dev instance.
+    if [[ $site_instanceisdev -eq 1 ]]; then
+        # Fill the site_githuburl variable
+        site_githuburl=${config_git_gitupstream}
+    # Otherwise
+    else
+        # Fill the site_githuburl variable
+        site_githuburl=${config_git_githuburlprefix}-$3-$1.git
+    fi
 
     # Fill the site_climaintenance variable
     site_climaintenance=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/climaintenance.html
@@ -334,11 +360,18 @@ site_pickmoodleinstance()
 # As a result, the site_moodlebranchsite and site_moodlerelease variables are filled for the Moodle site.
 site_pickmoodlebranch()
 {
-    # Fill the site_moodlebranchsite variable
-    if [[ $site_instanceisprod -eq 1 ]]; then
-        site_moodlebranchsite=${3^^}_${4}_STABLE_site
+    # If we are dealing with a dev instance.
+    if [[ $site_instanceisdev -eq 1 ]]; then
+        # Fill the site_moodlebranchsite variable
+        site_moodlebranchsite=${3^^}_${4}_STABLE
+    # Otherwise
     else
-        site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
+        # Fill the site_moodlebranchsite variable
+        if [[ $site_instanceisprod -eq 1 ]]; then
+            site_moodlebranchsite=${3^^}_${4}_STABLE_site
+        else
+            site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
+        fi
     fi
 
     # Fill the site_moodlerelease variable
@@ -388,8 +421,8 @@ site_verifygithubrepo()
     # Check if the instance's Github repo exists.
     git ls-remote $site_githuburl 2>/dev/null 1>/dev/null
     if [ $? -gt 0 ]; then
-        echo "I haven't found a Github repository on $site_githuburl for the given Moodle site."
-        echo "I have to assume that this is a broken Moodle instance."
+        echo "I haven't found a Github repository on $site_githuburl."
+        echo "I can't continue."
         echo "Exiting..."
         exit 1
     fi
@@ -415,16 +448,26 @@ site_fixpermissions()
         setperms_configphp=$site_configphp
     fi
 
-    chown -R $site_site:psacln $setperms_moodledata \
+    if [[ $site_instanceisdev -eq 1 ]]; then
+        setperms_perms_wwwroot=$config_vhost_perms_wwwroot_dev
+        setperms_perms_moodledata=$config_vhost_perms_moodledata_dev
+        setperms_perms_configphp=$config_vhost_perms_configphp_dev
+    else
+        setperms_perms_wwwroot=$config_vhost_perms_wwwroot
+        setperms_perms_moodledata=$config_vhost_perms_moodledata
+        setperms_perms_configphp=$config_vhost_perms_configphp
+    fi
+
+    chown -R $site_site:$config_vhost_group_moodledata $setperms_moodledata \
         && success || failure
-    chmod -R u=rwX,g=rX,o=rX $setperms_moodledata \
+    chmod -R $setperms_perms_moodledata $setperms_moodledata \
         && success || failure
-    chown -R $site_site:psacln $setperms_wwwroot \
+    chown -R $site_site:$config_vhost_group_wwwroot $setperms_wwwroot \
         && success || failure
-    chmod -R u=rX,g=rX,o=rX $setperms_wwwroot \
+    chmod -R $setperms_perms_wwwroot $setperms_wwwroot \
         && success || failure
     if [ -e $setperms_configphp ]; then
-        chmod u=r,g=,o= $setperms_configphp \
+        chmod $setperms_perms_configphp $setperms_configphp \
             && success || failure
     fi
 
