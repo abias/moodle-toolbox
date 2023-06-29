@@ -250,7 +250,7 @@ now "Stop cron"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
+sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --stop \
     && success || failure
 
 
@@ -259,7 +259,7 @@ if [[ $moodlerelease -gt 310 ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
+    sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --disable-wait \
         && success || failure
 fi
 
@@ -269,10 +269,10 @@ now "Enable maintenance mode"
 cd $site_wwwroot \
     && success || failure
 if [[ $nosleepmode -eq 1 ]]; then
-    sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --enable \
+    sudo -u $site_site $site_moodlephpbin admin/cli/maintenance.php --enable \
         && success || failure
 else
-    sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --enablelater=$config_toolbox_maintenancesleep \
+    sudo -u $site_site $site_moodlephpbin admin/cli/maintenance.php --enablelater=$config_toolbox_maintenancesleep \
         && success || failure
     sleep ${config_toolbox_maintenancesleep}m
 fi
@@ -292,7 +292,7 @@ now "Update Moodle database"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \
+sudo -u $site_site $site_moodlephpbin admin/cli/upgrade.php --non-interactive \
     && success || failure
 
 
@@ -300,7 +300,7 @@ now "Disable maintenance mode"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --disable \
+sudo -u $site_site $site_moodlephpbin admin/cli/maintenance.php --disable \
     && success || failure
 
 
@@ -309,7 +309,7 @@ if [[ $moodlerelease -gt 310 ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
+    sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --enable \
         && success || failure
 fi
 

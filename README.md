@@ -181,7 +181,7 @@ This script is used to brand a Moodle instance. It expects additional parameters
 
 ```
 Usage:
-mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
+mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -199,6 +199,11 @@ Optional parameters:
      If this flag is set, the script will not ask for any confirmations
   -d <distro>
      The Moodle distribution which is to be used by the scripts
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 
@@ -299,7 +304,7 @@ It does not do any rollback of upgrade steps. Please use it only for development
 
 ```
 Usage:
-mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>]
+mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
 
 Mandatory parameters:
   -s <site>
@@ -316,6 +321,11 @@ Optional parameters:
      The Moodle distribution which is to be used by the scripts
      This parameter expects the distribution name of the instance of the Moodle site.
      When running the script, a list of possible values can be requested with the -h parameter.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
 #### mtb-site-permissions.php

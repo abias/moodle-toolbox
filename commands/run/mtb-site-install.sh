@@ -374,7 +374,7 @@ export configtemplate_dbpass=$moodledbpass
 export configtemplate_upgradekey=$site_upgradekey
 export configtemplate_bbburl="${config_moodle_bbburlprefix}/${config_moodle_bbbuser}/${config_moodle_bbburlsuffix}"
 export configtemplate_bbbtoken=${config_moodle_bbbtoken}
-export configtemplate_pathtophp=$config_webserver_phpbin
+export configtemplate_pathtophp=site_moodlephpbin
 export configtemplate_pathtodu=$config_webserver_dubin
 export configtemplate_pathtodot=$config_webserver_dotbin
 export configtemplate_pathtogs=$config_webserver_gsbin
@@ -413,7 +413,7 @@ now "Installing Moodle database"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+sudo -u $site_site $site_moodlephpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
     && success || failure
 
 
@@ -423,7 +423,7 @@ if [[ $moodleinith5p -eq 1 ]]; then
     cd $site_wwwroot \
         && success || failure
     # The following scheduled task can fail for several reasons, especially because we are downloading stuff from a third party system
-    sudo -u $site_site $config_webserver_phpbin admin/cli/scheduled_task.php --execute=\\core\\task\\h5p_get_content_types_task \
+    sudo -u $site_site $site_moodlephpbin admin/cli/scheduled_task.php --execute=\\core\\task\\h5p_get_content_types_task \
         && success || failureconfirm
 fi
 

@@ -4,8 +4,9 @@
 ### local config: webserver stack
 ###################################
 
-# The php binary
-config_webserver_phpbin='/opt/plesk/php/7.4/bin/php'
+# The php binary, depending on the Moodle version
+config_webserver_phpbin_upto400='/opt/plesk/php/7.4/bin/php'
+config_webserver_phpbin_from401='/opt/plesk/php/8.1/bin/php'
 
 
 ###################################

@@ -178,7 +178,7 @@ now "Setting Moodle baseline configuration (from ini file)"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigfromini.php -i="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.ini" \
+sudo -u $site_site $site_moodlephpbin $CURRENTDIR/../../_include/php/moodleconfigfromini.php -i="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.ini" \
     && success || failure
 
 
@@ -186,7 +186,7 @@ now "Setting Moodle baseline configuration (from sql file)"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin $CURRENTDIR/../../_include/php/moodleconfigfromsql.php -s="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.sql" \
+sudo -u $site_site $site_moodlephpbin $CURRENTDIR/../../_include/php/moodleconfigfromsql.php -s="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/configbaseline.sql" \
     && success || failure
 
 
@@ -207,7 +207,7 @@ if [[ $site_moodlerelease -ge 310 ]]; then
         lang=`cut -d "_" -f 1 <<<"$langfile"` \
             && success || failure
         # Import the language pack
-        sudo -u $site_site $config_webserver_phpbin $site_wwwroot/admin/tool/customlang/cli/import.php --lang=$lang --source="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/$langfile" --checkin --mode=all \
+        sudo -u $site_site $site_moodlephpbin $site_wwwroot/admin/tool/customlang/cli/import.php --lang=$lang --source="$CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/all/$langfile" --checkin --mode=all \
             && success || failure
     done
 fi
@@ -218,7 +218,7 @@ now "Updating Moodle DB to apply the new settings is necessary"
 cd $site_wwwroot \
     && success || failure
 # Updating the database is done now to make sure that Moodle core not show the database wizard on the first login after setting the baseline config
-sudo -u $site_site $config_webserver_phpbin admin/cli/upgrade.php --non-interactive \
+sudo -u $site_site $site_moodlephpbin admin/cli/upgrade.php --non-interactive \
     && success || failure
 
 

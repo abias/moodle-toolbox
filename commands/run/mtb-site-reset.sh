@@ -170,6 +170,7 @@ confirm
 
 site_verifymoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
+site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 
 ###################################
@@ -210,7 +211,7 @@ now "Stop cron"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --stop \
+sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --stop \
     && success || failure
 
 
@@ -219,7 +220,7 @@ if [[ $moodlerelease -gt 310 ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --disable-wait \
+    sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --disable-wait \
         && success || failure
 fi
 
@@ -298,7 +299,7 @@ now "Kill all sessions"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/kill_all_sessions.php \
+sudo -u $site_site $site_moodlephpbin admin/cli/kill_all_sessions.php \
     && success || failure
 
 
@@ -312,7 +313,7 @@ if [[ -f $site_wwwroot/local/datacleaner/cli/clean.php ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    sudo -u $site_site $config_webserver_phpbin local/datacleaner/cli/clean.php --run --verbose \
+    sudo -u $site_site $site_moodlephpbin local/datacleaner/cli/clean.php --run --verbose \
         && success || failure
 fi
 
@@ -321,7 +322,7 @@ now "Purge caches"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/purge_caches.php \
+sudo -u $site_site $site_moodlephpbin admin/cli/purge_caches.php \
     && success || failure
 
 
@@ -329,7 +330,7 @@ now "Disable maintenance mode"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/maintenance.php --disable \
+sudo -u $site_site $site_moodlephpbin admin/cli/maintenance.php --disable \
     && success || failure
 
 
@@ -338,7 +339,7 @@ if [[ $moodlerelease -gt 310 ]]; then
 
     cd $site_wwwroot \
         && success || failure
-    sudo -u $site_site $config_webserver_phpbin admin/cli/cron.php --enable \
+    sudo -u $site_site $site_moodlephpbin admin/cli/cron.php --enable \
         && success || failure
 fi
 

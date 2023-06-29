@@ -376,6 +376,16 @@ site_pickmoodlebranch()
 
     # Fill the site_moodlerelease variable
     site_moodlerelease=$4
+
+    # If we are dealing with an instance up to 4.0.
+    if [[ $site_moodlerelease -le 400 ]]; then
+        # Fill the site_moodlephpbin variable
+        site_moodlephpbin=${config_webserver_phpbin_upto400}
+    # Otherwise
+    else
+        # Fill the site_moodlephpbin variable
+        site_moodlephpbin=${config_webserver_phpbin_from401}
+    fi
 }
 
 # This helper function checks if the Moodle site from the given parameters $1 and $2 and $3 exists.

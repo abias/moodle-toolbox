@@ -33,10 +33,11 @@ usage ()
     moodlesites=`array_echo_linebyline_indented "${moodlesites[@]}"`
     moodleinstances=`array_echo_linebyline_indented "${config_vhost_instances[@]}"`
     moodledistros=`array_echo_linebyline_indented "${config_vhost_distros[@]}"`
+    moodlereleases=`array_echo_linebyline_indented "${config_vhost_releases[@]}"`
 
     cat <<EOU
 Usage:
-mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
+mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
 
 Mandatory parameters:
   -s <site>
@@ -65,6 +66,15 @@ $moodledistros
      Default value:
      $config_vhost_distros_default
 
+  -r <release>
+     The Moodle release which is to be used by the scripts
+
+     Possible values:
+$moodlereleases
+
+     Default value:
+     $config_vhost_releases_default
+
   Customer domain:
 
     -k <customerdomain>
@@ -92,7 +102,7 @@ EOU
 }
 
 # Process parameters
-while getopts 'hs:i:d:k:b:c:x:y:z:a' OPTION; do
+while getopts 'hs:i:d:r:k:b:c:x:y:z:a' OPTION; do
     case "$OPTION" in
         s)
             if ! array_contains_element "$OPTARG" "${moodlesites[@]}"; then
@@ -117,6 +127,14 @@ while getopts 'hs:i:d:k:b:c:x:y:z:a' OPTION; do
 	    else
                  moodledistro=$OPTARG
 	    fi
+            ;;
+        r)
+            if ! array_contains_element "$OPTARG" "${config_vhost_releases[@]}"; then
+                 usage
+                 exit 1
+        else
+                 moodlerelease=$OPTARG
+        fi
             ;;
         k)
             moodlecustomerdomain=$OPTARG
@@ -174,6 +192,11 @@ fi
 # If no distro was given, use the default
 if [[ -z "$moodledistro" ]]; then
     moodledistro=$config_vhost_distros_default
+fi
+
+# If no release was given, use the default
+if [[ -z "$moodlerelease" ]]; then
+    moodlerelease=$config_vhost_releases_default
 fi
 
 # If a customer domain were given, remember this fact.
@@ -237,6 +260,7 @@ confirm
 
 site_verifymoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
+site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
 
 
 ###################################
@@ -356,7 +380,7 @@ now "Purge caches"
 
 cd $site_wwwroot \
     && success || failure
-sudo -u $site_site $config_webserver_phpbin admin/cli/purge_caches.php \
+sudo -u $site_site $site_moodlephpbin admin/cli/purge_caches.php \
     && success || failure
 
 
