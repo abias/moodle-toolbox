@@ -216,6 +216,34 @@ $CFG->forced_plugin_settings['antivirus_clamav']['tries'] = 2;
 
 
 //=========================================================================
+// LERN.LINK PRODUCTS WITH FEES
+//=========================================================================
+
+// Product: LMS | AddOn | KursBackups.
+// Default value: 0 (Disabled).
+// Change value as soon as the product is sold to: 1 (Enabled).
+$CFG->forced_plugin_settings['backup']['backup_auto_active'] = 0;
+
+// Product: LMS | Skalierung | Logfiles*
+// Default value: 365 (365 days).
+// Change value as soon as the product is sold to: 1000 (1000 days) or 0 (Unlimited storage).
+$CFG->forced_plugin_settings['logstore_standard']['loglifetime'] = 365;
+
+// Product: LMS | AddOn | GlobaleSuche*
+// Default value: 0 (Disabled).
+// Change value as soon as the product is sold to: simpledb (DB backend) or solr (SOLR backend).
+$CFG->enableglobalsearch = 0;
+$CFG->searchengine = 'simpledb';
+
+
+
+//=========================================================================
+// ADDITIONAL SPECIFIC SETTINGS (LIKE CREDENTIALS TO 3RD PARTY TOOLS)
+//=========================================================================
+
+
+
+//=========================================================================
 // SETTINGS FOR DEBUGGING AND TESTING
 //=========================================================================
 
