@@ -180,7 +180,7 @@ config_moodle_outgoingmailsmtphosts='smtp.eu.mailgun.org:465'
 config_moodle_outgoingmailnoreplyaddressprefix='noreply'
 
 # The support prefix which will be added to the domain and which will be set during the installation.
-config_moodle_outgoingmailsupportemailprefix='noreply'
+config_moodle_outgoingmailsupportemailprefix='support'
 
 # The domain which has a catchall postbox where all mails from non-prod instances can be diverted to.
 config_moodle_outgoingmailtestmailer='lern.li'

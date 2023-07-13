@@ -322,10 +322,6 @@ if [[ $branddomain -eq 1 ]]; then
     sed -i "s/^\$CFG->noreplyaddress =.*/\$CFG->noreplyaddress = '$configsed_noreplyaddress';/" $site_configphp \
         && success || failure
 
-    configsed_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlecustomerdomain
-    sed -i "s/^\$CFG->supportemail =.*/\$CFG->supportemail = '$configsed_supportemail';/" $site_configphp \
-        && success || failure
-
     if [[ $site_instanceisprod -eq 1 ]]; then
         configsed_divertallmailsaddress=$moodlecustomerdomain@${config_moodle_outgoingmailtestmailer}
     else
@@ -335,6 +331,12 @@ if [[ $branddomain -eq 1 ]]; then
         && success || failure
 
     unset ${!configsed_*}
+
+    configvalue_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlecustomerdomain
+    sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportemail --set="$configvalue_supportemail" \
+        && success || failure
+
+    unset ${!configvalue_*}
 fi
 
 if [[ $brandbbb -eq 1 ]]; then

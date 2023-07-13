@@ -135,8 +135,6 @@ $CFG->smtpauthtype = 'LOGIN';
 $CFG->smtpuser = '$configtemplate_smtpuser';
 $CFG->smtppass = '$configtemplate_smtppass';
 $CFG->noreplyaddress = '$configtemplate_noreplyaddress';
-$CFG->supportname = '$configtemplate_supportname';
-$CFG->supportemail = '$configtemplate_supportemail';
 
 
 

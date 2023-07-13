@@ -147,8 +147,6 @@ $CFG->smtpauthtype = 'LOGIN';
 $CFG->smtpuser = '$configtemplate_smtpuser';
 $CFG->smtppass = '$configtemplate_smtppass';
 $CFG->noreplyaddress = '$configtemplate_noreplyaddress';
-$CFG->supportname = '$configtemplate_supportname';
-$CFG->supportemail = '$configtemplate_supportemail';
 
 // E-Mail digest send time (especially relevant for lern.link support forum)
 $CFG->digestmailtime = 12;

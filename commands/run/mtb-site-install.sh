@@ -382,8 +382,6 @@ export configtemplate_smtphosts=$config_moodle_outgoingmailsmtphosts
 export configtemplate_smtpuser=$config_moodle_outgoingmailsmtpuser
 export configtemplate_smtppass=$config_moodle_outgoingmailsmtppass
 export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressprefix}@$site_site
-export configtemplate_supportname="$moodlefullname"
-export configtemplate_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$site_site
 export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
 export configtemplate_envbarprodroot=$site_envbarprodroot
 export configtemplate_envbartestroot=$site_envbartestroot
@@ -396,9 +394,11 @@ export configtemplate_tempdir=$site_moodledata/temp
 export configtemplate_backuptempdir=$site_moodledata/backuptemp
 export configtemplate_localrequestdir=/tmp/$site_site
 export configtemplate_lang=$moodlelang
+export configvalue_supportname="$moodlefullname $config_moodle_outgoingmailsupportnamesuffix"
+export configvalue_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$site_site
 
 
-cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_supportname $configtemplate_supportemail $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarsecretkey $configtemplate_divertallmailsaddress $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarsecretkey $configtemplate_divertallmailsaddress $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
@@ -414,6 +414,16 @@ now "Installing Moodle database"
 cd $site_wwwroot \
     && success || failure
 sudo -u $site_site $site_moodlephpbin admin/cli/install_database.php --lang=$moodlelang --agree-license --fullname="$moodlefullname" --shortname="$moodleshortname" --adminuser=$config_moodle_adminusername --adminpass=$config_moodle_adminuserpass --adminemail=$config_moodle_adminusermail \
+    && success || failure
+
+
+now "Setting site configuration values"
+
+cd $site_wwwroot \
+    && success || failure
+sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportname --set="$configvalue_supportname" \
+    && success || failure
+sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportemail --set="$configvalue_supportemail" \
     && success || failure
 
 
