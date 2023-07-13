@@ -228,7 +228,7 @@ $CFG->forced_plugin_settings['logstore_standard']['loglifetime'] = 365;
 
 // Product: LMS | AddOn | GlobaleSuche*
 // Default value: 0 (Disabled).
-// Change value as soon as the product is sold to: simpledb (DB backend) or solr (SOLR backend).
+// Change value as soon as the product is sold to: 1 (Enabled) and leave the searchengine as 'simpledb'.
 $CFG->enableglobalsearch = 0;
 $CFG->searchengine = 'simpledb';
 
