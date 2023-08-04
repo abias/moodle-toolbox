@@ -332,9 +332,12 @@ if [[ $branddomain -eq 1 ]]; then
 
     unset ${!configsed_*}
 
-    configvalue_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlecustomerdomain
-    sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportemail --set="$configvalue_supportemail" \
-        && success || failure
+    currentsupportemail=`sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportemail`
+    if [[ "$currentsupportemail" =~ $moodlesite ]]; then
+        configvalue_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$moodlecustomerdomain
+        sudo -u $site_site $site_moodlephpbin admin/cli/cfg.php --name=supportemail --set="$configvalue_supportemail" \
+            && success || failure
+    fi
 
     unset ${!configvalue_*}
 fi
