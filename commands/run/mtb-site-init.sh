@@ -168,7 +168,7 @@ confirm
 # site_verifymoodleinstance - This standard step is not possible here as the Moodle instance is not initiated yet
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
-site_verifygithubrepo
+site_verifygithubrepo $site_githuburl
 
 
 ###################################

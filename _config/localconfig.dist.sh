@@ -86,7 +86,7 @@ config_vhost_perms_configphp='u=r,g=,o='
 config_vhost_perms_configphp_dev='u=rw,g=,o='
 
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
-# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test and pg)
+# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test and pg as well as the building stuff which is currently hardcoded to expect that there is only a site_test branch in addition to the site branch)
 config_vhost_instances=('prod' 'test' 'pg' 'dev')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
@@ -119,10 +119,10 @@ config_vhost_releases_default='401'
 ### local config: git environment
 ###################################
 
-# The Github URL prefix for Git repositories. This URL is amended by the site's distro type and the site name and the '.git' suffix.
-config_git_githuburlprefix='git@github.com:lernlink-intern/lms-site'
+# The Github URL prefix for Git general repositories. This URL is amended by the caller.
+config_git_githuburlprefix='git@github.com:lernlink-intern/'
 
-# The Github URL for the upstream repo.
+# The Github URL for the site upstream repo.
 config_git_gitupstream='git@github.com:moodle/moodle.git'
 
 
@@ -227,3 +227,35 @@ config_github_mainbranch='master'
 
 # The Github actions workflow file used in Moodle plugins.
 config_github_ghaworkflow='.github/workflows/moodle-plugin-ci.yml'
+
+
+###################################
+### build tools: local config
+###################################
+
+# The host where the building is done.
+config_build_buildinghost='aleo.lmsnetz.de'
+
+# The directory where all the Git repos for building are located.
+config_build_repodir='/var/repos/'
+
+# The repo directory prefix which will be used for Moodle core.
+config_build_coreprefix='lms-core-'
+
+# The remote repo name which will be used for Moodle core.
+config_build_coreremote='core'
+
+# The repo branch name which will be used for Moodle core.
+config_build_corebranch='lernlink'
+
+# The repo directory prefix which will be used for Moodle sites (Please note that the siterepo_scanmoodlesiterepos() function assumes currently that this prefix contains exactly 2 dashes)
+config_build_siteprefix='lms-site-'
+
+# The repo branch name which will be used for Moodle sites.
+config_build_sitebranch='site'
+
+# The temp file for commit messages.
+config_build_commitmessage='/tmp/commitmessage'
+
+# The commit message for plugin updates.
+config_build_commitpluginupdates='PLUGIN UPDATES'

@@ -177,7 +177,7 @@ confirm
 site_verifymoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodleinstance $moodlesite $moodleinstance $moodledistro
 site_pickmoodlebranch $moodlesite $moodleinstance $moodledistro $moodlerelease
-site_verifygithubrepo
+site_verifygithubrepo $site_githuburl
 
 
 ###################################

@@ -50,11 +50,45 @@ Singleton instances are kind of special. They are installed and handled as if th
 Usage
 -----
 
+### /commands/build
+
+In this folder, you will find scripts which can be used on the building host (which is configured in the localconfig.sh file) to build Moodle instance repos.
+
+#### mtb-site-update.sh
+
+This script is used to update an existing repo of a Moodle instance.
+
+```
+Usage:
+mtb-site-update.sh -s <site> [-a] [-d <distro>] [-r <release>]
+
+Mandatory parameters:
+  -s <site>
+     The Moodle site which is to be used by this script
+     This parameter expects the folder name of the Moodle site in the repodir - without the leading prefixes.
+     When running the script, a list of possible values can be requested with the -h parameter.
+
+Optional parameters:
+  -a
+     Auto mode
+     If this flag is set, the script will not ask for any confirmations
+  -d <distro>
+     The Moodle distribution which is to be used by the scripts
+     This parameter expects the distribution name of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+  -r <release>
+     The Moodle release which is to be used by the scripts
+     This parameter expects the release number of the instance of the Moodle site.
+     When running the script, a list of possible values can be requested with the -h parameter.
+     If not given, this parameter value is taken from the Moodle toolbox configuration file.
+```
+
 ### /commands/run
 
 In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / dev).
 
-#### mtb-site-init.php
+#### mtb-site-init.sh
 
 This script is used to initialize a Moodle instance. It needs just some basic parameters about the site and will setup the instance structure on disk.
 
@@ -88,7 +122,7 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
-#### mtb-site-install.php
+#### mtb-site-install.sh
 
 This script is used to install a Moodle instance. It needs some additional parameters about the database and the site and will install the site / initialize the database.
 
@@ -141,7 +175,7 @@ Optional parameters:
      If this flag is set, the script will download the H5P content types to the Moodle instance initially
 ```
 
-#### mtb-site-configure.php
+#### mtb-site-configure.sh
 
 This script is used to configure a Moodle instance. It needs just some basic parameters about the site and will apply the basic configuration as it is defined in the configuration templates.
 
@@ -175,7 +209,7 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
-#### mtb-site-brand.php
+#### mtb-site-brand.sh
 
 This script is used to brand a Moodle instance. It expects additional parameters about the details which should be branded.
 
@@ -226,7 +260,7 @@ Optional parameters:
        The SMTP mail password which is used for outgoing mail
 ```
 
-#### mtb-site-pull.php
+#### mtb-site-pull.sh
 
 This script is used to pull the latest codebase of the given instance from Github and update the Moodle database within a maintenance window.
 
@@ -262,7 +296,7 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
-#### mtb-site-reset.php
+#### mtb-site-reset.sh
 
 This script is used to reset a non-prod Moodle instance to the status of the prod Moodle instance.
 It will reset the whole instance to the current status (code + data) of the prod instance.
@@ -297,7 +331,7 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
-#### mtb-site-downgrade.php
+#### mtb-site-downgrade.sh
 
 This script is used to downgrade the core and plugin versions stored in the Moodle database to the versions stored in the version.php files on disk.
 It does not do any rollback of upgrade steps. Please use it only for development or emergency purposes.
@@ -328,7 +362,7 @@ Optional parameters:
      If not given, this parameter value is taken from the Moodle toolbox configuration file.
 ```
 
-#### mtb-site-permissions.php
+#### mtb-site-permissions.sh
 
 This script is used to fix the permissions on disk.
 Normally, all site scripts which deal with files should fix permissions at the end anyway. However, after manual modifications and to fix issues, this script can be useful.
@@ -361,7 +395,7 @@ Optional parameters:
 
 In this folder, you will find scripts which can be used to do various Moodle dev tasks.
 
-#### mtb-plugin-upgrade-prepare.php
+#### mtb-plugin-upgrade-prepare.sh
 
 This script is used to prepare a plugin upgrade.
 It is used as the first of three scripts which must be used in combination to easily publish new plugin major versions.
@@ -394,7 +428,7 @@ Optional parameters:
      Please note that the script must be executable.
 ```
 
-#### mtb-plugin-upgrade-finish.php
+#### mtb-plugin-upgrade-finish.sh
 
 This script is used to finish a plugin upgrade.
 It is used as the second of three scripts which must be used in combination to easily publish new plugin major versions.
@@ -416,7 +450,7 @@ Mandatory parameters:
      Ideally, this matches the date in the CHANGELOG entry. Don't forget the two trailing zeros which are required for Moodle versions.
 ```
 
-#### mtb-plugin-upgrade-release.php
+#### mtb-plugin-upgrade-release.sh
 
 This script is used to release a plugin upgrade.
 It is used as the third of three scripts which must be used in combination to easily publish new plugin major versions.
@@ -435,7 +469,7 @@ Mandatory parameters:
      The (human readable) target release of the plugin.
 ```
 
-#### mtb-plugin-patch-commit.php
+#### mtb-plugin-patch-commit.sh
 
 This script is used to commit a patch to a plugin.
 It is normally used to commit a patch to the master branch, but can be used to patch other branches as well.
@@ -464,7 +498,7 @@ Optional parameters:
      If this switch is set, the branch is pushed to Github after the commit.
 ```
 
-#### mtb-plugin-patch-backport.php
+#### mtb-plugin-patch-backport.sh
 
 This script is used to backport a commit to release branches.
 
@@ -489,7 +523,7 @@ Optional parameters:
      If this switch is set, the given branches are pushed to Github after the backport.
 ```
 
-#### mtb-plugin-update-finish-latest.php
+#### mtb-plugin-update-finish-latest.sh
 
 This script is used to finish a plugin update for the latest supported release.
 It is used as the first of two scripts which must be used in combination to easily publish new plugin minor versions.
@@ -516,7 +550,7 @@ Optional parameters:
      If this switch is set, the branches are pushed to Github after the commit.
 ```
 
-#### mtb-plugin-update-release-latest.php
+#### mtb-plugin-update-release-latest.sh
 
 This script is used to release a plugin update for the latest supported release.
 It is used as the second of two scripts which must be used in combination to easily publish new plugin minor versions.
@@ -535,7 +569,7 @@ Mandatory parameters:
      The (human readable) major version of the plugin update.
 ```
 
-#### mtb-plugin-update-finish-legacy.php
+#### mtb-plugin-update-finish-legacy.sh
 
 This script is used to finish a plugin update for a legacy release.
 It is used as the first of two scripts which must be used in combination to easily publish new plugin minor versions.
@@ -562,7 +596,7 @@ Optional parameters:
      If this switch is set, the branches are pushed to Github after the commit.
 ```
 
-#### mtb-plugin-update-release-legacy.php
+#### mtb-plugin-update-release-legacy.sh
 
 This script is used to release a plugin update for a legacy release.
 It is used as the second of two scripts which must be used in combination to easily publish new plugin minor versions.

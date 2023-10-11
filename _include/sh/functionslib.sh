@@ -44,6 +44,12 @@ now ()
     echo -e "\033[1;35mNow: $1\033[0m"
 }
 
+# This helper function simply shows a note message for side information.
+note ()
+{
+    echo -e "\033[1;33mNote: $1\033[0m"
+}
+
 # This helper function asks for confirmation. 
 # If the automode variable is set to 1, the function returns directly.
 # If the user enters y, the script continues.
@@ -145,6 +151,22 @@ if (( $EUID == 0 )); then
     echo "This script has to be as normal user"
     echo "Please run it as normal user"
     echo "It will use sudo itself for all commands which require root permissions"
+    echo "Exiting..."
+    exit 1
+fi
+}
+
+
+###################################
+### host checks
+###################################
+
+# This helper function checks if the script is run on the building host.
+# If it is not, the script terminates.
+require_buildinghost ()
+{
+if [ $HOSTNAME != $config_build_buildinghost ]; then
+    echo "This script can only be run on the building host"
     echo "Exiting..."
     exit 1
 fi
@@ -349,7 +371,7 @@ site_pickmoodleinstance()
     # Otherwise
     else
         # Fill the site_githuburl variable
-        site_githuburl=${config_git_githuburlprefix}-$3-$1.git
+        site_githuburl=${config_git_githuburlprefix}${config_build_siteprefix}$3-$1.git
     fi
 
     # Fill the site_climaintenance variable
@@ -368,9 +390,9 @@ site_pickmoodlebranch()
     else
         # Fill the site_moodlebranchsite variable
         if [[ $site_instanceisprod -eq 1 ]]; then
-            site_moodlebranchsite=${3^^}_${4}_STABLE_site
+            site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}
         else
-            site_moodlebranchsite=${3^^}_${4}_STABLE_site_${2}
+            site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}_${2}
         fi
     fi
 
@@ -422,19 +444,6 @@ site_verifymoodleinstance()
 	echo "I have to assume that this is an incomplete Moodle instance."
 	echo "Exiting..."
 	exit 1
-    fi
-}
-
-# This helper function checks if there is a valid Github repository.
-site_verifygithubrepo()
-{
-    # Check if the instance's Github repo exists.
-    git ls-remote $site_githuburl 2>/dev/null 1>/dev/null
-    if [ $? -gt 0 ]; then
-        echo "I haven't found a Github repository on $site_githuburl."
-        echo "I can't continue."
-        echo "Exiting..."
-        exit 1
     fi
 }
 
@@ -538,8 +547,66 @@ site_pickdbcredentials()
 
 
 ###################################
+### moodle repo-related functions
+###################################
+
+# This helper function scans all directories below the configured repo dir and collects all Moodle site repos.
+# As a result, the array moodlesiterepos contains the directory names of these Moodle site repos.
+siterepo_scanmoodlesiterepos()
+{
+    # Initialize an empty array for the moodle repos
+    moodlesiterepos=()
+
+    # Get all subdirectories below the repo dir
+    readarray allrepos < <(find $config_build_repodir -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
+
+    # Iterate over these subdirectories
+    for repo in ${allrepos[@]}
+    do
+        # If this subdirectory is a site repo
+        if [[ $repo == ${config_build_siteprefix}* ]]; then
+            # Add the subdirectory to the list of moodle site repos (and remove the prefixes)
+            reponame=$(echo $repo | cut -d'-' -f 4- -s)
+            moodlesiterepos+=($reponame)
+        fi
+    done
+}
+
+# This helper function picks the Moodle site repo from the given parameter $1.
+# As a result, the siterepo_* variables are filled with paths and other data for the Moodle site repo.
+siterepo_pickmoodlesiterepo()
+{
+    # Fill the siterepo_repopath variable
+    siterepo_repopath=${config_build_repodir}${config_build_siteprefix}$2-$1
+
+    # Fill the siterepo_branchsite and siterepo_branchsitetest variables
+    siterepo_branchcore=${2^^}_${3}_STABLE_${config_build_corebranch}
+ 
+    # Fill the siterepo_branchsite and siterepo_branchsitetest variables
+    siterepo_branchsite=${2^^}_${3}_STABLE_${config_build_sitebranch}
+    siterepo_branchsitetest=${2^^}_${3}_STABLE_${config_build_sitebranch}_test
+
+    # Fill the siterepo_githuburl variable
+    siterepo_githuburl=${config_git_githuburlprefix}${config_build_siteprefix}$2-$1.git
+}
+
+
+###################################
 ### git-related functions
 ###################################
+
+# This helper function checks if there is a valid Github repository based on parameter $1.
+site_verifygithubrepo()
+{
+    # Check if the given Github repo exists.
+    git ls-remote $1 2>/dev/null 1>/dev/null
+    if [ $? -gt 0 ]; then
+        echo "I haven't found a Github repository on $1."
+        echo "I can't continue."
+        echo "Exiting..."
+        exit 1
+    fi
+}
 
 # This helper function sets some environment variables for git comits.
 git_init_commits()
