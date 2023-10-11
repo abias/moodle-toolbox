@@ -97,7 +97,7 @@ if [[ -z "$pluginbranches" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to backport a patch within the plugin at \033[31m$pluginpath\033[0m!"
+echo -e "You requested to backport a patch within the plugin at \033[1;35m$pluginpath\033[0m!"
 confirm
 
 
@@ -284,7 +284,7 @@ git checkout $config_github_mainbranch \
 
 now "Finish"
 
-echo -e "The patch was backported within the \033[31m$pluginpath\033[0m plugin."
+echo -e "The patch was backported within the \033[1;35m$pluginpath\033[0m plugin."
 if [[ $pluginpush -eq 1 ]]; then
 	echo -e "The branch(es) was/were pushed to Github as well."
 fi

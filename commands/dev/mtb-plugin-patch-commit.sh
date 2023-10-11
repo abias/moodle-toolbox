@@ -110,7 +110,7 @@ if [[ -z "$pluginmessage" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to commit a patch to the plugin at \033[31m$pluginpath\033[0m!"
+echo -e "You requested to commit a patch to the plugin at \033[1;35m$pluginpath\033[0m!"
 confirm
 
 
@@ -216,7 +216,7 @@ fi
 
 now "Finish"
 
-echo -e "The patch was committed to the \033[31m$pluginpath\033[0m plugin."
+echo -e "The patch was committed to the \033[1;35m$pluginpath\033[0m plugin."
 if [[ $pluginpush -eq 1 ]]; then
     echo -e "The branch was pushed to Github as well."
 fi

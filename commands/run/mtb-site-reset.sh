@@ -158,9 +158,9 @@ if [[ -z "$moodlerelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to reset the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
+echo -e "You requested to reset the \033[1;35m$moodleinstance\033[0m instance within the \033[1;35m$moodlesite\033[0m site!"
 echo "I will reset the whole instance to the current status (code + data) of the prod instance."
-echo -e "I will \033[31mnot reset the config.php file\033[0m. If you have changed this file in any way, please make sure to reset it manually back to a stable state."
+echo -e "I will \033[1;35mnot reset the config.php file\033[0m. If you have changed this file in any way, please make sure to reset it manually back to a stable state."
 confirm
 
 
@@ -350,4 +350,4 @@ fi
 
 now "Finish"
 
-echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site was reset."
+echo -e "The \033[1;35m$site_instance\033[0m instance within the \033[1;35m$site_site\033[0m site was reset."

@@ -142,7 +142,7 @@ if [[ ! -z "$pluginadditions" ]] && [[ ! -x "$pluginadditions" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to prepare the plugin upgrade of \033[31m$pluginpath\033[0m to release \033[31m$pluginrelease\033[0m!"
+echo -e "You requested to prepare the plugin upgrade of \033[1;35m$pluginpath\033[0m to release \033[1;35m$pluginrelease\033[0m!"
 confirm
 
 
@@ -303,5 +303,5 @@ git commit -a -m "Prepare compatibility for Moodle $pluginrelease." \
 
 now "Finish"
 
-echo -e "The \033[31m$pluginpath\033[0m plugin upgrade for release \033[31m$pluginrelease\033[0m has been prepared."
+echo -e "The \033[1;35m$pluginpath\033[0m plugin upgrade for release \033[1;35m$pluginrelease\033[0m has been prepared."
 echo -e "Please continue your preparation work and use then mtb-plugin-upgrade-finish.sh"

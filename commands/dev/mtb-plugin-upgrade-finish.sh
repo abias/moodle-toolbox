@@ -109,7 +109,7 @@ if [[ -z "$pluginversion" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to finish the plugin upgrade of \033[31m$pluginpath\033[0m to release \033[31m$pluginrelease\033[0m!"
+echo -e "You requested to finish the plugin upgrade of \033[1;35m$pluginpath\033[0m to release \033[1;35m$pluginrelease\033[0m!"
 confirm
 
 
@@ -239,5 +239,5 @@ git push $config_github_remoterepo upgrade-$pluginmrelease \
 
 now "Finish"
 
-echo -e "The \033[31m$pluginpath\033[0m plugin upgrade for release \033[31m$pluginrelease\033[0m has been finished and has been pushed to Github."
+echo -e "The \033[1;35m$pluginpath\033[0m plugin upgrade for release \033[1;35m$pluginrelease\033[0m has been finished and has been pushed to Github."
 echo -e "Please review the Github actions results and use then mtb-plugin-upgrade-release.sh"

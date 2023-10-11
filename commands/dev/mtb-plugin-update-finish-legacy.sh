@@ -108,7 +108,7 @@ if [[ -z "$pluginrelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to finish the plugin update of \033[31m$pluginpath\033[0m for release \033[31m$pluginrelease\033[0m!"
+echo -e "You requested to finish the plugin update of \033[1;35m$pluginpath\033[0m for release \033[1;35m$pluginrelease\033[0m!"
 confirm
 
 
@@ -232,7 +232,7 @@ git checkout $config_github_mainbranch \
 
 now "Finish"
 
-echo -e "The \033[31m$pluginpath\033[0m plugin update for release \033[31m$pluginrelease\033[0m has been finished."
+echo -e "The \033[1;35m$pluginpath\033[0m plugin update for release \033[1;35m$pluginrelease\033[0m has been finished."
 if [[ $pluginpush -eq 1 ]]; then
     echo -e "The branch was pushed to Github as well."
 fi

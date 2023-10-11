@@ -165,7 +165,7 @@ if [[ -z "$moodlerelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to pull the latest codebase into the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
+echo -e "You requested to pull the latest codebase into the \033[1;35m$moodleinstance\033[0m instance within the \033[1;35m$moodlesite\033[0m site!"
 echo "I will pull the codebase and run a DB update afterwards."
 confirm
 
@@ -197,7 +197,7 @@ cd $site_wwwroot \
     && success || failure
 gitstatus=$(git status --porcelain)
 if [[ -n "$gitstatus" ]]; then
-    echo -e "\033[31mThe main git repo is not clean. This MUST be solved before the rollout.\033[0m"
+    echo -e "\033[1;35mThe main git repo is not clean. This MUST be solved before the rollout.\033[0m"
     echo "This Moodle instance's git repo is not clean. This should not happy and MUST be solved before the pull."
     echo "I can't continue."
     exit 1
@@ -320,4 +320,4 @@ fi
 
 now "Finish"
 
-echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site was pulled and updated."
+echo -e "The \033[1;35m$site_instance\033[0m instance within the \033[1;35m$site_site\033[0m site was pulled and updated."

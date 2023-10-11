@@ -250,7 +250,7 @@ if [[ "$branddomain" -ne 1 && "$brandbbb" -ne 1 && "$brandsmtp" -ne 1 ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to brand the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
+echo -e "You requested to brand the \033[1;35m$moodleinstance\033[0m instance within the \033[1;35m$moodlesite\033[0m site!"
 confirm
 
 
@@ -395,4 +395,4 @@ sudo -u $site_site $site_moodlephpbin admin/cli/purge_caches.php \
 
 now "Finish"
 
-echo -e "The \033[31m$site_instance\033[0m instance within the \033[31m$site_site\033[0m site was branded."
+echo -e "The \033[1;35m$site_instance\033[0m instance within the \033[1;35m$site_site\033[0m site was branded."

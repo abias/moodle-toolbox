@@ -151,7 +151,7 @@ if [[ -z "$moodlerelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to downgrade the database of the \033[31m$moodleinstance\033[0m instance within the \033[31m$moodlesite\033[0m site!"
+echo -e "You requested to downgrade the database of the \033[1;35m$moodleinstance\033[0m instance within the \033[1;35m$moodlesite\033[0m site!"
 confirm
 
 

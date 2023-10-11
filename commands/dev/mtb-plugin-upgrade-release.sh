@@ -93,7 +93,7 @@ if [[ -z "$pluginrelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to release the plugin upgrade of \033[31m$pluginpath\033[0m to release \033[31m$pluginrelease\033[0m!"
+echo -e "You requested to release the plugin upgrade of \033[1;35m$pluginpath\033[0m to release \033[1;35m$pluginrelease\033[0m!"
 confirm
 
 
@@ -270,5 +270,5 @@ git checkout $config_github_mainbranch \
 
 now "Finish"
 
-echo -e "The \033[31m$pluginpath\033[0m plugin upgrade for release \033[31m$pluginrelease\033[0m has been released and has been pushed to Github."
+echo -e "The \033[1;35m$pluginpath\033[0m plugin upgrade for release \033[1;35m$pluginrelease\033[0m has been released and has been pushed to Github."
 echo -e "Please review the results on Github and continue to publish the release on moodle.org"
