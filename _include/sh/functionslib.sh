@@ -295,6 +295,24 @@ site_pickmoodleinstance()
         site_instanceisprod=0
     fi
 
+    # If we are dealing with a copy instance which has its own branch.
+    if array_contains_element "$2" "${config_vhost_instances_copywithownbranch[@]}"; then
+        # Fill the site_instanceiscopywithownbranch variable
+        site_instanceiscopywithownbranch=1
+    else
+        # Fill the site_instanceiscopywithownbranch variable
+        site_instanceiscopywithownbranch=0
+    fi
+
+    # If we are dealing with a copy instance which does not have its own branch.
+    if array_contains_element "$2" "${config_vhost_instances_copywithoutbranch[@]}"; then
+        # Fill the site_instanceiscopywithoutbranch variable
+        site_instanceiscopywithoutbranch=1
+    else
+        # Fill the site_instanceiscopywithownbranch variable
+        site_instanceiscopywithoutbranch=0
+    fi
+
     # Fill the site_site variable
     site_site=$1
 
@@ -391,10 +409,21 @@ site_pickmoodlebranch()
         site_moodlebranchsite=${3^^}_${4}_STABLE
     # Otherwise
     else
-        # Fill the site_moodlebranchsite variable
+        # If we are dealing with the prod instance
         if [[ $site_instanceisprod -eq 1 ]]; then
+            # Fill the site_moodlebranchsite variable
             site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}
+        # If we are dealign with a copy with own branch
+        elif [[ $site_instanceiscopywithownbranch -eq 1 ]]; then
+            # Fill the site_moodlebranchsite variable
+            site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}_${2}
+        # If we are dealign with a copy without own branch
+        elif [[ $site_instanceiscopywithoutbranch -eq 1 ]]; then
+            # Fill the site_moodlebranchsite variable
+            site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}
+        # Otherwise (this should not happen currently)
         else
+            # Fill the site_moodlebranchsite variable
             site_moodlebranchsite=${3^^}_${4}_STABLE_${config_build_sitebranch}_${2}
         fi
     fi

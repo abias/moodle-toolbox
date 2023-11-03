@@ -91,6 +91,12 @@ config_vhost_instances=('prod' 'test' 'stage' 'pg' 'dev')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
 config_vhost_instances_prod='prod'
+# The copywithownbranch instances are instances which a) have their own branches in Github and b) can be reset from the prod system
+# Make sure that the values are allowed values as well
+config_vhost_instances_copywithownbranch=('test')
+# The copywithoutbranch instances are instances which a) do not have their own branches in Github (and get the prod branch as well) and b) can be reset from the prod system
+# Make sure that the values are allowed values as well
+config_vhost_instances_copywithoutbranch=('stage')
 # The singleton instances are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test or stage instance besides them
 # Make sure that the values are allowed values as well
 config_vhost_instances_singleton=('pg')
