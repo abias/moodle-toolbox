@@ -251,10 +251,10 @@ $CFG->searchengine = 'simpledb';
 //=========================================================================
 
 // Set debug level
-$CFG->debug = (E_ALL | E_STRICT); // Developer level
+$CFG->debug = E_ERROR | E_PARSE | E_WARNING | E_NOTICE; // Normal level
 
 // Show debug messages in the web frontend
-$CFG->debugdisplay = 1; // Yes
+$CFG->debugdisplay = 0; // No
 
 // Enable performance information
 $CFG->perfdebug = 7; // No
