@@ -161,9 +161,6 @@ $CFG->smtpuser = '$configtemplate_smtpuser';
 $CFG->smtppass = '$configtemplate_smtppass';
 $CFG->noreplyaddress = '$configtemplate_noreplyaddress';
 
-// E-Mail digest send time (especially relevant for lern.link support forum)
-$CFG->digestmailtime = 12;
-
 // Divert all outgoing mail.
 $CFG->divertallemailsto = '$configtemplate_divertallmailsaddress';
 
