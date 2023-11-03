@@ -352,6 +352,9 @@ site_pickmoodleinstance()
     # Fill the site_envbartestroot variable
     site_envbartestroot=https://test.$1
 
+    # Fill the site_envbarstageroot variable
+    site_envbarstageroot=https://stage.$1
+
     # Fill the site_divertgallmailsaddress variable
     site_divertallmailsaddress=$2.$1@${config_moodle_outgoingmailtestmailer}
 
@@ -579,7 +582,7 @@ siterepo_pickmoodlesiterepo()
     # Fill the siterepo_repopath variable
     siterepo_repopath=${config_build_repodir}${config_build_siteprefix}$2-$1
 
-    # Fill the siterepo_branchsite and siterepo_branchsitetest variables
+    # Fill the siterepo_branchcore variable
     siterepo_branchcore=${2^^}_${3}_STABLE_${config_build_corebranch}
  
     # Fill the siterepo_branchsite and siterepo_branchsitetest variables

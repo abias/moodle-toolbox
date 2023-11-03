@@ -86,12 +86,12 @@ config_vhost_perms_configphp='u=r,g=,o='
 config_vhost_perms_configphp_dev='u=rw,g=,o='
 
 # The directory prefixes below the wwwroot which hold the particular Moodle instance
-# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test and pg as well as the building stuff which is currently hardcoded to expect that there is only a site_test branch in addition to the site branch)
-config_vhost_instances=('prod' 'test' 'pg' 'dev')
+# If you want to deploy any other instance, please check all scripts for correct behaviour (Especially the envbar stuff which is currently hardcoded to just handle prod, test, stage and pg as well as the building stuff which is currently hardcoded to expect that there is only a site_test branch in addition to the site branch)
+config_vhost_instances=('prod' 'test' 'stage' 'pg' 'dev')
 # The prod instance might have to be handled specially in the scripts
 # Make sure that the prod value is an allowed value as well
 config_vhost_instances_prod='prod'
-# The singleton instances are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test instance besides them
+# The singleton instances are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test or stage instance besides them
 # Make sure that the values are allowed values as well
 config_vhost_instances_singleton=('pg')
 # The dev instances are installed and handled as if they are another singleton instance, but a) MTB will use the upstream Git repo and b) MTB will just install and never update them

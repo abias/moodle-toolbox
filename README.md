@@ -44,7 +44,7 @@ Non-prod instances are all other instances besides the prod instance. They can b
 
 ### 3. Singleton instances
 
-Singleton instances are kind of special. They are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test instance besides them. The main goal of the singleton instance is to have a less restrictive configuration to be used as playground. 
+Singleton instances are kind of special. They are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test or stage instance besides them. The main goal of the singleton instance is to have a less restrictive configuration to be used as playground. 
 
 
 Usage
@@ -86,7 +86,7 @@ Optional parameters:
 
 ### /commands/run
 
-In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / dev).
+In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / stage / dev).
 
 #### mtb-site-init.sh
 

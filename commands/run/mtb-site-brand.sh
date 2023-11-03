@@ -313,6 +313,11 @@ if [[ $branddomain -eq 1 ]]; then
     sed -i "s/'showtext' => 'TEST'.*/'showtext' => 'TEST', 'matchpattern' => '${configsed_envbartestroot//\//\\/}',/" $site_configphp \
         && success || failure
 
+    configsed_envbarstageroot=https://stage.$moodlecustomerdomain
+    # In the following sed call, the slashes in the configsed_envbarstageroot variable have to be escaped.
+    sed -i "s/'showtext' => 'STAGE'.*/'showtext' => 'STAGE', 'matchpattern' => '${configsed_envbarstageroot//\//\\/}',/" $site_configphp \
+        && success || failure
+
     configsed_datacleanerprodroot=https://$moodlecustomerdomain
     # In the following sed call, the slashes in the configsed_datacleanerprodroot variable have to be escaped.
     sed -i "s/^\$CFG->original_wwwroot =.*/\$CFG->original_wwwroot = '${configsed_datacleanerprodroot//\//\\/}';/" $site_configphp \

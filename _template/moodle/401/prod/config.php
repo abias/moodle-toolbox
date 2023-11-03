@@ -182,6 +182,10 @@ $CFG->local_envbar_items = array(
     array(
         'showtext' => 'TEST', 'matchpattern' => '$configtemplate_envbartestroot',
         'colourbg' => 'crimson', 'colourtext' => 'white'
+    ),
+    array(
+        'showtext' => 'STAGE', 'matchpattern' => '$configtemplate_envbarstageroot',
+        'colourbg' => 'fuchsia', 'colourtext' => 'white'
     )
 );
 

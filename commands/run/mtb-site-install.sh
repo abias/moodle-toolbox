@@ -385,6 +385,7 @@ export configtemplate_noreplyaddress=${config_moodle_outgoingmailnoreplyaddressp
 export configtemplate_maxbytes=$((moodleupload * 1024 * 1024))
 export configtemplate_envbarprodroot=$site_envbarprodroot
 export configtemplate_envbartestroot=$site_envbartestroot
+export configtemplate_envbarstageroot=$site_envbarstageroot
 export configtemplate_envbarsecretkey=$site_envbarsecretkey
 export configtemplate_divertallmailsaddress=$site_divertallmailsaddress
 export configtemplate_datacleanerprodroot=$site_datacleanerprodroot
@@ -398,7 +399,7 @@ export configvalue_supportname="$moodlefullname $config_moodle_outgoingmailsuppo
 export configvalue_supportemail=${config_moodle_outgoingmailsupportemailprefix}@$site_site
 
 
-cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarsecretkey $configtemplate_divertallmailsaddress $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
+cat $CURRENTDIR/../../_template/$site_moodledistro/$site_moodlerelease/$site_instance/config.php | envsubst '$configtemplate_wwwroot $configtemplate_dataroot $configtemplate_dbname $configtemplate_dbuser $configtemplate_dbpass $configtemplate_upgradekey $configtemplate_bbburl $configtemplate_bbbtoken $configtemplate_pathtophp $configtemplate_pathtodu $configtemplate_pathtodot $configtemplate_pathtogs $configtemplate_smtphosts $configtemplate_smtpuser $configtemplate_smtppass $configtemplate_noreplyaddress $configtemplate_maxbytes $configtemplate_envbarprodroot $configtemplate_envbartestroot $configtemplate_envbarstageroot $configtemplate_envbarsecretkey $configtemplate_divertallmailsaddress $configtemplate_datacleanerprodroot $configtemplate_cachedir $configtemplate_localcachedir $configtemplate_tempdir $configtemplate_backuptempdir $configtemplate_localrequestdir $configtemplate_lang' > $site_configphp \
     && success || failure
 
 unset ${!configtemplate_*}
