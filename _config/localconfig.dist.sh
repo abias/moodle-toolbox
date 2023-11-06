@@ -204,6 +204,14 @@ config_toolbox_maintenancesleep=10
 
 
 ###################################
+### run tools: reset
+###################################
+
+# The filesize which is excluded when rsyncing moodledata
+config_rsync_moodledata_maxsize='24M'
+
+
+###################################
 ### dev tools: git
 ###################################
 

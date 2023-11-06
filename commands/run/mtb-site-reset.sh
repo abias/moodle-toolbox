@@ -263,7 +263,7 @@ $config_webserver_nice $config_webserver_rsyncbin --verbose --recursive --perms 
 
 now "Syncing Moodle moodledata"
 
-$config_webserver_nice $config_webserver_rsyncbin --verbose --recursive --perms --owner --group --times --delete --exclude=/climaintenance.html --ignore-missing-args --delete-missing-args $site_moodledataprod/ $site_moodledata/ \
+$config_webserver_nice $config_webserver_rsyncbin --verbose --recursive --perms --owner --group --times --delete --exclude=/climaintenance.html --ignore-missing-args --delete-missing-args --max-size=$config_rsync_moodledata_maxsize $site_moodledataprod/ $site_moodledata/ \
     && success || if [ $? -eq 24 ]; then success; else failure; fi # if files have vanished during sync, the exit code is 24 which is also a success for us.
 
 
