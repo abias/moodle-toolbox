@@ -234,6 +234,11 @@ $CFG->forced_plugin_settings['logstore_standard']['loglifetime'] = 365;
 $CFG->enableglobalsearch = 0;
 $CFG->searchengine = 'simpledb';
 
+// Product: LMS | Config | AntiLeistKontr.
+// Default value: false (Disabled).
+// Change value as soon as the product is sold to: true (Enabled).
+$CFG->lernlink_efficiencycontrolprevention = false;
+
 
 
 //=========================================================================
