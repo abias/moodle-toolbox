@@ -115,7 +115,7 @@ config_vhost_distros_default='moodle'
 # The Moodle releases which should be allowed
 # Currently, 39 and 311 are supported and are used in Git branch names
 # If you want to use any other release, please check all scripts for correct behaviour
-config_vhost_releases=('39' '311' '400' '401')
+config_vhost_releases=('39' '311' '400' '401' '403')
 # As this is an optional parameter in the scripts, you can also set a default value
 # Make sure that the default value is an allowed value as well
 config_vhost_releases_default='401'
