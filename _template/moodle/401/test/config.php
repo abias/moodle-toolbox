@@ -239,6 +239,11 @@ $CFG->searchengine = 'simpledb';
 // Change value as soon as the product is sold to: true (Enabled).
 $CFG->lernlink_efficiencycontrolprevention = false;
 
+// Product: LMS | AddOn | Webservices.
+// Default value: false (Disabled).
+// Change value as soon as the product is sold to: true (Enabled).
+$CFG->lernlink_webservicemanagement = false;
+
 
 
 //=========================================================================
