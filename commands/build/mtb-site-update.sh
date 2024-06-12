@@ -256,15 +256,15 @@ git submodule update --remote --checkout \
 
 now "Commit updated submodules to the repo with a clear commit message"
 
-echo "$config_build_commitpluginupdates" > $config_build_commitmessage \
+echo "$config_build_commitpluginupdates" > ${config_build_commitmessage}_${moodlesite} \
     && success || failure
-echo >> $config_build_commitmessage \
+echo >> ${config_build_commitmessage}_${moodlesite} \
     && success || failure
-git status | grep modified | awk '{print $2}' >> $config_build_commitmessage \
+git status | grep modified | awk '{print $2}' >> ${config_build_commitmessage}_${moodlesite} \
     && success || failure
-git commit --all --file=$config_build_commitmessage \
+git commit --all --file=${config_build_commitmessage}_${moodlesite} \
     && success || if [ $? -eq 1 ]; then success; else failure; fi # if nothing was there to commit, the exit code is 1 which is also a success for us.
-rm $config_build_commitmessage \
+rm ${config_build_commitmessage}_${moodlesite} \
     && success || failure
 
 
