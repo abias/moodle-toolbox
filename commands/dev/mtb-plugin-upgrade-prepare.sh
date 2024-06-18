@@ -253,6 +253,8 @@ cd $pluginpath \
     && success || failure
 sed -i "s/This plugin requires Moodle.*/This plugin requires Moodle ${pluginrelease}\+/" $pluginpath/README.md \
     && success || failure
+sed -i "s/This theme requires Moodle.*/This theme requires Moodle ${pluginrelease}\+/" $pluginpath/README.md \
+    && success || failure
 
 
 now "Modify version.php"
