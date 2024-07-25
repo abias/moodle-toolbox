@@ -7,6 +7,9 @@ UPDATE {modules} SET visible = 0 WHERE name = 'chat' AND visible != 0
 -- mod_survey: Disable the plugin by default
 UPDATE {modules} SET visible = 0 WHERE name = 'survey' AND visible != 0
 
+-- block_online_users: Disable the plugin by default
+UPDATE {block} SET visible = 0 WHERE name = 'online_users' AND visible != 0
+
 -- repository_wikimedia: Remove the repository instance
 DELETE FROM {repository_instances} WHERE id = (SELECT id FROM {repository} WHERE type = 'wikimedia')
 DELETE FROM {repository} WHERE type = 'wikimedia'
