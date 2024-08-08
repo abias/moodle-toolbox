@@ -248,7 +248,7 @@ config_github_ghaworkflow='.github/workflows/moodle-plugin-ci.yml'
 ###################################
 
 # The host where the building is done.
-config_build_buildinghost='aleo.lmsnetz.de'
+config_build_buildinghost='aeon.lmsnetz.de'
 
 # The directory where all the Git repos for building are located.
 config_build_repodir='/var/repos/'
