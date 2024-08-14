@@ -244,6 +244,7 @@ cd $siterepo_repopath \
 git checkout ${siterepo_branchsite} --recurse-submodules \
     && success || failure
 note "The following output might contain warnings like 'unable to rmdir'. This is an artefact of the rebase which can be ignored"
+note "The following output might contain warnings like 'skipped previously applied commit'. This is an artefact of the rebase which can be ignored"
 git rebase ${siterepo_branchcore} \
     && success || failure
 
