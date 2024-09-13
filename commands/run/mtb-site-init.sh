@@ -207,8 +207,8 @@ else
     success
 fi
 
-if [[ -e $site_womenslib ]]; then
-    echo "I have found already a lib/womenslib.php file, I expect that there is already a Moodle instance installed."
+if [[ -e $site_moodlelib ]]; then
+    echo "I have found already a lib/moodlelib.php file, I expect that there is already a Moodle instance installed."
     echo "It does not make sense to init the instance again, at least not with this script."
     echo "I can't continue."
     exit 1

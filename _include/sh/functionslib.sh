@@ -358,8 +358,8 @@ site_pickmoodleinstance()
     # Fill the site_mucconfig variable
     site_mucconfig=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3data/muc/config.php
 
-    # Fill the site_womenslib variable
-    site_womenslib=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/womenslib.php
+    # Fill the site_moodlelib variable
+    site_moodlelib=${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/moodlelib.php
 
     # Fill the site_url variable
     site_url=https://$2.$1
@@ -470,9 +470,9 @@ site_verifymoodleinstance()
 	exit 1
     fi
 
-    # Check if the instance's womenslib exists. 
-    if ! [ -e ${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/womenslib.php ]; then
-        echo "The file ${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/womenslib.php does not exist"
+    # Check if the instance's moodlelib exists.
+    if ! [ -e ${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/moodlelib.php ]; then
+        echo "The file ${config_vhost_basedir}/$1/${config_vhost_wwwroot}/$3-$2/$3/lib/moodlelib.php does not exist"
 	echo "I have to assume that this is an incomplete Moodle instance."
 	echo "Exiting..."
 	exit 1

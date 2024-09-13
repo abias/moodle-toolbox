@@ -161,8 +161,8 @@ else
     success
 fi
 
-if [[ ! -e $site_womenslib ]]; then
-    echo "I haven't found a lib/womenslib.php file, I expect that the Moodle instance was not initialized yet."
+if [[ ! -e $site_moodlelib ]]; then
+    echo "I haven't found a lib/moodlelib.php file, I expect that the Moodle instance was not initialized yet."
     echo "I can't continue."
     exit 1
 else
