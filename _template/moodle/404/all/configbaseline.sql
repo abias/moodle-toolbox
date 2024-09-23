@@ -24,6 +24,9 @@ DELETE FROM {repository} WHERE type = 'url'
 -- filter_emoticon: Disable the filter
 UPDATE {filter_active} SET active = -9999 WHERE filter = 'emoticon' AND active != -9999
 
+-- filter_mathjaxloader: Disable the filter
+UPDATE {filter_active} SET active = -9999 WHERE filter = 'mathjaxloader' AND active != -9999
+
 -- filter_activitynames: Disable the filter
 UPDATE {filter_active} SET active = -9999 WHERE filter = 'activitynames' AND active != -9999
 
