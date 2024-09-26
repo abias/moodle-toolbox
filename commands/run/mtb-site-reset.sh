@@ -261,6 +261,14 @@ $config_webserver_nice $config_webserver_rsyncbin --verbose --recursive --perms 
     && success || failure
 
 
+now "Checking out the $site_moodlebranchsite branch"
+
+cd $site_wwwroot \
+    && success || failure
+git checkout $site_moodlebranchsite --recurse-submodules \
+    && success || failure
+
+
 now "Syncing Moodle moodledata"
 
 $config_webserver_nice $config_webserver_rsyncbin --verbose --recursive --perms --owner --group --times --delete --exclude=/climaintenance.html --ignore-missing-args --delete-missing-args --max-size=$config_rsync_moodledata_maxsize $site_moodledataprod/ $site_moodledata/ \
