@@ -237,10 +237,7 @@ cd $pluginpath \
     && success || failure
 git checkout MOODLE_${pluginmrelease}_STABLE \
     && success || failure
-sed -i "s/$config_github_mainbranch/MOODLE_${pluginmrelease}_STABLE/" $pluginpath/README.md \
-    && success || failure
-    # The sed command is run a second time by purpose. Everytime you run it, it replaces the string 'master' with 'MOODLE_311_STABLE' (or the corresponding upgrade version). This will match twice in the Moodle Plugin CI line. The other possibility would have been to write a slightly more complicated sed command.
-sed -i "s/$config_github_mainbranch/MOODLE_${pluginmrelease}_STABLE/" $pluginpath/README.md \
+sed -i "4s/$config_github_mainbranch/MOODLE_${pluginmrelease}_STABLE/g" $pluginpath/README.md \
     && success || failure
 git commit -a -m 'Adapt GHA badge after cutting the release branch' \
     && success || failure
