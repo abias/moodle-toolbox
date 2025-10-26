@@ -236,16 +236,6 @@ git checkout upgrade-$pluginmrelease \
     && success || failure
 
 
-if [[ -e "$pluginpath/$config_github_ghaworkflow" ]]; then
-    now "Modify moodle-plugin-ci.yml"
-
-    cd $pluginpath \
-        && success || failure
-    sed -i "s/moodle-branch: \[\x27MOODLE_.*_STABLE/moodle-branch: \[\x27MOODLE_${pluginmrelease}_STABLE/" $pluginpath/$config_github_ghaworkflow \
-        && success || failure
-fi
-
-
 now "Modify README.md"
 
 cd $pluginpath \

@@ -27,6 +27,3 @@ config_github_remoterepo='origin'
 # The main branch used in Moodle plugins.
 # From this branch, the release branches will be branched.
 config_github_mainbranch='main'
-
-# The Github actions workflow file used in Moodle plugins.
-config_github_ghaworkflow='.github/workflows/moodle-plugin-ci.yml'

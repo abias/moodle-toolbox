@@ -186,4 +186,4 @@ git checkout $config_github_mainbranch \
 now "Finish"
 
 echo -e "The \033[1;35m$pluginpath\033[0m plugin update for release \033[1;35m$pluginrelease\033[0m has been released and has been pushed to Github."
-echo -e "Please review the results on Github and continue to publish the update on moodle.org"
+echo -e "Please review the results on Github and check if the release has been pushed properly to moodle.org by Github Actions as well."
