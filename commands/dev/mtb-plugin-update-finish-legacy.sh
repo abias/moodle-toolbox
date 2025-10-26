@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 

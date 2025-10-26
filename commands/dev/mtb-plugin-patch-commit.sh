@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 
@@ -31,7 +30,7 @@ Mandatory parameters:
   -d <date>
      The date of the patch.
      This is just needed for the CHANGELOG entry.
-     
+
      Example:
      2022-11-01
 
@@ -43,7 +42,7 @@ Mandatory parameters:
      Fix a very bad issue
 
 Optional parameters:
-  -v 
+  -v
      Raise version.
      If this switch is set, the plugin version in version.php is raised within the commit.
 

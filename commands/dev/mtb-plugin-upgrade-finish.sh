@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 
@@ -30,20 +29,20 @@ Mandatory parameters:
 
   -m <machinerelease>
      The (machine readable) target release of the plugin.
-     
+
      Example:
      311
 
   -r <release>
      The (human readable) target release of the plugin.
-     
+
      Example:
      3.11
 
   -v <version>
      The version of the release of the plugin.
      Ideally, this matches the date in the CHANGELOG entry. Don't forget the two trailing zeros which are required for Moodle versions.
-     
+
      Example:
      2022110100
 EOU

@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 
@@ -31,7 +30,7 @@ Mandatory parameters:
   -b <branches>
      The branches which the patch should be backported to.
      This parameter expects a comma-separated list of existing branch names.
-     
+
      Example:
      MOODLE_311_STABLE,MOODLE_310_STABLE
 

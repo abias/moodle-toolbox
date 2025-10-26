@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 
@@ -30,27 +29,27 @@ Mandatory parameters:
 
   -m <machinerelease>
      The (machine readable) target release of the plugin.
-     
+
      Example:
      311
 
   -r <release>
      The (human readable) target release of the plugin.
-     
+
      Example:
      3.11
 
   -d <date>
      The date of the upgrade.
      This is just needed for the CHANGELOG entry.
-     
+
      Example:
      2022-11-01
 
   -c <coreversion>
      The version of the Moodle core which is required for the new release of the plugin.
      You can find the Moodle core releases on https://docs.moodle.org/dev/Releases.
-     
+
      Example:
      2021051700
 
@@ -244,7 +243,7 @@ if [[ -e "$pluginpath/$config_github_ghaworkflow" ]]; then
         && success || failure
     sed -i "s/moodle-branch: \[\x27MOODLE_.*_STABLE/moodle-branch: \[\x27MOODLE_${pluginmrelease}_STABLE/" $pluginpath/$config_github_ghaworkflow \
         && success || failure
-fi	
+fi
 
 
 now "Modify README.md"
@@ -287,7 +286,7 @@ if [[ ! -z "$pluginadditions" ]]; then
     cd $pluginpath \
         && success || failure
     source $pluginadditions
-fi	
+fi
 
 
 now "Commit changes"

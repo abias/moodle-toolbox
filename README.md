@@ -1,13 +1,13 @@
 moodle-toolbox
 ==============
 
-This is a small Bash script collection which makes handling of multiple Moodle instances and working with Moodle code quite handy.
+This is a small Bash script collection which makes working with Moodle plugins quite handy.
 
 
 Requirements
 ------------
 
-This toolbox requires an up-to-date Bash installation and, for running Moodle CLI scripts, and installed PHP-CLI interpreter.
+This toolbox requires an up-to-date Bash installation.
 
 
 Installation
@@ -16,380 +16,15 @@ Installation
 Clone the toolbox into a directory on your webserver, for example:
 /opt/moodle-toolbox
 
-Then, have a look at the configuration files
+Then, have a look at the configuration file
 /_config/localconfig.dist.sh,
-/_config/localcredentials.dist.sh,
-copy the files to
+copy the file to
 /_config/localconfig.sh,
-/_config/localcredentials.sh,
-and adapt these configuration files to your local needs. All configuration settings should be commented well in the configuration dist files.
-
-Futhermore, have a look at the template files below
-/_template/
-and adapt the config.php template files for new installations to your local needs.
-
-
-Instance types
---------------
-
-If you look at the localconfig.sh file, you will see that there are three types of instances:
-
-### 1. The prod instance
-
-The prod instance is the main instance of a productive Moodle installation. It acts as master for several things like upgrade keys, envbar URLs and it is used as data source for resetting non-prod instances.
-
-### 2. The non-prod instances
-
-Non-prod instances are all other instances besides the prod instance. They can be installed after / in addition to the prod instance. Their data can always be reset to the status of the prod instance.
-
-### 3. Singleton instances
-
-Singleton instances are kind of special. They are installed and handled as if they are a prod instance, but they a) will get different configuration templates and b) will not be able to get any test or stage instance besides them. The main goal of the singleton instance is to have a less restrictive configuration to be used as playground. 
+and adapt the configuration file to your local needs. All configuration settings should be commented well in the configuration dist file.
 
 
 Usage
 -----
-
-### /commands/build
-
-In this folder, you will find scripts which can be used on the building host (which is configured in the localconfig.sh file) to build Moodle instance repos.
-
-#### mtb-site-update.sh
-
-This script is used to update an existing repo of a Moodle instance.
-
-```
-Usage:
-mtb-site-update.sh -s <site> [-a] [-d <distro>] [-r <release>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site in the repodir - without the leading prefixes.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-### /commands/run
-
-In this folder, you will find scripts which can be used on all kinds of Moodle instances (prod / test / stage / dev).
-
-#### mtb-site-init.sh
-
-This script is used to initialize a Moodle instance. It needs just some basic parameters about the site and will setup the instance structure on disk.
-
-```
-Usage:
-mtb-site-init.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-#### mtb-site-install.sh
-
-This script is used to install a Moodle instance. It needs some additional parameters about the database and the site and will install the site / initialize the database.
-
-```
-Usage:
-mtb-site-install.sh -s <site> -i <instance> -f <fullname> -t <shortname> -n <dbname> -u <dbuser> -p <dbpass> [-a] [-d <distro>] [-r <release>] [-m <maxbytes>] [-l <language>] [-j]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -f <fullname>
-     The full name to be set for the Moodle site
-  -t <shortname>
-     The short name to be set for the Moodle site
-  -n <dbname>
-     The database name to be set for the Moodle site
-  -u <dbuser>
-     The database user to be set for the Moodle site
-  -p <dbpass>
-     The database password to be set for the Moodle site
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -m <maxbytes>
-     The Moodle maxbytes setting to be set for the Moodle site
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -l <language>
-     The language pack to be set for the Moodle site
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -j
-     Initialize H5P content types
-     If this flag is set, the script will download the H5P content types to the Moodle instance initially
-```
-
-#### mtb-site-configure.sh
-
-This script is used to configure a Moodle instance. It needs just some basic parameters about the site and will apply the basic configuration as it is defined in the configuration templates.
-
-```
-Usage:
-mtb-site-configure.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-#### mtb-site-brand.sh
-
-This script is used to brand a Moodle instance. It expects additional parameters about the details which should be branded.
-
-```
-Usage:
-mtb-site-brand.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>] [-k <customerdomain>] [-b <bbbuser> -c <bbbtoken>] [[-x <smtpserver>] -y <smtpuser> -z <smtppass>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-
-  Customer domain:
-    -k <customerdomain>
-       The customer domain to be set for the Moodle site
-
-  BBB token (all or none of these optional parameters have to be given):
-    -b <bbbuser>
-       The BBB user to be set for the Moodle site
-    -c <bbbtoken>
-       The BBB token to be set for the Moodle site
-
-  SMTP server (at least the user and pass parameters or none of these optional parameters have to be given):
-    -x <smtpserver>
-       The SMTP mail server which is used for outgoing mail
-    -y <smtpuser>
-       The SMTP mail user which is used for outgoing mail
-    -z <smtppass>
-       The SMTP mail password which is used for outgoing mail
-```
-
-#### mtb-site-pull.sh
-
-This script is used to pull the latest codebase of the given instance from Github and update the Moodle database within a maintenance window.
-
-```
-Usage:
-mtb-site-pull.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>] [-n]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -n
-     No sleep mode
-     If this flag is set, the script will not sleep before enabling the maintenance mode
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-#### mtb-site-reset.sh
-
-This script is used to reset a non-prod Moodle instance to the status of the prod Moodle instance.
-It will reset the whole instance to the current status (code + data) of the prod instance.
-But it will not reset the config.php file. If you have changed this file in any way, please make sure to reset it manually back to a stable state.
-
-```
-Usage:
-mtb-site-reset.sh -s <site> -i <instance> [-a] [-d <distro>] [-r <release>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-#### mtb-site-downgrade.sh
-
-This script is used to downgrade the core and plugin versions stored in the Moodle database to the versions stored in the version.php files on disk.
-It does not do any rollback of upgrade steps. Please use it only for development or emergency purposes.
-
-```
-Usage:
-mtb-site-downgrade.sh -s <site> -i <instance> [-d <distro>] [-r <release>]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -r <release>
-     The Moodle release which is to be used by the scripts
-     This parameter expects the release number of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-     If not given, this parameter value is taken from the Moodle toolbox configuration file.
-```
-
-#### mtb-site-permissions.sh
-
-This script is used to fix the permissions on disk.
-Normally, all site scripts which deal with files should fix permissions at the end anyway. However, after manual modifications and to fix issues, this script can be useful.
-
-```
-Usage:
-mtb-site-permissions.sh -s <site> -i <instance> [-d <distro>] [-a]
-
-Mandatory parameters:
-  -s <site>
-     The Moodle site which is to be used by this script
-     This parameter expects the folder name of the Moodle site below the basedir.
-     When running the script, a list of possible values can be requested with the -h parameter.
-  -i <instance>
-     The instance of the Moodle site which is to be used by this script
-     This parameter expects the instance name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-
-Optional parameters:
-  -a
-     Auto mode
-     If this flag is set, the script will not ask for any confirmations
-  -d <distro>
-     The Moodle distribution which is to be used by the scripts
-     This parameter expects the distribution name of the instance of the Moodle site.
-     When running the script, a list of possible values can be requested with the -h parameter.
-```
 
 ### /commands/dev
 
@@ -619,12 +254,16 @@ Mandatory parameters:
 Maintainers
 -----------
 
-lern.link GmbH\
 Alexander Bias
 
 
 Copyright
 ---------
 
-lern.link GmbH\
 Alexander Bias
+
+
+Credits
+-------
+
+This script collection was started as internal management tool at lern.link GmbH.

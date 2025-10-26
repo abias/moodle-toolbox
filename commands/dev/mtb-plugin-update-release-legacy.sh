@@ -6,7 +6,6 @@
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$CURRENTDIR/../../_config/localconfig.sh"
-source "$CURRENTDIR/../../_config/localcredentials.sh"
 source "$CURRENTDIR/../../_include/sh/functionslib.sh"
 
 
@@ -170,7 +169,7 @@ git push $config_github_remoterepo MOODLE_${pluginmrelease}_STABLE --tags \
     && success || failure
 
 
-now "Checkout $config_github_mainbranch branch again (just for cleanup)" 
+now "Checkout $config_github_mainbranch branch again (just for cleanup)"
 
 cd $pluginpath \
     && success || failure
