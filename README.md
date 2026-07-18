@@ -22,6 +22,10 @@ copy the file to
 /_config/_localconfig.sh,
 and adapt the configuration file to your local needs. All configuration settings should be commented well in the configuration dist file.
 
+Finally, add the
+/bin
+folder to your PATH. This is not strictly necessary, but it allows you to call the scripts by their plain name from within any directory.
+
 
 Usage
 -----
