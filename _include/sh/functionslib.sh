@@ -161,8 +161,8 @@ array_echo_linebyline_indented ()
 }
 
 # This helper function takes the array which is passed in $2 and checks if the string passed in $1 is contained in the array.
-# If it is, the function returns 1.
-# If it is not, the function returns 0.
+# If it is, the function returns 0 (i.e. success).
+# If it is not, the function returns 1 (i.e. failure).
 array_contains_element ()
 {
     local e match="$1"
