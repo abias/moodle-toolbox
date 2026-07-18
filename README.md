@@ -104,7 +104,7 @@ Mandatory parameters:
 #### mtb-plugin-patch-commit.sh
 
 This script is used to commit a patch to a plugin.
-It is normally used to commit a patch to the master branch, but can be used to patch other branches as well.
+It is normally used to commit a patch to the main branch, but can be used to patch other branches as well.
 
 ```
 Usage:
@@ -149,7 +149,7 @@ Mandatory parameters:
 Optional parameters:
   -s <shahash>
      The SHA hash of the patch to be backported.
-     If this parameter is not given, the script backports the HEAD commit in the master branch.
+     If this parameter is not given, the script backports the HEAD commit in the main branch.
   -g
      Push to Github.
      If this switch is set, the given branches are pushed to Github after the backport.

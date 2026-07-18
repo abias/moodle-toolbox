@@ -37,7 +37,7 @@ Mandatory parameters:
 Optional parameters:
   -s <shahash>
      The SHA hash of the patch to be backported.
-     If this parameter is not given, the script backports the HEAD commit in the master branch.
+     If this parameter is not given, the script backports the HEAD commit in the main branch.
 
      Example:
      678fsdf
