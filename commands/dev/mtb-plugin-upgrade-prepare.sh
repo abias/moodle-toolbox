@@ -202,7 +202,7 @@ unset gitupgradebranch
 
 cd $pluginpath \
     && success || failure
-gitcommmit=$(git log --oneline | grep "Prepare compatibility for Moodle $pluginrelease")
+gitcommit=$(git log --oneline | grep "Prepare compatibility for Moodle $pluginrelease")
 if [[ $? -eq 0 ]]; then
     echo -e "The git history already contains a commit message for preparing this upgrade."
     echo "I can't continue."

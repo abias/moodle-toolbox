@@ -152,7 +152,7 @@ unset gitupgradebranch
 
 cd $pluginpath \
     && success || failure
-gitcommmit=$(git log --oneline | grep "Release v$pluginrelease-r1")
+gitcommit=$(git log --oneline | grep "Release v$pluginrelease-r1")
 if [[ $? -ne 0 ]]; then
     echo -e "The git history does not contain a commit message for finishing this upgrade."
     echo "I can't continue."
