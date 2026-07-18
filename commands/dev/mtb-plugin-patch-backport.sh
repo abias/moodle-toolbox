@@ -49,7 +49,7 @@ EOU
 }
 
 # Process parameters
-while getopts 'hp:b:s:vg' OPTION; do
+while getopts 'hp:b:s:g' OPTION; do
     case "$OPTION" in
         p)
             pluginpath=$OPTARG
