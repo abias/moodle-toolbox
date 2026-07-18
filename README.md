@@ -50,9 +50,6 @@ Mandatory parameters:
   -d <date>
      The date of the upgrade.
      This is just needed for the CHANGELOG entry.
-  -v <version>
-     The version of the release of the plugin.
-     Ideally, this matches the date in the CHANGELOG entry. Don't forget the two trailing zeros which are required for Moodle versions.
   -c <coreversion>
      The version of the Moodle core which is required for the new release of the plugin.
      You can find the Moodle core releases on https://docs.moodle.org/dev/Releases.
