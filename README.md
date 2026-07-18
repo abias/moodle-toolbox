@@ -26,7 +26,7 @@ and adapt the configuration file to your local needs. All configuration settings
 Usage
 -----
 
-### /commands/dev
+### /bin
 
 In this folder, you will find scripts which can be used to do various Moodle dev tasks.
 

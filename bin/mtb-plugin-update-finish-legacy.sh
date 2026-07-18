@@ -5,8 +5,8 @@
 ###################################
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$CURRENTDIR/../../_config/_localconfig.sh"
-source "$CURRENTDIR/../../_include/_functions.sh"
+source "$CURRENTDIR/../_config/_localconfig.sh"
+source "$CURRENTDIR/../_include/_functions.sh"
 
 
 ###################################
@@ -17,7 +17,7 @@ usage ()
 {
     cat <<EOU
 Usage:
-mtb-plugin-update-release-latest.sh -p <path> -m <machinerelease> -r <release>
+mtb-plugin-update-finish-legacy.sh -p <path> -m <machinerelease> -r <release> [-v] [-g]
 
 Mandatory parameters:
   -p <path>
@@ -38,11 +38,20 @@ Mandatory parameters:
 
      Example:
      3.11
+
+Optional parameters:
+  -v
+     Raise version.
+     If this switch is set, the plugin version in version.php is raised within the update.
+
+  -g
+     Push to Github.
+     If this switch is set, the branches are pushed to Github after the commit.
 EOU
 }
 
 # Process parameters
-while getopts 'hp:m:r:' OPTION; do
+while getopts 'hp:m:r:vg' OPTION; do
     case "$OPTION" in
         p)
             pluginpath=$OPTARG
@@ -52,6 +61,12 @@ while getopts 'hp:m:r:' OPTION; do
             ;;
         r)
             pluginrelease=$OPTARG
+            ;;
+        v)
+            pluginraiseversion=1
+            ;;
+        g)
+            pluginpush=1
             ;;
         h)
             usage
@@ -92,7 +107,7 @@ if [[ -z "$pluginrelease" ]]; then
 fi
 
 # Confirmation
-echo -e "You requested to release the plugin update of \033[1;35m$pluginpath\033[0m with release \033[1;35m$pluginrelease\033[0m!"
+echo -e "You requested to finish the plugin update of \033[1;35m$pluginpath\033[0m for release \033[1;35m$pluginrelease\033[0m!"
 confirm
 
 
@@ -116,23 +131,17 @@ unset gitstatus
 
 cd $pluginpath \
     && success || failure
-git checkout $config_github_mainbranch \
+git checkout MOODLE_${pluginmrelease}_STABLE \
     && success || failure
 changes=$(grep "### Unreleased" $pluginpath/CHANGES.md)
-if [[ $? -eq 0 ]]; then
-    echo -e "The CHANGES.md file contains an 'Unreleased' section. It seems as if the update is not finished yet."
+if [[ $? -ne 0 ]]; then
+    echo -e "The CHANGES.md file does not contain an 'Unreleased' section. It seems as if the update is not prepared yet."
     echo "I can't continue."
     exit 1
 else
     success
 fi
 unset changes
-
-
-now "Github actions status"
-
-echo -e "The plugin update must not be released if there are still any bugs or issues. Please confirm that Github actions was 'all green'."
-confirm
 
 
 ###################################
@@ -148,27 +157,64 @@ git_init_commits
 ### action
 ###################################
 
-now "Tag the update in the release branch"
+now "Check out MOODLE_${pluginmrelease}_STABLE branch"
+
+cd $pluginpath \
+    && success || failure
+git checkout MOODLE_${pluginmrelease}_STABLE \
+    && success || failure
+
+
+if [[ $pluginraiseversion -eq 1 ]]; then
+    now "Raise plugin version"
+
+    cd $pluginpath \
+        && success || failure
+    version=$(grep "plugin->version" $pluginpath/version.php | tr -dc '0-9')
+    nextversion=$((version + 1))
+    sed -i "/plugin->version/s/$version/$nextversion/g" $pluginpath/version.php \
+        && success || failure
+    unset version
+    unset nextversion
+fi
+
+
+now "Raise plugin release"
 
 cd $pluginpath \
     && success || failure
 release=$(grep "plugin->release" $pluginpath/version.php | sed 's/.*-r//' | tr -dc '0-9')
-git checkout MOODLE_${pluginmrelease}_STABLE \
+nextrelease=$((release + 1))
+sed -i "/plugin->release/s/-r${release}/-r${nextrelease}/g" $pluginpath/version.php \
     && success || failure
-git tag v$pluginrelease-r$release \
-    && success || failure
+unset release
 
 
-now "Push the $config_github_mainbranch branch, the release branch and the release tag to Github"
+now "Amend CHANGES.md"
 
 cd $pluginpath \
     && success || failure
-git push $config_github_remoterepo $config_github_mainbranch \
+sed -i "s/### Unreleased/### v$pluginrelease-r$nextrelease/" $pluginpath/CHANGES.md \
     && success || failure
-git push $config_github_remoterepo MOODLE_${pluginmrelease}_STABLE \
+
+
+now "Commit changes"
+
+cd $pluginpath \
     && success || failure
-git push $config_github_remoterepo MOODLE_${pluginmrelease}_STABLE --tags \
+git commit -a -m "Release v$pluginrelease-r$nextrelease" \
     && success || failure
+unset nextrelease
+
+
+if [[ $pluginpush -eq 1 ]]; then
+    now "Push branch to Github"
+
+    cd $pluginpath \
+        && success || failure
+    git push $config_github_remoterepo \
+        && success || failure
+fi
 
 
 now "Checkout $config_github_mainbranch branch again (just for cleanup)"
@@ -185,5 +231,8 @@ git checkout $config_github_mainbranch \
 
 now "Finish"
 
-echo -e "The \033[1;35m$pluginpath\033[0m plugin update for release \033[1;35m$pluginrelease\033[0m has been released and has been pushed to Github."
-echo -e "Please review the results on Github and check if the release has been pushed properly to moodle.org by Github Actions as well."
+echo -e "The \033[1;35m$pluginpath\033[0m plugin update for release \033[1;35m$pluginrelease\033[0m has been finished."
+if [[ $pluginpush -eq 1 ]]; then
+    echo -e "The branch was pushed to Github as well."
+fi
+echo -e "Please review the Git log and use then mtb-plugin-update-release-legacy.sh"

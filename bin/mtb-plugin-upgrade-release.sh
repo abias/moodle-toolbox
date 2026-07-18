@@ -5,8 +5,8 @@
 ###################################
 
 CURRENTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$CURRENTDIR/../../_config/_localconfig.sh"
-source "$CURRENTDIR/../../_include/_functions.sh"
+source "$CURRENTDIR/../_config/_localconfig.sh"
+source "$CURRENTDIR/../_include/_functions.sh"
 
 
 ###################################
