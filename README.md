@@ -17,9 +17,9 @@ Clone the toolbox into a directory on your webserver, for example:
 /opt/moodle-toolbox
 
 Then, have a look at the configuration file
-/_config/localconfig.dist.sh,
+/_config/_localconfig.dist.sh,
 copy the file to
-/_config/localconfig.sh,
+/_config/_localconfig.sh,
 and adapt the configuration file to your local needs. All configuration settings should be commented well in the configuration dist file.
 
 
