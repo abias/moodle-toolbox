@@ -142,7 +142,7 @@ if [[ -z "$pluginhash" ]]; then
     pluginhash=$(git rev-parse HEAD)
 fi
 commitmessage=$(git show $pluginhash --pretty=format:"%B" --no-patch)
-changesmessage=$(git show $pluginhash CHANGES.md | grep -m 1 "+* 20[0-9][0-9]-[0-9][0-9]-[0-9][0-9] - " | cut -c4-)
+changesmessage=$(git show $pluginhash -- CHANGES.md | grep -m 1 -E "^\+\* 20[0-9]{2}-[0-9]{2}-[0-9]{2} - " | cut -c4-)
 if [[ -z $commitmessage ]]; then
     echo "The extracted commit message is - for whatever reason - empty."
     echo "Do you really want to continue?"
