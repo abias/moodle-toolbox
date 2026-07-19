@@ -149,6 +149,8 @@ Mandatory parameters:
   -b <branches>
      The branches which the patch should be backported to.
      This parameter expects a comma-separated list of existing branch names.
+     Instead of a full branch name, you can also use the plain Moodle release number as a shorthand.
+     It is expanded to MOODLE_<number>_STABLE automatically.
 
 Optional parameters:
   -s <shahash>

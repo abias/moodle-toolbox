@@ -30,9 +30,12 @@ Mandatory parameters:
   -b <branches>
      The branches which the patch should be backported to.
      This parameter expects a comma-separated list of existing branch names.
+     Instead of a full branch name, you can also use the plain Moodle release number as a shorthand.
+     It is expanded to MOODLE_<number>_STABLE automatically.
 
-     Example:
+     Examples:
      MOODLE_311_STABLE,MOODLE_310_STABLE
+     311,310
 
 Optional parameters:
   -s <shahash>
@@ -95,8 +98,24 @@ if [[ -z "$pluginbranches" ]]; then
     exit 1
 fi
 
+# Expand the shorthand branch names to full branch names
+expandedbranches=""
+for branch in ${pluginbranches//,/ }
+do
+    if [[ "$branch" =~ ^[0-9]+$ ]]; then
+        branch="MOODLE_${branch}_STABLE"
+    fi
+    if [[ -z "$expandedbranches" ]]; then
+        expandedbranches="$branch"
+    else
+        expandedbranches="$expandedbranches,$branch"
+    fi
+done
+pluginbranches=$expandedbranches
+unset expandedbranches branch
+
 # Confirmation
-echo -e "You requested to backport a patch within the plugin at \033[1;35m$pluginpath\033[0m!"
+echo -e "You requested to backport a patch within the plugin at \033[1;35m$pluginpath\033[0m to the branch(es) \033[1;35m${pluginbranches//,/, }\033[0m!"
 confirm
 
 
