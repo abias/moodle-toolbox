@@ -140,7 +140,7 @@ This script is used to backport a commit to release branches.
 
 ```
 Usage:
-mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g]
+mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g] [-l]
 
 Mandatory parameters:
   -p <path>
@@ -159,6 +159,10 @@ Optional parameters:
   -g
      Push to Github.
      If this switch is set, the given branches are pushed to Github after the backport.
+  -l
+     Look at the changes before pushing.
+     If this switch is set, the backported commit is shown with git show before each branch is pushed to Github.
+     This switch only has an effect if -g is set as well.
 ```
 
 #### mtb-plugin-patch-rebase.sh
@@ -171,7 +175,7 @@ Conflicts in CHANGES.md are resolved by the script itself, all other conflicts h
 
 ```
 Usage:
-mtb-plugin-patch-rebase.sh -p <path> -b <branch> [-g]
+mtb-plugin-patch-rebase.sh -p <path> -b <branch> [-g] [-l]
 
 Mandatory parameters:
   -p <path>
@@ -184,6 +188,10 @@ Optional parameters:
   -g
      Push to Github.
      If this switch is set, the feature branch is force-pushed to Github after the rebase.
+  -l
+     Look at the changes before pushing.
+     If this switch is set, the rebased commits are shown with git show before the branch is pushed to Github.
+     This switch only has an effect if -g is set as well.
 ```
 
 #### mtb-plugin-update-finish-latest.sh

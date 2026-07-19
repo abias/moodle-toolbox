@@ -17,7 +17,7 @@ usage ()
 {
     cat <<EOU
 Usage:
-mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g]
+mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g] [-l]
 
 Mandatory parameters:
   -p <path>
@@ -48,11 +48,16 @@ Optional parameters:
   -g
      Push to Github.
      If this switch is set, the given branches are pushed to Github after the backport.
+
+  -l
+     Look at the changes before pushing.
+     If this switch is set, the backported commit is shown with git show before each branch is pushed to Github.
+     This switch only has an effect if -g is set as well.
 EOU
 }
 
 # Process parameters
-while getopts 'hp:b:s:g' OPTION; do
+while getopts 'hp:b:s:gl' OPTION; do
     case "$OPTION" in
         p)
             pluginpath=$OPTARG
@@ -65,6 +70,9 @@ while getopts 'hp:b:s:g' OPTION; do
             ;;
         g)
             pluginpush=1
+            ;;
+        l)
+            pluginshow=1
             ;;
         h)
             usage
@@ -291,6 +299,20 @@ do
 
 
     if [[ $pluginpush -eq 1 ]]; then
+        if [[ $pluginshow -eq 1 ]]; then
+            now "Show changes in $branch branch before pushing"
+
+            cd $pluginpath \
+                && success || failure
+            backportsha=$(git rev-parse HEAD)
+            git show $backportsha
+            unset backportsha
+            echo
+            echo "These are the changes which will be pushed to the $branch branch now."
+            confirm
+        fi
+
+
         now "Push branch to Github"
 
         cd $pluginpath \

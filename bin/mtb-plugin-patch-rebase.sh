@@ -34,7 +34,7 @@ usage ()
 {
     cat <<EOU
 Usage:
-mtb-plugin-patch-rebase.sh -p <path> -b <branch> [-g]
+mtb-plugin-patch-rebase.sh -p <path> -b <branch> [-g] [-l]
 
 Mandatory parameters:
   -p <path>
@@ -54,11 +54,16 @@ Optional parameters:
   -g
      Push to Github.
      If this switch is set, the feature branch is force-pushed to Github after the rebase.
+
+  -l
+     Look at the changes before pushing.
+     If this switch is set, the rebased commits are shown with git show before the branch is pushed to Github.
+     This switch only has an effect if -g is set as well.
 EOU
 }
 
 # Process parameters
-while getopts 'hp:b:g' OPTION; do
+while getopts 'hp:b:gl' OPTION; do
     case "$OPTION" in
         p)
             pluginpath=$OPTARG
@@ -68,6 +73,9 @@ while getopts 'hp:b:g' OPTION; do
             ;;
         g)
             pluginpush=1
+            ;;
+        l)
+            pluginshow=1
             ;;
         h)
             usage
@@ -376,6 +384,17 @@ unset gitbranch
 
 
 if [[ $pluginpush -eq 1 ]]; then
+    if [[ $pluginshow -eq 1 ]]; then
+        now "Show changes in $pluginbranch branch before pushing"
+
+        cd $pluginpath \
+            && success || failure
+        git show $config_github_mainbranch..$pluginbranch
+        echo
+        echo "These are the rebased commits which will be pushed to the $pluginbranch branch now."
+    fi
+
+
     now "Push branch to Github"
 
     cd $pluginpath \
