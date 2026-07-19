@@ -197,22 +197,23 @@ do
     fi
     if [[ $conflictincherrypick -ne 0 ]]; then
         echo
-	echo "There were conflicts during git cherry-pick. That's not an issue (yet)."
-	versionphpchanges=$(git diff --check | grep version.php | wc -l)
-	if [[ $versionphpchanges -gt 0 ]]; then
+        echo "There were conflicts during git cherry-pick. That's not an issue (yet)."
+        conflictedfiles=$(git diff --name-only --diff-filter=U)
+        versionphpconflict=$(echo "$conflictedfiles" | grep -Fx "version.php")
+        otherconflicts=$(echo "$conflictedfiles" | grep -Fvx "version.php")
+        if [[ -n $versionphpconflict ]]; then
             echo
-	    echo "There was a conflict in version.php."
-	    echo "Please resolve the conflict manually as I can't do this automatically."
-	    echo "Please take special care that you set the new version right so that it matches the plugin version scheme for branch $branch"
-	fi
-	otherchanges=$(git diff --check | grep -v version.php | wc -l)
-	if [[ $otherchanges -gt 0 ]]; then
-            echo
-	    echo "There were conflicts in the following files:"
-	    git diff --check |grep -v version.php | cut -d":" -f1 |sort -u
-	    echo "Please resolve the conflicts manually as I can't do this automatically."
+            echo "There was a conflict in version.php."
+            echo "Please resolve the conflict manually as I can't do this automatically."
+            echo "Please take special care that you set the new version right so that it matches the plugin version scheme for branch $branch"
         fi
-        if [[ $versionphpchanges -gt 0 || $otherchanges -gt 0 ]]; then
+        if [[ -n $otherconflicts ]]; then
+            echo
+            echo "There were conflicts in the following files:"
+            echo "$otherconflicts"
+            echo "Please resolve the conflicts manually as I can't do this automatically."
+        fi
+        if [[ -n $conflictedfiles ]]; then
             echo
             echo "The rough process for resolving the conflicts is:"
             echo "  Open a new terminal"
@@ -222,9 +223,10 @@ do
             echo
             echo "However, please do not commit anything and let me continue as soon as all conflicts are resolved."
             acknowledge
-	fi
-        unset changesmdchanges versionphpchanges otherchanges
+        fi
+        unset conflictedfiles versionphpconflict otherconflicts
     fi
+    unset changesmdchanges
 
     if [[ -n $changesmessage ]]; then
         now "Amend Changelog (again)"
@@ -241,6 +243,22 @@ do
         fi
         unset changes
     fi
+
+
+    now "Verify that all conflicts are resolved"
+
+    cd $pluginpath \
+        && success || failure
+    remainingconflicts=$(git diff --name-only --diff-filter=U)
+    if [[ -n $remainingconflicts ]]; then
+        echo "There are still unresolved conflicts in the following files:"
+        echo "$remainingconflicts"
+        echo "I can't continue."
+        exit 1
+    else
+        success
+    fi
+    unset remainingconflicts
 
 
     now "Commit patch"
