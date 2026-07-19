@@ -189,12 +189,13 @@ do
     changesmdchanges=$(git diff --name-only --cached | grep CHANGES.md | wc -l)
     if [[ $changesmdchanges -gt 0 ]]; then
         echo
-	echo "CHANGES.md has changes in the patch. However, I will reset CHANGES.md now as the CHANGES.md entry will be re-applied cleanly by me later."
+    echo "CHANGES.md has changes in the patch. However, I will reset CHANGES.md now as the CHANGES.md entry will be re-applied cleanly by me later."
         git reset CHANGES.md \
             && success || failure
         git checkout -- CHANGES.md \
             && success || failure
     fi
+    unset changesmdchanges
     if [[ $conflictincherrypick -ne 0 ]]; then
         echo
         echo "There were conflicts during git cherry-pick. That's not an issue (yet)."
@@ -226,7 +227,6 @@ do
         fi
         unset conflictedfiles versionphpconflict otherconflicts
     fi
-    unset changesmdchanges
 
     if [[ -n $changesmessage ]]; then
         now "Amend Changelog (again)"
@@ -276,7 +276,7 @@ do
 
         cd $pluginpath \
             && success || failure
-        git push $config_github_remoterepo \
+        git push $config_github_remoterepo $branch \
             && success || failure
     fi
 done
