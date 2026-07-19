@@ -159,6 +159,31 @@ Optional parameters:
      If this switch is set, the given branches are pushed to Github after the backport.
 ```
 
+#### mtb-plugin-patch-rebase.sh
+
+This script is used to rebase a feature branch onto the main branch.
+
+Before the rebase, it checks if the local main branch is in sync with the remote repository and offers to pull it.
+
+Conflicts in CHANGES.md are resolved by the script itself, all other conflicts have to be resolved manually while the script waits.
+
+```
+Usage:
+mtb-plugin-patch-rebase.sh -p <path> -b <branch> [-g]
+
+Mandatory parameters:
+  -p <path>
+     The (full) path to the plugin directory where the plugin which contains the feature branch is located.
+     This path does not necessarily have to be located within a runnning Moodle site.
+  -b <branch>
+     The feature branch which should be rebased onto the main branch.
+
+Optional parameters:
+  -g
+     Push to Github.
+     If this switch is set, the feature branch is force-pushed to Github after the rebase.
+```
+
 #### mtb-plugin-update-finish-latest.sh
 
 This script is used to finish a plugin update for the latest supported release.
