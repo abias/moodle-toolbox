@@ -25,6 +25,15 @@ rebase_in_progress ()
     return 1
 }
 
+# This helper function explains how to proceed if the script terminates while a rebase is still in progress.
+rebase_abort_hint ()
+{
+    echo
+    echo "The rebase is still in progress in the plugin git repo at $pluginpath."
+    echo "You can either solve the remaining issues manually and finish the rebase with git rebase --continue."
+    echo "Or you can abort the rebase with git rebase --abort which brings the $pluginbranch branch back to the state before the rebase."
+}
+
 
 ###################################
 ### check startup
@@ -246,6 +255,7 @@ do
     if [[ $rebaseround -gt 100 ]]; then
         echo "The rebase did not finish after 100 rounds. Something is definitely wrong here."
         echo "I can't continue."
+        rebase_abort_hint
         exit 1
     fi
 
@@ -258,6 +268,7 @@ do
     if [[ -z $stoppedsha ]]; then
         echo "I can't determine which commit the rebase stopped at."
         echo "I can't continue."
+        rebase_abort_hint
         exit 1
     fi
     echo "The rebase stopped while applying this commit:"
@@ -305,7 +316,7 @@ do
             echo
             echo "There was a conflict in version.php."
             echo "Please resolve the conflict manually as I can't do this automatically."
-            echo "Please take special care that you set the new version right so that it matches the plugin version scheme for branch $pluginbranch"
+            echo "Please take special care that the resulting version in version.php is higher than the version on the $config_github_mainbranch branch."
         fi
 
         if [[ -n $otherconflicts ]]; then
@@ -340,6 +351,7 @@ do
         echo "There are still unresolved conflicts in the following files:"
         echo "$remainingconflicts"
         echo "I can't continue."
+        rebase_abort_hint
         exit 1
     else
         success
@@ -358,6 +370,19 @@ do
     else
         GIT_EDITOR=true git rebase --continue \
             && success
+    fi
+    # A failed continue or skip is fine as long as the rebase moved on and just stopped at the next commit.
+    # If it is still stuck at the same commit, looping again would not help.
+    if rebase_in_progress; then
+        nextsha=$(git rev-parse REBASE_HEAD)
+        if [[ "$nextsha" == "$stoppedsha" ]]; then
+            echo
+            echo "The rebase could not be continued and is still stuck at the same commit."
+            echo "I can't continue."
+            rebase_abort_hint
+            exit 1
+        fi
+        unset nextsha
     fi
     unset stoppedsha hadconflicts
 done
