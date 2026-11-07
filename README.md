@@ -105,35 +105,6 @@ Mandatory parameters:
      The (human readable) target release of the plugin.
 ```
 
-#### mtb-plugin-patch-commit.sh
-
-This script is used to commit a patch to a plugin.
-It is normally used to commit a patch to the main branch, but can be used to patch other branches as well.
-
-```
-Usage:
-mtb-plugin-patch-commit.sh -p <path> -d <date> -m <message> [-v] [-g]
-
-Mandatory parameters:
-  -p <path>
-     The (full) path to the plugin directory where the plugin which contains the patch is located.
-     This path does not necessarily have to be located within a runnning Moodle site.
-  -d <date>
-     The date of the patch.
-     This is just needed for the CHANGELOG entry.
-  -m <message>
-     The message of the patch.
-     This is needed for the CHANGELOG entry and for the commit message
-
-Optional parameters:
-  -v
-     Raise version.
-     If this switch is set, the plugin version in version.php is raised within the commit.
-  -g
-     Push to Github.
-     If this switch is set, the branch is pushed to Github after the commit.
-```
-
 #### mtb-plugin-patch-backport.sh
 
 This script is used to backport a commit to release branches.
