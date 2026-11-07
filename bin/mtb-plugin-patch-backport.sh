@@ -216,7 +216,7 @@ do
     changesmdchanges=$(git diff --name-only --cached | grep CHANGES.md | wc -l)
     if [[ $changesmdchanges -gt 0 ]]; then
         echo
-    echo "CHANGES.md has changes in the patch. However, I will reset CHANGES.md now as the CHANGES.md entry will be re-applied cleanly by me later."
+        echo "CHANGES.md has changes in the patch. However, I will reset CHANGES.md now as the CHANGES.md entry will be re-applied cleanly by me later."
         git reset CHANGES.md \
             && success || failure
         git checkout -- CHANGES.md \
@@ -344,6 +344,6 @@ now "Finish"
 
 echo -e "The patch was backported within the \033[1;35m$pluginpath\033[0m plugin."
 if [[ $pluginpush -eq 1 ]]; then
-	echo -e "The branch(es) was/were pushed to Github as well."
+    echo -e "The branch(es) was/were pushed to Github as well."
 fi
 echo -e "Please review the results in the Git history."
