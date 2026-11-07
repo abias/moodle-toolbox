@@ -109,6 +109,11 @@ Mandatory parameters:
 
 This script is used to backport a commit to release branches.
 
+Before the backport, it checks if the local main branch and the given branches are in sync with the remote repository and offers to pull them.
+
+Conflicts in CHANGES.md are resolved by the script itself, all other conflicts have to be resolved manually while the script waits.
+Branches which already contain the patch are skipped.
+
 ```
 Usage:
 mtb-plugin-patch-backport.sh -p <path> -b <branches> [-s <shahash>] [-g] [-l]

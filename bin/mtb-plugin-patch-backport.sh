@@ -10,6 +10,77 @@ source "$CURRENTDIR/../_include/_functions.sh"
 
 
 ###################################
+### local functions
+###################################
+
+# This helper function compares the local branch which is passed in $1 with the same branch in the remote repo.
+# If the local branch is behind, it offers to pull it.
+# If the local branch is ahead, it asks for confirmation.
+# If the branches have diverged, the script terminates.
+check_branch_sync ()
+{
+    syncbranch=$1
+    if ! git ls-remote --exit-code --heads $config_github_remoterepo $syncbranch > /dev/null; then
+        echo "The $syncbranch branch does not exist in $config_github_remoterepo yet. There is nothing to compare."
+        success
+        unset syncbranch
+        return
+    fi
+    git fetch $config_github_remoterepo $syncbranch \
+        && success || failure
+    localsha=$(git rev-parse $syncbranch)
+    remotesha=$(git rev-parse $config_github_remoterepo/$syncbranch)
+    if [[ "$localsha" == "$remotesha" ]]; then
+        echo "The local $syncbranch branch is up to date with $config_github_remoterepo."
+        success
+    elif git merge-base --is-ancestor $localsha $remotesha; then
+        echo
+        echo "The local $syncbranch branch is behind $config_github_remoterepo/$syncbranch."
+        echo "It would be reasonable to pull the $syncbranch branch before the backport."
+        askandremember
+        if [[ $doit -eq 1 ]]; then
+            git checkout $syncbranch \
+                && success || failure
+            git pull --ff-only $config_github_remoterepo $syncbranch \
+                && success || failure
+        elif [[ $pluginpush -eq 1 ]]; then
+            echo "You requested to push to Github, but the push of the $syncbranch branch would be rejected if it is not pulled before."
+            echo "I can't continue."
+            exit 1
+        else
+            echo "Ok, I will use the local state of the $syncbranch branch then."
+        fi
+        unset doit
+    elif git merge-base --is-ancestor $remotesha $localsha; then
+        echo
+        echo "The local $syncbranch branch is ahead of $config_github_remoterepo/$syncbranch."
+        echo "This means that the $syncbranch branch has commits which are not pushed to $config_github_remoterepo yet."
+        echo "Do you really want to continue?"
+        confirm
+    else
+        echo
+        echo "The local $syncbranch branch and $config_github_remoterepo/$syncbranch have diverged."
+        echo "Please solve this manually as I can't do this automatically."
+        echo "I can't continue."
+        exit 1
+    fi
+    unset syncbranch localsha remotesha
+}
+
+# This helper function explains how to clean up if the script terminates in the middle of the backport to the branch which is passed in $1.
+backport_abort_hint ()
+{
+    echo
+    echo "The backport to the $1 branch was not finished and the $1 branch still contains the uncommitted changes of the backport."
+    echo "You can throw these changes away and go back to the $config_github_mainbranch branch with:"
+    echo "  cd $pluginpath"
+    echo "  git reset --hard"
+    echo "  git checkout $config_github_mainbranch"
+    echo "Branches which were processed before the $1 branch are already backported (and pushed if requested)."
+}
+
+
+###################################
 ### check startup
 ###################################
 
@@ -137,7 +208,7 @@ cd $pluginpath \
     && success || failure
 gitstatus=$(git status --porcelain)
 if [[ -n "$gitstatus" ]]; then
-    echo "The plugin git repo is not clean. This must be solved before the upgrade."
+    echo "The plugin git repo is not clean. This must be solved before the backport."
     echo "I can't continue."
     exit 1
 else
@@ -166,6 +237,7 @@ cd $pluginpath \
 if [[ -z "$pluginhash" ]]; then
     git checkout $config_github_mainbranch \
         && success || failure
+    check_branch_sync $config_github_mainbranch
     pluginhash=$(git rev-parse HEAD)
 fi
 commitmessage=$(git show $pluginhash --pretty=format:"%B" --no-patch)
@@ -183,13 +255,10 @@ if [[ -z $changesmessage ]]; then
 fi
 
 
-now "Start to loop through given backport branches"
-
-success
-
+# All branches are checked before the first one is touched, so that the backport does not stop halfway because of one of them.
 for branch in ${pluginbranches//,/ }
 do
-    now "Checking branch security nets"
+    now "Checking branch security nets for $branch branch"
 
     cd $pluginpath \
         && success || failure
@@ -202,8 +271,16 @@ do
         success
     fi
     unset gitbranch
+    check_branch_sync $branch
+done
 
 
+now "Start to loop through given backport branches"
+
+success
+
+for branch in ${pluginbranches//,/ }
+do
     now "Cherry-pick patch to $branch branch (without the changes to CHANGES.md and version.php)"
 
     cd $pluginpath \
@@ -255,22 +332,6 @@ do
         unset conflictedfiles versionphpconflict otherconflicts
     fi
 
-    if [[ -n $changesmessage ]]; then
-        now "Amend Changelog (again)"
-
-        cd $pluginpath \
-            && success || failure
-        changes=$(grep "### Unreleased" $pluginpath/CHANGES.md)
-        if [[ $? -ne 0 ]]; then
-            sed -i "7i ### Unreleased\n\n* $changesmessage\n" $pluginpath/CHANGES.md \
-                && success || failure
-        else
-            sed -i "9i * $changesmessage" $pluginpath/CHANGES.md \
-                && success || failure
-        fi
-        unset changes
-    fi
-
 
     now "Verify that all conflicts are resolved"
 
@@ -281,11 +342,53 @@ do
         echo "There are still unresolved conflicts in the following files:"
         echo "$remainingconflicts"
         echo "I can't continue."
+        backport_abort_hint $branch
         exit 1
     else
         success
     fi
     unset remainingconflicts
+
+
+    now "Verify that the patch is not backported to $branch branch already"
+
+    cd $pluginpath \
+        && success || failure
+    git add --all \
+        && success || failure
+    if git diff --cached --quiet -- . ':(exclude)version.php'; then
+        echo "The patch does not change anything in the $branch branch (apart from version.php)."
+        echo "It seems that the patch is already backported to this branch."
+        echo "I will skip the $branch branch and throw away the changes of the backport there."
+        git reset -q --hard \
+            && success || failure
+        skippedbranches="$skippedbranches $branch"
+        continue
+    else
+        success
+    fi
+
+
+    if [[ -n $changesmessage ]]; then
+        now "Amend Changelog (again)"
+
+        cd $pluginpath \
+            && success || failure
+        if grep -Fqx -- "* $changesmessage" $pluginpath/CHANGES.md; then
+            echo "The CHANGES.md entry is already there. I won't add it a second time."
+            success
+        else
+            changes=$(grep "### Unreleased" $pluginpath/CHANGES.md)
+            if [[ $? -ne 0 ]]; then
+                sed -i "7i ### Unreleased\n\n* $changesmessage\n" $pluginpath/CHANGES.md \
+                    && success || failure
+            else
+                sed -i "9i * $changesmessage" $pluginpath/CHANGES.md \
+                    && success || failure
+            fi
+            unset changes
+        fi
+    fi
 
 
     now "Commit patch"
@@ -345,5 +448,8 @@ now "Finish"
 echo -e "The patch was backported within the \033[1;35m$pluginpath\033[0m plugin."
 if [[ $pluginpush -eq 1 ]]; then
     echo -e "The branch(es) was/were pushed to Github as well."
+fi
+if [[ -n $skippedbranches ]]; then
+    echo -e "The following branch(es) was/were skipped as the patch is already backported there:\033[1;35m$skippedbranches\033[0m"
 fi
 echo -e "Please review the results in the Git history."
