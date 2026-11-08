@@ -236,7 +236,10 @@ cd $pluginpath \
     && success || failure
 git checkout MOODLE_${pluginmrelease}_STABLE \
     && success || failure
-sed -i "4s/$config_github_mainbranch/MOODLE_${pluginmrelease}_STABLE/g" $pluginpath/README.md \
+# Only replace the branch name where it is used as branch parameter in the badge image URL (branch=main) and in the
+# actions link URL (branch%3Amain). Otherwise, the main branch name would also be replaced within the plugin name
+# (e.g. local_maintenance_livecheck would become local_MOODLE_503_STABLEtenance_livecheck).
+sed -i -E "4s/(branch=|branch%3A)${config_github_mainbranch}([^A-Za-z0-9_.-]|$)/\1MOODLE_${pluginmrelease}_STABLE\2/g" $pluginpath/README.md \
     && success || failure
 git commit -a -m 'Adapt GHA badge after cutting the release branch' \
     && success || failure
